@@ -790,9 +790,8 @@ shell("syncthing -no-browser")
 
 -- xss-lock grabs a logind suspend inhibit lock and will use i3lock to lock the
 -- screen before suspend. Use loginctl lock-session to lock your screen.
--- shell("xss-lock --transfer-sleep-lock -- i3lock --nofork")
 -- shell("lxsession")
-shell("light-locker")
+-- spawn("light-locker")
 
 shell("killall hidamari-server")
 spawn("hidamari --background")

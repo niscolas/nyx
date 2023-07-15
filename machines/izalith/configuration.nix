@@ -103,6 +103,13 @@
     dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
   };
 
+  programs.xss-lock = {
+    enable = true;
+    lockerCommand = ''
+      ${pkgs.lightlocker}/bin/light-locker-command -l
+    '';
+  };
+
   boot.loader = {
     efi = {
       canTouchEfiVariables = true;
@@ -202,11 +209,15 @@
     displayManager = {
       lightdm = {
         enable = true;
-        greeters.gtk.enable = true;
-        # extraSeatDefaults = ''
-        #   display-setup-script=xrandr --auto
-        # '';
       };
+
+      sessionCommands = ''
+        ${pkgs.lightlocker}/bin/light-locker --lock-on-suspend &
+      '';
+
+      setupCommands = ''
+        ${pkgs.xorg.xrandr}/bin/xrandr --auto
+      '';
 
       defaultSession = "none+awesome";
     };
@@ -263,6 +274,7 @@
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     awesome
+    coreutils
     lightlocker
     nushell
     neovim

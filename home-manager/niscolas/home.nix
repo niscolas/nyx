@@ -41,7 +41,6 @@
     bat
     bottom
     cmake
-    coreutils
     dbus
     delta
     discord
