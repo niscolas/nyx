@@ -1,0 +1,54 @@
+[alias]
+    a = add -A
+    ch = checkout
+    cm = commit
+    cma = commit --amend --no-edit
+    cmm = commit -m
+    s = status -sb
+    sm = submodule
+    sr = submodule foreach git s
+    t = log --graph --pretty=format:'%Cred%h%Creset - %Cgreen(%ad)%C(yellow)%d%Creset %s %C(bold blue)<%an>%Creset' --abbrev-commit --date=local
+
+    hide = update-index --assume-unchanged
+    unhide = update-index --no-assume-unchanged
+
+[core]
+    pager = delta
+    autocrlf = input
+
+[credential]
+    helper = store
+
+[delta]
+    line-numbers = true
+    navigate = true  # use n and N to move between diff sections
+    side-by-side = true
+    syntax-theme = gruvbox-dark
+
+[diff]
+    colorMoved = default
+
+[filter "lfs"]
+    process = git-lfs filter-process
+    required = true
+    clean = git-lfs clean -- %f
+    smudge = git-lfs smudge -- %f
+
+[init]
+    defaultBranch = main
+
+[interactive]
+    diffFilter = delta --color-only
+
+[merge]
+    conflictstyle = diff3
+    tool = unityyamlmerge
+
+[mergetool "unityyamlmerge"]
+    trustExitCode = false
+    cmd = $UNITY_EDITOR/Editor/Data/Tools/UnityYAMLMerge.exe merge -p "$BASE" "$REMOTE" "$LOCAL" "$MERGED"
+
+[http]
+	postBuffer = 2097152000
+[sendpack]
+	sideband = false

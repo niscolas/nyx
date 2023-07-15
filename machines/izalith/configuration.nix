@@ -5,7 +5,7 @@
 
 {
   imports =
-    [ # Include the results of the hardware scan.
+    [
       ./hardware-configuration.nix
     ];
 
@@ -34,6 +34,7 @@
       User = "niscolas";
     };
   };
+
   systemd.services.backup_logseq = {
     path = with pkgs; [ bash git openssh ];
     serviceConfig = {
@@ -57,19 +58,28 @@
     wantedBy = [ "default.target" ];
   };
 
+  services.undervolt = {
+    enable = true;
+    temp = 85;
+    coreOffset = -80;
+    gpuOffset = -20;
+  };
+
   services.auto-cpufreq.enable = true;
+
   services.thermald.enable = true;
+
   services.tlp = {
       enable = true;
       settings = {
         CPU_BOOST_ON_AC = 0;
         CPU_BOOST_ON_BAT = 0;
 
-        CPU_SCALING_GOVERNOR_ON_BAT = "powersave";
         CPU_SCALING_GOVERNOR_ON_AC = "performance";
+        CPU_SCALING_GOVERNOR_ON_BAT = "powersave";
 
-        CPU_ENERGY_PERF_POLICY_ON_BAT = "power";
         CPU_ENERGY_PERF_POLICY_ON_AC = "performance";
+        CPU_ENERGY_PERF_POLICY_ON_BAT = "power";
 
         #CPU_MIN_PERF_ON_AC = 0;
         CPU_MAX_PERF_ON_AC = 99;
@@ -83,24 +93,30 @@
         START_CHARGE_THRESH_BAT0=40;
         STOP_CHARGE_THRESH_BAT0=50;
       };
-};
-
+  };
 
   programs.dconf.enable = true;
 
-  boot.loader.systemd-boot.enable = false;
+  programs.steam = {
+    enable = true;
+    remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
+    dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
+  };
 
   boot.loader = {
     efi = {
       canTouchEfiVariables = true;
       efiSysMountPoint = "/boot";
     };
+
     grub = {
       enable = true;
       efiSupport = true;
       device = "nodev";
       useOSProber = true;
     };
+
+    systemd-boot.enable = false;
   };
 
   networking.hostName = "izalith";
@@ -133,20 +149,65 @@
     LC_TIME = "pt_BR.UTF-8";
   };
 
-  # Enable the X11 windowing system.
   services.xserver = {
     enable = true;
 
-    desktopManager = {
-      xfce.enable = true;
-    };
+    config = ''
+      Section "ServerLayout"
+          Identifier "Default Layout"
+          Screen "nvidia" 0 0
+      EndSection
+
+      Section "Module"
+          Load "modesetting"
+          Load "glx"
+      EndSection
+
+      Section "Device"
+        Identifier "nvidia"
+        Driver "nvidia"
+        BusID "PCI:1:0:0"
+        Option "AllowEmptyInitialConfiguration"
+        Option "PrimaryGPU" "yes
+      EndSection
+
+      Section "Device"
+        Identifier "intel"
+        Driver "modesetting"
+        Option "AccelMethod" "sna"
+      EndSection
+
+      Section "Screen"
+        Identifier "nvidia"
+        Device "nvidia"
+        Option "AllowEmptyInitialConfiguration"
+      EndSection
+
+      Section "Screen"
+        Identifier "intel"
+        Device "intel"
+      EndSection
+    '';
+
+    # Configure keymap in X11
+    layout = "us";
+    xkbVariant = "";
+
+    # Enable touchpad support (enabled default in most desktopManager).
+    libinput.enable = true;
+
+    # Tell Xorg to use the nvidia driver
+    videoDrivers = ["nvidia"];
 
     displayManager = {
-      # Enable the GNOME Desktop Environment.
-      #gdm.enable = true;
-      #gnome.enable = true;
+      lightdm = {
+        enable = true;
+        greeters.gtk.enable = true;
+        # extraSeatDefaults = ''
+        #   display-setup-script=xrandr --auto
+        # '';
+      };
 
-      sddm.enable = true;
       defaultSession = "none+awesome";
     };
 
@@ -156,12 +217,7 @@
         luarocks # is the package manager for Lua modules
         luadbi-mysql # Database abstraction layer
       ];
-
     };
-
-    # Configure keymap in X11
-    layout = "us";
-    xkbVariant = "";
   };
 
   # Enable CUPS to print documents.
@@ -187,23 +243,8 @@
   hardware.bluetooth.enable = true;
   services.blueman.enable = true;
 
-  xdg = {
-    portal = {
-      enable = true;
-      extraPortals = with pkgs; [
-        xdg-desktop-portal-wlr
-        xdg-desktop-portal-gtk
-        xdg-desktop-portal-kde
-      ];
-    };
-  };
-
-  services.flatpak.enable = true;
-
-  # Enable touchpad support (enabled default in most desktopManager).
-  # services.xserver.libinput.enable = true;
-
   users.defaultUserShell = pkgs.nushell;
+
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.niscolas = {
     isNormalUser = true;
@@ -213,84 +254,18 @@
     shell = pkgs.nushell;
   };
 
-  # Allow unfree packages
-  nixpkgs.config.allowUnfree = true;
+  nixpkgs = {
+    config.allowUnfreePredicate = (pkg: true);
+    config.allowUnfree = true;
+  };
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-    arandr
-    armcord
     awesome
-    barrier
-    bash
-    bat
-    blueman
-    bottom
-    cmake
-    coreutils
-    dbus
-    delta
-    discord
-    easyeffects
-    exa
-    fd
-    firefox
-    firefox
-    flameshot
-    fluent-reader
-    fzf
-    gamemode
-    gamescope
-    gcc
-    git
-    git-lfs
-    glxinfo
-    gnome.gnome-power-manager
-    google-chrome
-    heroic
-    kanata
-    libnotify
-    logseq
-    lua-language-server
-    ludusavi
-    lutris
-    lxappearance
-    mangohud
-    mprocs
-    neovim
-    networkmanagerapplet
-    nodejs
+    lightlocker
     nushell
-    parsec-bin
-    pavucontrol
-    picom
-    pritunl-client
-    protonup-qt
-    ripgrep
-    rofi
-    rustup
-    sddm
-    starship
-    steam
-    steam-run
-    steamPackages.steam-runtime
-    stylua
-    sunshine
-    syncthing
-    tailscale
-    tridactyl-native
-    unzip
-    vim
-    vulkan-tools
-    watchman
-    wezterm
-    wget
-    xclip
-    xfce.thunar
-    xfce.xfce4-power-manager
-    zip
-    zoxide
+    neovim
     zsh
   ];
 
@@ -301,25 +276,15 @@
     driSupport32Bit = true;
   };
 
-  # NVIDIA drivers are unfree.
-  #nixpkgs.config.allowUnfreePredicate = pkg:
-    #builtins.elem (lib.getName pkg) [
-      #"nvidia-x11"
-    #];
-  nixpkgs.config.allowUnfreePredicate = (pkg: true);
-
-  # Tell Xorg to use the nvidia driver
-  services.xserver.videoDrivers = ["nvidia"];
-
   hardware.nvidia = {
     # Modesetting is needed for most wayland compositors
     modesetting.enable = true;
 
-    forceFullCompositionPipeline = false;
+    forceFullCompositionPipeline = true;
 
     # Use the open source version of the kernel module
     # Only available on driver 515.43.04+
-    open = true;
+    open = false;
 
     # Enable the nvidia settings menu
     nvidiaSettings = true;
@@ -327,22 +292,35 @@
     # Optionally, you may need to select the appropriate driver version for your specific GPU.
     package = config.boot.kernelPackages.nvidiaPackages.stable;
 
+    powerManagement.enable = true;
   };
 
   hardware.nvidia.prime = {
-      offload = {
-        enable = true;
-        enableOffloadCmd = true;
-      };
-
-      intelBusId = "PCI:0:2:0";
-      nvidiaBusId = "PCI:1:0:0";
+    offload = {
+      enable = true;
+      enableOffloadCmd = true;
     };
 
+    intelBusId = "PCI:0:2:0";
+    nvidiaBusId = "PCI:1:0:0";
+  };
+
+  # specialisation = {
+  #   external-display.configuration = {
+  #     system.nixos.tags = [ "external-display" ];
+  #     hardware.nvidia = {
+  #       prime.offload.enable = lib.mkForce false;
+  #       powerManagement.enable = lib.mkForce false;
+  #     };
+  #   };
+  # };
+  #
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
   nix.gc.automatic = true;
   nix.gc.options = "--delete-older-than 7d";
+
+  boot.kernelParams = [ "acpi_rev_override" "nvidia-drm.modeset=1" ];
 
   services.udev.extraRules = ''
     KERNEL=="uinput", MODE="0660", GROUP="uinput", OPTIONS+="static_node=uinput"
@@ -368,7 +346,8 @@
     # sunshine
     47984 47989 48010
 
-    50000 59100 59200 59716 ];
+    50000 59100 59200 59716
+  ];
 
   networking.firewall.allowedUDPPorts = [
     24800
@@ -376,9 +355,58 @@
     # sunshine
     47998 47999 48000 48002 48010
 
-    50000 59100 59200 59716 ];
-  # Or disable the firewall altogether.
-  # networking.firewall.enable = false;
+    50000 59100 59200 59716
+  ];
+
+  services.opensnitch = {
+    enable = false;
+    rules = {
+      "steam_family_share_bypass" = {
+        "created" = "2023-07-09T18:54:31.048633146-03:00";
+        "updated" = "2023-07-09T18:54:31.048703462-03:00";
+        "name" = "steam_family_share_bypass";
+        "enabled" = true;
+        "precedence" = false;
+        "action" = "allow";
+        "duration" = "always";
+        "operator" = {
+          "type" = "list";
+          "operand" = "list";
+          "sensitive" = false;
+          "data" = [
+            {
+              "type" = "regexp";
+              "operand" = "process.path";
+              "data" = ".*steam.*";
+              "sensitive" = false;
+            }
+            {
+              "type" = "regexp";
+              "operand" = "dest.ip";
+              "data" = "(192.[0-168].[0-2].[1-249])|(254.254.254.254)";
+              "sensitive" = false;
+            }
+          ];
+          "list" = [
+            {
+              "type" = "regexp";
+              "operand" = "process.path";
+              "sensitive" = false;
+              "data" = ".*steam.*";
+              "list" = null;
+            }
+            {
+              "type" = "regexp";
+              "operand" = "dest.ip";
+              "sensitive" = false;
+              "data" = "(192\\.[0-168]\\.[0-2]\\.[1-249])|(254.254.254.254)";
+              "list" = null;
+            }
+          ];
+        };
+      };
+    };
+  };
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
