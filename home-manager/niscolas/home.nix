@@ -1,12 +1,44 @@
-{ config, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 
 {
+  imports = [
+    ./mangohud/init.nix
+    ./nushell/init.nix
+  ];
+
   home.username = "niscolas";
   home.homeDirectory = "/home/niscolas";
 
   home.file = {
+    ".bin".source = ./.bin;
+    ".config/alacritty".source = ./alacritty;
     ".config/awesome".source = ./awesome;
+    ".config/bat".source = ./bat;
+    ".config/bottom".source = ./bottom;
+    ".config/bspwm".source = ./bspwm;
+    ".config/cpupower_gui".source = ./cpupower_gui;
+    ".config/eww".source = ./eww;
+    ".config/flameshot".source = ./flameshot;
+    ".config/gh".source = ./gh;
     ".config/git".source = ./git;
+    ".config/hidamari".source = ./hidamari;
+    ".config/i3".source = ./i3;
+    ".config/ideavim".source = ./ideavim;
+    ".config/keyd".source = ./keyd;
+    ".config/ludusavi".source = ./ludusavi;
+    ".config/neofetch".source = ./neofetch;
+    ".config/omnisharp".source = ./omnisharp;
+    ".config/optimus-manager".source = ./optimus-manager;
+    ".config/picom".source = ./picom;
+    ".config/polybar".source = ./polybar;
+    ".config/ranger".source = ./ranger;
+    ".config/rg".source = ./rg;
+    ".config/rofi".source = ./rofi;
+    ".config/sxhkd".source = ./sxhkd;
+    ".config/tridactyl".source = ./tridactyl;
+    ".config/wezterm".source = ./wezterm;
+    ".config/wired".source = ./wired;
+    ".config/zsh".source = ./zsh;
   };
 
   # link all files in `./scripts` to `~/.config/i3/scripts`
@@ -29,10 +61,51 @@
     tray.enable = true;
   };
 
-  # set cursor size and dpi for 4k monitor
   xresources.properties = {
-    "Xcursor.size" = 16;
     "Xft.dpi" = 120;
+  };
+
+  home.pointerCursor = {
+    gtk.enable = true;
+    x11.enable = true;
+    name = "Nordzy-cursors";
+    size = 16;
+    package = pkgs.nordzy-cursor-theme;
+  };
+
+  gtk = {
+    enable = true;
+
+    theme = {
+      name = "Yaru-dark";
+      package = pkgs.yaru-theme;
+    };
+
+    iconTheme = {
+      name = "Papirus-Dark";
+      package = pkgs.papirus-icon-theme;
+    };
+
+    gtk3.extraConfig = {
+      Settings = ''
+        gtk-application-prefer-dark-theme=1
+      '';
+    };
+
+    gtk4.extraConfig = {
+      Settings = ''
+        gtk-application-prefer-dark-theme=1
+      '';
+    };
+  };
+
+  programs.firefox = {
+    enable = true;
+    package = pkgs.firefox.override {
+      cfg = {
+        enableTridactylNative = true;
+      };
+    };
   };
 
   home.packages = with pkgs; [
@@ -47,7 +120,6 @@
     easyeffects
     exa
     fd
-    firefox
     flameshot
     fluent-reader
     fzf
@@ -57,11 +129,16 @@
     git
     git-lfs
     glxinfo
+    gnome.gnome-disk-utility
     google-chrome
     heroic
+    inkscape-with-extensions
     kanata
     libnotify
+    lm_sensors # for `sensors` command
     logseq
+    lsof # list open files
+    ltrace # library call monitoring
     lua-language-server
     ludusavi
     lutris
@@ -70,11 +147,13 @@
     mprocs
     neofetch
     networkmanagerapplet
+    nix-output-monitor # it provides the command `nom` works just like `nix` with more details log output
     nodejs
     opensnitch-ui
     p7zip
     parsec-bin
     pavucontrol
+    pciutils # lspci
     picom
     pritunl-client
     protonup-qt
@@ -82,34 +161,18 @@
     rofi
     rustup
     starship
+    strace # system call monitoring
     stylua
     sunshine
     unzip
+    usbutils # lsusb
     vulkan-tools
     wezterm
     wget
     xclip
-    xfce.thunar
-    xfce.xfce4-power-manager
     xz
     zip
     zoxide
-
-    # it provides the command `nom` works just like `nix`
-    # with more details log output
-    nix-output-monitor
-
-    # system call monitoring
-    strace # system call monitoring
-    ltrace # library call monitoring
-    lsof # list open files
-
-    # system tools
-    sysstat
-    lm_sensors # for `sensors` command
-    ethtool
-    pciutils # lspci
-    usbutils # lsusb
   ];
 
   # This value determines the home Manager release that your

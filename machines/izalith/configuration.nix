@@ -17,7 +17,7 @@
     XDG_DATA_DIRS = lib.mkDefault "$XDG_DATA_DIRS:/usr/share:/var/lib/flatpak/exports/share:$HOME/.local/share/flatpak/exports/share";
 
     # Not officially in the specification
-    XDG_BIN_HOME = "$HOME/scripts";
+    XDG_BIN_HOME = "$HOME/.bin";
     PATH = [
       "${XDG_BIN_HOME}"
     ];
@@ -136,6 +136,13 @@
   # Enable networking
   networking.networkmanager.enable = true;
 
+  xdg.portal = {
+    enable = true;
+    extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+  };
+
+  services.flatpak.enable = true;
+
   services.tailscale.enable = true;
 
   # Set your time zone.
@@ -158,6 +165,10 @@
 
   services.xserver = {
     enable = true;
+
+    excludePackages = with pkgs; [
+      xterm
+    ];
 
     config = ''
       Section "ServerLayout"
@@ -205,6 +216,12 @@
 
     # Tell Xorg to use the nvidia driver
     videoDrivers = ["nvidia"];
+
+    desktopManager.xfce = {
+      enable = true;
+      noDesktop = true;
+      enableXfwm = false;
+    };
 
     displayManager = {
       lightdm = {

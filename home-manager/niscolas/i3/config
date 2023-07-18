@@ -1,0 +1,135 @@
+## globals
+set $mod Mod4
+
+set $i3_mode_default mode "default"
+
+exec --no-startup-id blueman-applet
+exec --no-startup-id dex --autostart --environment i3
+exec --no-startup-id dunst
+exec --no-startup-id nm-applet
+exec --no-startup-id picom
+# xss-lock grabs a logind suspend inhibit lock and will use i3lock to lock the
+# screen before suspend. Use loginctl lock-session to lock your screen.
+exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
+exec --no-startup-id lxsession
+
+exec setxkbmap us
+exec setxkbmap -option "compose:menu" 
+
+exec_always --no-startup-id autotiling
+exec_always --no-startup-id zsh $HOME/.config/polybar/launch.sh
+exec_always --no-startup-id feh --bg-scale ~/Pictures/wallpapers/sunset-116-1920×1080.jpg
+
+## modes
+bindsym $mod+Shift+Control+r mode "resize"
+mode "resize" {
+    set $resize_amount 10 px or 10 ppt
+
+    bindsym h resize shrink width $resize_amount
+    bindsym j resize grow height $resize_amount
+    bindsym k resize shrink height $resize_amount
+    bindsym l resize grow width $resize_amount
+
+    bindsym Escape $i3_mode_default bindsym Return $i3_mode_default
+}
+
+bindsym $mod+comma exec $HOME/scripts/keyboard/swap_layout.sh
+
+## terminal
+bindsym $mod+Return exec kitty
+
+## rofi
+bindsym $mod+d exec $HOME/.config/rofi/scripts/apps.sh
+bindsym $mod+Ctrl+p exec $HOME/.config/rofi/scripts/power.sh
+
+## brightness
+bindsym $mod+Up exec brightnessctl set +10%
+bindsym $mod+Down exec brightnessctl set 10%-
+
+## other programs
+bindsym $mod+Shift+s exec flameshot gui
+
+## windows / layout management
+bindsym $mod+Shift+q kill
+
+bindsym $mod+h focus left
+bindsym $mod+j focus down
+bindsym $mod+k focus up
+bindsym $mod+l focus right
+bindsym $mod+p focus parent
+bindsym $mod+c focus child
+
+bindsym $mod+Shift+h move left
+bindsym $mod+Shift+j move down
+bindsym $mod+Shift+k move up
+bindsym $mod+Shift+l move right
+
+bindsym $mod+Alt+h split h
+bindsym $mod+Alt+v split v
+
+bindsym $mod+f fullscreen toggle
+bindsym $mod+Shift+f fullscreen toggle global
+bindsym $mod+s layout stacking
+bindsym $mod+w layout tabbed
+bindsym $mod+e layout toggle split
+
+## floating windows
+floating_modifier $mod
+bindsym $mod+Shift+u floating toggle
+bindsym $mod+u focus mode_toggle
+
+## wokspaces settings
+set $ws1 "1"
+set $ws2 "2"
+set $ws3 "3"
+set $ws4 "4"
+set $ws5 "5"
+set $ws6 "6"
+set $ws7 "7"
+set $ws8 "8"
+set $ws9 "9"
+set $ws10 "10"
+
+bindsym $mod+1 workspace number $ws1
+bindsym $mod+2 workspace number $ws2
+bindsym $mod+3 workspace number $ws3
+bindsym $mod+4 workspace number $ws4
+bindsym $mod+5 workspace number $ws5
+bindsym $mod+6 workspace number $ws6
+bindsym $mod+7 workspace number $ws7
+bindsym $mod+8 workspace number $ws8
+bindsym $mod+9 workspace number $ws9
+bindsym $mod+0 workspace number $ws10
+
+bindsym $mod+Shift+1 move container to workspace number $ws1
+bindsym $mod+Shift+2 move container to workspace number $ws2
+bindsym $mod+Shift+3 move container to workspace number $ws3
+bindsym $mod+Shift+4 move container to workspace number $ws4
+bindsym $mod+Shift+5 move container to workspace number $ws5
+bindsym $mod+Shift+6 move container to workspace number $ws6
+bindsym $mod+Shift+7 move container to workspace number $ws7
+bindsym $mod+Shift+8 move container to workspace number $ws8
+bindsym $mod+Shift+9 move container to workspace number $ws9
+bindsym $mod+Shift+0 move container to workspace number $ws10
+
+## i3 bindings
+bindsym $mod+Shift+c reload
+bindsym $mod+Shift+r restart
+
+set $exec_exit_i3 exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
+bindsym $mod+Shift+e $exec_exit_i3
+
+## ui
+font pango:CaskaydiaCove Nerd Font Bold 8
+
+gaps inner 16
+
+for_window [all] title_window_icon yes
+for_window [all] title_window_icon padding 8
+for_window [all] border pixel 4
+
+for_window [instance="Godot_Engine"] floating enable
+for_window [instance="Godot_Editor"] floating disable
+
+include $HOME/.config/i3/colorschemes/gruvbox
+

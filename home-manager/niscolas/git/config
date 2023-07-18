@@ -1,5 +1,5 @@
 [alias]
-    a = add -A
+    aa = add -A
     ch = checkout
     cm = commit
     cma = commit --amend --no-edit
