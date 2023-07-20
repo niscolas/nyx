@@ -310,7 +310,6 @@
     coreutils
     lightlocker
     nushell
-    neovim
     zsh
   ];
 

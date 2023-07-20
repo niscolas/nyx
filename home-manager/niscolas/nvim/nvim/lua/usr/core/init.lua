@@ -1,0 +1,6 @@
+require("usr.core.util")
+require("usr.core.niscolas_global")
+require("usr.core.autocmds")
+require("usr.core.commands")
+require("usr.core.settings")
+require("usr.core.keymaps")

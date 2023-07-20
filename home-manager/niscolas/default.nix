@@ -2,6 +2,7 @@
 
 {
   imports = [
+    ./nvim/default.nix
     ./mangohud/default.nix
     ./nushell/default.nix
   ];
@@ -144,7 +145,6 @@
     logseq
     lsof # list open files
     ltrace # library call monitoring
-    lua-language-server
     ludusavi
     lutris
     lxappearance
@@ -167,8 +167,8 @@
     rustup
     starship
     strace # system call monitoring
-    stylua
     sunshine
+    stylua
     unzip
     usbutils # lsusb
     vulkan-tools
