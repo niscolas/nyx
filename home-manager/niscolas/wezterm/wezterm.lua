@@ -4,7 +4,7 @@ local action = wezterm.action
 local config = {}
 
 if wezterm.config_builder then
-	config = wezterm.config_builder()
+    config = wezterm.config_builder()
 end
 
 config.font = wezterm.font("IntelOne Mono", { weight = "Medium" })
@@ -21,14 +21,29 @@ local color_scheme_name = "GruvboxDark"
 local color_scheme = wezterm.color.get_builtin_schemes()[color_scheme_name]
 config.color_scheme = color_scheme_name
 config.colors = {
-	tab_bar = {
-		background = color_scheme.background,
-	},
+    tab_bar = {
+        background = color_scheme.background,
+    },
 }
 
 config.keys = {
-	{ key = "{", mods = "CTRL|SHIFT", action = action.MoveTabRelative(-1) },
-	{ key = "}", mods = "CTRL|SHIFT", action = action.MoveTabRelative(1) },
+    { key = "{", mods = "CTRL|SHIFT", action = action.MoveTabRelative(-1) },
+    { key = "}", mods = "CTRL|SHIFT", action = action.MoveTabRelative(1) },
+    {
+        key = "s",
+        mods = "CTRL|SHIFT|ALT",
+        action = action.SplitHorizontal { domain = "CurrentPaneDomain" },
+    },
+    {
+        key = "v",
+        mods = "CTRL|SHIFT|ALT",
+        action = action.SplitVertical { domain = "CurrentPaneDomain" },
+    },
+    {
+        key = "l",
+        mods = "CTRL|SHIFT|ALT",
+        action = action.ActivatePaneDirection("Left"),
+    },
 }
 
 --
@@ -69,28 +84,32 @@ local secondary_color = color_scheme.background
 -- Given "/foo/bar" returns "bar"
 -- Given "c:\\foo\\bar" returns "bar"
 function basename(s)
-	return string.gsub(s, "(.*[/\\])(.*)", "%2")
+    if s == nil then
+        return ""
+    end
+
+    return string.gsub(s, "(.*[/\\])(.*)", "%2")
 end
 
 wezterm.on("update-right-status", function(window, pane)
-	window:set_right_status(wezterm.format({
-		{ Background = { Color = secondary_color } },
-		{ Foreground = { Color = accent_color } },
-		{ Text = wezterm.nerdfonts.ple_left_half_circle_thick },
+    window:set_right_status(wezterm.format {
+        { Background = { Color = secondary_color } },
+        { Foreground = { Color = accent_color } },
+        { Text = wezterm.nerdfonts.ple_left_half_circle_thick },
 
-		{ Background = { Color = accent_color } },
-		{ Foreground = { Color = secondary_color } },
-		{ Attribute = { Intensity = "Bold" } },
-		{ Text = wezterm.nerdfonts.dev_terminal },
+        { Background = { Color = accent_color } },
+        { Foreground = { Color = secondary_color } },
+        { Attribute = { Intensity = "Bold" } },
+        { Text = wezterm.nerdfonts.dev_terminal },
 
-		{ Background = { Color = secondary_color } },
-		{ Foreground = { Color = accent_color } },
-		{ Text = wezterm.nerdfonts.ple_right_half_circle_thick },
+        { Background = { Color = secondary_color } },
+        { Foreground = { Color = accent_color } },
+        { Text = wezterm.nerdfonts.ple_right_half_circle_thick },
 
-		{ Background = { Color = secondary_color } },
-		{ Foreground = { Color = accent_color } },
-		{ Text = " " .. basename(pane:get_foreground_process_name()) .. " " },
-	}))
+        { Background = { Color = secondary_color } },
+        { Foreground = { Color = accent_color } },
+        { Text = " " .. basename(pane:get_foreground_process_name()) .. " " },
+    })
 end)
 
 return config
