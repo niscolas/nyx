@@ -1,0 +1,6 @@
+require("aeonia.core.util")
+require("aeonia.core.niscolas_global")
+require("aeonia.core.autocmds")
+require("aeonia.core.commands")
+require("aeonia.core.settings")
+require("aeonia.core.keymaps")

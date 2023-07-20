@@ -1,3 +1,3 @@
-require("usr.core")
-require("usr.gui")
-require("usr.lazy").setup()
+require("aeonia.core")
+require("aeonia.gui")
+require("aeonia.lazy").setup()
