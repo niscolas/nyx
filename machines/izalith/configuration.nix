@@ -1,13 +1,21 @@
 # Edit this configuration file to define what should be installed on
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, inputs, ... }:
 
 {
   imports =
     [
       ./hardware-configuration.nix
+      inputs.home-manager.nixosModules.home-manager
     ];
+
+  home-manager = {
+    extraSpecialArgs = { inherit inputs; };
+    users = {
+      niscolas = import ../../home-manager/niscolas;
+    };
+  };
 
   environment.sessionVariables = rec {
     XDG_CACHE_HOME = "$HOME/.cache";
@@ -16,11 +24,13 @@
     XDG_STATE_HOME = "$HOME/.local/state";
     XDG_DATA_DIRS = lib.mkDefault "$XDG_DATA_DIRS:/usr/share:/var/lib/flatpak/exports/share:$HOME/.local/share/flatpak/exports/share";
 
-    # Not officially in the specification
     XDG_BIN_HOME = "$HOME/.bin";
     PATH = [
       "${XDG_BIN_HOME}"
     ];
+
+    MACHINE_SETUP = "personal";
+    MACHINE_THEME = "gruvbox";
   };
 
   environment.shells = with pkgs; [ nushell zsh ];
@@ -110,20 +120,26 @@
     '';
   };
 
-  boot.loader = {
-    efi = {
-      canTouchEfiVariables = true;
-      efiSysMountPoint = "/boot";
-    };
+  boot = {
+    kernelPackages = pkgs.linuxKernel.packages.linux_xanmod;
 
-    grub = {
-      enable = true;
-      efiSupport = true;
-      device = "nodev";
-      useOSProber = true;
-    };
+    kernelParams = [ "acpi_rev_override" "nvidia-drm.modeset=1" ];
 
-    systemd-boot.enable = false;
+    loader = {
+      efi = {
+        canTouchEfiVariables = true;
+        efiSysMountPoint = "/boot";
+      };
+
+      grub = {
+        enable = true;
+        efiSupport = true;
+        device = "nodev";
+        useOSProber = true;
+      };
+
+      systemd-boot.enable = false;
+    };
   };
 
   networking.hostName = "izalith";
@@ -348,8 +364,6 @@
 
   nix.gc.automatic = true;
   nix.gc.options = "--delete-older-than 7d";
-
-  boot.kernelParams = [ "acpi_rev_override" "nvidia-drm.modeset=1" ];
 
   services.udev.extraRules = ''
     KERNEL=="uinput", MODE="0660", GROUP="uinput", OPTIONS+="static_node=uinput"

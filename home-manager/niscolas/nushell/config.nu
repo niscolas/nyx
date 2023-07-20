@@ -549,7 +549,9 @@ alias l = ls -a
 alias ls = ls -a
 alias ll = ls -l
 alias lld = ls -la
-# alias audiorrr = with-env [ NIXPKGS_ALLOW_UNFREE 1 ] { nix run "github:JamesReynolds/audiorelay-flake" --impure }
+alias barrc = barrier_util.nu client
+alias barrs = barrier_util.nu server
+alias audior = run_audiorelay_flake.nu
 
 source ~/bonfire/secrets/env.nu
 source ~/.zoxide.nu

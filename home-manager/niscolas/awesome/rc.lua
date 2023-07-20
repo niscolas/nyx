@@ -415,20 +415,6 @@ globalkeys = gears.table.join(
         end
     end, { description = "restore minimized", group = "client" }),
 
-    -- Prompt
-    awful.key({ modkey }, "r", function()
-        awful.screen.focused().mypromptbox:run()
-    end, { description = "run prompt", group = "launcher" }),
-
-    awful.key({ modkey }, "x", function()
-        awful.prompt.run {
-            prompt = "Run Lua code: ",
-            textbox = awful.screen.focused().mypromptbox.widget,
-            exe_callback = awful.util.eval,
-            history_path = awful.util.get_cache_dir() .. "/history_eval",
-        }
-    end, { description = "lua execute prompt", group = "awesome" }),
-
     awful.key({ modkey }, "space", function()
         shell("~/.config/rofi/launchers/type-3/launcher.sh")
     end, { description = "show the app launcher", group = "launcher" }),
@@ -442,7 +428,7 @@ globalkeys = gears.table.join(
     end, { description = "show flameshot", group = "launcher" }),
 
     awful.key({ modkey, "Shift" }, ",", function()
-        shell("keyboard-swap_layout.sh")
+        shell("keyboard_swap_layout.nu")
     end, { description = "swap keyboard layout", group = "launcher" }),
 
     awful.key({ modkey }, "z", function()
@@ -798,7 +784,7 @@ spawn("hidamari --background")
 
 shell("picom")
 if not command_executed then
-    shell("xrandr-util.nu auto")
+    shell("xrandr_util.nu auto")
     command_executed = true
 end
 spawn("easyeffects")

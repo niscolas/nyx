@@ -2,13 +2,17 @@
 
 {
   imports = [
-    ./mangohud/init.nix
-    ./nushell/init.nix
+    ./mangohud/default.nix
+    ./nushell/default.nix
   ];
+
+  nixpkgs = {
+    config.allowUnfreePredicate = (pkg: true);
+    config.allowUnfree = true;
+  };
 
   home.username = "niscolas";
   home.homeDirectory = "/home/niscolas";
-
   home.file = {
     ".bin".source = ./.bin;
     ".config/alacritty".source = ./alacritty;
@@ -133,6 +137,7 @@
     google-chrome
     heroic
     inkscape-with-extensions
+    input-leap
     kanata
     libnotify
     lm_sensors # for `sensors` command

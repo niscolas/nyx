@@ -58,7 +58,7 @@
       # preset=-1
       
       ### Enable most of the toggleable parameters (currently excludes `histogram`)
-      full = true;
+      #full = true;
       
       ### Show FPS only. ***Not meant to be used with other display params***
       # fps_only
@@ -80,8 +80,8 @@
       
       ### Display the current GPU information
       ## Note: gpu_mem_clock and gpu_mem_temp also need "vram" to be enabled
-      #gpu_stats = true;
-      # gpu_temp
+      gpu_stats = true;
+      gpu_temp = true;
       # gpu_junction_temp
       # gpu_core_clock
       # gpu_mem_temp
@@ -95,8 +95,8 @@
       # gpu_fan
       
       ### Display the current CPU information
-      #cpu_stats = true;
-      # cpu_temp
+      cpu_stats = true;
+      cpu_temp = true;
       # cpu_power
       # cpu_text=
       # cpu_mhz
@@ -132,7 +132,7 @@
       # battery_time
       
       ### Display FPS and frametime
-      #fps = true;
+      fps = true;
       # fps_sampling_period=500
       # fps_color_change
       # fps_value=30,60
@@ -142,30 +142,30 @@
       
       ### Display GPU throttling status based on Power, current, temp or "other"
       ## Only shows if throttling is currently happening
-      #throttling_status = true;
+      throttling_status = true;
       
       ### Display miscellaneous information
-      # engine_version
-      # engine_short_names
-      # gpu_name
-      # vulkan_driver
-      # wine
-      # exec_name
+      engine_version = true;
+      engine_short_names = true;
+      gpu_name = true;
+      vulkan_driver = true;
+      wine = true;
+      exec_name = true;
       
       ### Display loaded MangoHud architecture
-      # arch
+      arch = true;
       
       ### Display the frametime line graph
       #frame_timing = true;
       # histogram
       
       ### Display GameMode / vkBasalt running status
-      # gamemode
-      # vkbasalt
+      gamemode = true;
+      vkbasalt = true;
       
       ### Gamescope related options
       ## Display the status of FSR (only works in gamescope)
-      # fsr
+      fsr = true;
       ## Hides the sharpness info for the `fsr` option (only available in gamescope)
       # hide_fsr_sharpness
       ## Shows the graph of gamescope app frametimes and latency (only on gamescope obviously)
@@ -185,7 +185,7 @@
       # fan
       
       ### Display current FPS limit
-      # show_fps_limit
+      show_fps_limit = true;
       
       ### Display the current resolution
       # resolution
