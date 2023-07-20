@@ -16,14 +16,6 @@
         specialArgs = { inherit inputs; };
         modules = [
           ./machines/izalith/configuration.nix
-
-          home-manager.nixosModules.home-manager
-          {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-
-            home-manager.users.niscolas = import ./home-manager/niscolas/home.nix;
-          }
         ];
       };
     };
