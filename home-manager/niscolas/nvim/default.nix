@@ -17,5 +17,5 @@
   ];
 
   home.file.".config/nvim".source = config.lib.file.mkOutOfStoreSymlink
-    "${config.home.homeDirectory}/bonfire/nyx/home-manager/niscolas/nvim/nvim";
+    "${config.home.homeDirectory}/bonfire/nyx/home-manager/niscolas/nvim/config";
 }
