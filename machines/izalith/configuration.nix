@@ -140,6 +140,8 @@
 
       systemd-boot.enable = false;
     };
+
+    plymouth.enable = true;
   };
 
   networking.hostName = "izalith";
