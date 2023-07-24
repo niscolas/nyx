@@ -553,5 +553,7 @@ alias barrc = barrier_util.nu client
 alias barrs = barrier_util.nu server
 alias audior = run_audiorelay_flake.nu
 
-if ~/bonfire/secrets/env.nu | path exists { source ~/bonfire/secrets/env.nu }
+const path = "~/bonfire/secrets/env.nu" 
+if ($path| path expand | path exists) { source $path }
+
 source ~/.zoxide.nu
