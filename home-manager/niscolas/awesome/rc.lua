@@ -787,7 +787,6 @@ if not command_executed then
     shell("xrandr_util.nu auto")
     command_executed = true
 end
-spawn("easyeffects")
 
 shell("setxkbmap us")
 shell('setxkbmap -option "compose:menu"')
