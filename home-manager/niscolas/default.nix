@@ -1,195 +1,220 @@
 { config, lib, pkgs, ... }:
 
 {
-  imports = [
-    ./nvim/default.nix
-    ./mangohud/default.nix
-    ./nushell/default.nix
-  ];
+    imports = [
+        ./eww/default.nix
+            ./nvim/default.nix
+            ./mangohud/default.nix
+            ./nushell/default.nix
+    ];
 
-  nixpkgs = {
-    config.allowUnfreePredicate = (pkg: true);
-    config.allowUnfree = true;
-  };
-
-  home.username = "niscolas";
-  home.homeDirectory = "/home/niscolas";
-  home.file = {
-    ".bin".source = ./.bin;
-    ".config/alacritty".source = ./alacritty;
-    ".config/awesome".source = ./awesome;
-    ".config/bat".source = ./bat;
-    ".config/bottom".source = ./bottom;
-    ".config/bspwm".source = ./bspwm;
-    ".config/cpupower_gui".source = ./cpupower_gui;
-    ".config/eww".source = ./eww;
-    ".config/flameshot".source = ./flameshot;
-    ".config/gh".source = ./gh;
-    ".config/git".source = ./git;
-    ".config/hidamari".source = ./hidamari;
-    ".config/i3".source = ./i3;
-    ".config/ideavim".source = ./ideavim;
-    ".config/keyd".source = ./keyd;
-    ".config/ludusavi".source = ./ludusavi;
-    ".config/neofetch".source = ./neofetch;
-    ".config/omnisharp".source = ./omnisharp;
-    ".config/optimus-manager".source = ./optimus-manager;
-    ".config/picom".source = ./picom;
-    ".config/polybar".source = ./polybar;
-    ".config/ranger".source = ./ranger;
-    ".config/rg".source = ./rg;
-    ".config/rofi".source = ./rofi;
-    ".config/sxhkd".source = ./sxhkd;
-    ".config/tridactyl".source = ./tridactyl;
-    ".config/wezterm".source = ./wezterm;
-    ".config/wired".source = ./wired;
-    ".config/zsh".source = ./zsh;
-  };
-
-  # link all files in `./scripts` to `~/.config/i3/scripts`
-  # home.file.".config/i3/scripts" = {
-  #   source = ./scripts;
-  #   recursive = true;   # link recursively
-  #   executable = true;  # make all files executable
-  # };
-
-  # encode the file content in nix configuration file directly
-  # home.file.".xxx".text = ''
-  #     xxx
-  # '';
-
-  services.blueman-applet.enable = true;
-  services.opensnitch-ui.enable = true;
-  services.network-manager-applet.enable = true;
-  services.syncthing = {
-    enable = true;
-    tray.enable = true;
-  };
-
-  xresources.properties = {
-    "Xft.dpi" = 120;
-  };
-
-  home.pointerCursor = {
-    gtk.enable = true;
-    x11.enable = true;
-    name = "Nordzy-cursors";
-    size = 16;
-    package = pkgs.nordzy-cursor-theme;
-  };
-
-  gtk = {
-    enable = true;
-
-    theme = {
-      name = "Yaru-dark";
-      package = pkgs.yaru-theme;
+    nixpkgs = {
+        config.allowUnfreePredicate = (pkg: true);
+        config.allowUnfree = true;
     };
 
-    iconTheme = {
-      name = "Papirus-Dark";
-      package = pkgs.papirus-icon-theme;
+    home.username = "niscolas";
+    home.homeDirectory = "/home/niscolas";
+    home.file = {
+        ".bin".source = ./.bin;
+        ".config/alacritty".source = ./alacritty;
+        ".config/awesome".source = ./awesome;
+        ".config/bat".source = ./bat;
+        ".config/bottom".source = ./bottom;
+        ".config/bspwm".source = ./bspwm;
+        ".config/cpupower_gui".source = ./cpupower_gui;
+        ".config/flameshot".source = ./flameshot;
+        ".config/gh".source = ./gh;
+        ".config/git".source = ./git;
+        ".config/hidamari".source = ./hidamari;
+        ".config/i3".source = ./i3;
+        ".config/ideavim".source = ./ideavim;
+        ".config/keyd".source = ./keyd;
+        ".config/ludusavi".source = ./ludusavi;
+        ".config/neofetch".source = ./neofetch;
+        ".config/omnisharp".source = ./omnisharp;
+        ".config/optimus-manager".source = ./optimus-manager;
+        ".config/picom".source = ./picom;
+        ".config/polybar".source = ./polybar;
+        ".config/ranger".source = ./ranger;
+        ".config/rg".source = ./rg;
+        ".config/rofi".source = ./rofi;
+        ".config/sxhkd".source = ./sxhkd;
+        ".config/tridactyl".source = ./tridactyl;
+        ".config/wezterm".source = ./wezterm;
+        ".config/wired".source = ./wired;
+        ".config/zsh".source = ./zsh;
     };
 
-    gtk3.extraConfig = {
-      Settings = ''
-        gtk-application-prefer-dark-theme=1
-      '';
+# link all files in `./scripts` to `~/.config/i3/scripts`
+# home.file.".config/i3/scripts" = {
+#   source = ./scripts;
+#   recursive = true;   # link recursively
+#   executable = true;  # make all files executable
+# };
+
+# encode the file content in nix configuration file directly
+# home.file.".xxx".text = ''
+#     xxx
+# '';
+
+    services.blueman-applet.enable = true;
+    services.opensnitch-ui.enable = true;
+    services.network-manager-applet.enable = true;
+    services.syncthing = {
+        enable = true;
+        tray.enable = true;
+    };
+    services.pasystray.enable = true;
+
+    services.stalonetray = {
+        enable = true;
+        # https://github.com/kolbusa/stalonetray/blob/master/stalonetrayrc.sample.in
+        config = {
+            geometry = "1x1-8+12";
+            grow_gravity = "E";
+            icon_size = "32";
+            transparent = true;
+            slot_size = "40x40";
+            kludges = "fix_window_pos,force_icons_size";
+        };
     };
 
-    gtk4.extraConfig = {
-      Settings = ''
-        gtk-application-prefer-dark-theme=1
-      '';
+    xresources.properties = {
+        "Xft.dpi" = 120;
     };
-  };
 
-  programs.firefox = {
-    enable = true;
-    package = pkgs.firefox.override {
-      cfg = {
-        enableTridactylNative = true;
-      };
+    home.pointerCursor = {
+        gtk.enable = true;
+        x11.enable = true;
+        name = "Nordzy-cursors";
+        size = 16;
+        package = pkgs.nordzy-cursor-theme;
     };
-  };
 
-  home.packages = with pkgs; [
-    armcord
-    barrier
-    bat
-    bottom
-    cmake
-    dbus
-    delta
-    discord
-    easyeffects
-    exa
-    fd
-    flameshot
-    fluent-reader
-    fzf
-    gamemode
-    gamescope
-    gcc
-    git
-    git-lfs
-    glxinfo
-    gnome.gnome-disk-utility
-    google-chrome
-    heroic
-    inkscape-with-extensions
-    input-leap
-    kanata
-    libnotify
-    lm_sensors # for `sensors` command
-    logseq
-    lsof # list open files
-    ltrace # library call monitoring
-    ludusavi
-    lutris
-    lxappearance
-    mangohud
-    mprocs
-    neofetch
-    networkmanagerapplet
-    nix-output-monitor # it provides the command `nom` works just like `nix` with more details log output
-    nodejs
-    opensnitch-ui
-    p7zip
-    parsec-bin
-    pavucontrol
-    pciutils # lspci
-    picom
-    pritunl-client
-    protonup-qt
-    ripgrep
-    rofi
-    rustup
-    starship
-    strace # system call monitoring
-    sunshine
-    stylua
-    unzip
-    usbutils # lsusb
-    vulkan-tools
-    wezterm
-    wget
-    xclip
-    xz
-    zip
-    zoxide
-  ];
+    gtk = {
+        enable = true;
 
-  # This value determines the home Manager release that your
-  # configuration is compatible with. This helps avoid breakage
-  # when a new home Manager release introduces backwards
-  # incompatible changes.
-  #
-  # You can update home Manager without changing this value. See
-  # the home Manager release notes for a list of state version
-  # changes in each release.
-  home.stateVersion = "23.05";
+        theme = {
+            name = "Yaru-dark";
+            package = pkgs.yaru-theme;
+        };
 
-  # Let home Manager install and manage itself.
-  programs.home-manager.enable = true;
+        iconTheme = {
+            name = "Papirus-Dark";
+            package = pkgs.papirus-icon-theme;
+        };
+
+        gtk3.extraConfig = {
+            Settings = ''
+                gtk-application-prefer-dark-theme=1
+                '';
+        };
+
+        gtk4.extraConfig = {
+            Settings = ''
+                gtk-application-prefer-dark-theme=1
+                '';
+        };
+    };
+
+    qt = { 
+        enable = true; 
+        style = {
+            name = "gtk2";
+            package = pkgs.libsForQt5.qtstyleplugins;
+        }; 
+        platformTheme =  "gtk"; 
+    };
+
+    programs.firefox = {
+        enable = true;
+        package = pkgs.firefox.override {
+            cfg = {
+                enableTridactylNative = true;
+            };
+        };
+    };
+
+    home.packages = with pkgs; [
+        armcord
+        barrier
+        bat
+        bottom
+        cmake
+        dbus
+        delta
+        discord
+        easyeffects
+        exa
+        fd
+        flameshot
+        fluent-reader
+        font-manager
+        fzf
+        gamemode
+        gamescope
+        gcc
+        git
+        git-lfs
+        glxinfo
+        gnome.gnome-disk-utility
+        google-chrome
+        heroic
+        inkscape-with-extensions
+        input-leap
+        kanata
+        libnotify
+        lm_sensors # for `sensors` command
+        logseq
+        lsof # list open files
+        ltrace # library call monitoring
+        ludusavi
+        lutris
+        lxappearance
+        mangohud
+        mprocs
+        neofetch
+        networkmanagerapplet
+        nix-output-monitor # it provides the command `nom` works just like `nix` with more details log output
+        nodejs
+        opensnitch-ui
+        p7zip
+        parsec-bin
+        pavucontrol
+        pciutils # lspci
+        picom
+        pritunl-client
+        protonup-qt
+        ripgrep
+        rofi
+        rustup
+        starship
+        strace # system call monitoring
+        sunshine
+        stylua
+        trayer
+        unzip
+        usbutils # lsusb
+        vulkan-tools
+        wezterm
+        wget
+        xclip
+        xz
+        zip
+        zoxide
+    ];
+
+# This value determines the home Manager release that your
+# configuration is compatible with. This helps avoid breakage
+# when a new home Manager release introduces backwards
+# incompatible changes.
+#
+# You can update home Manager without changing this value. See
+# the home Manager release notes for a list of state version
+# changes in each release.
+    home.stateVersion = "23.05";
+
+# Let home Manager install and manage itself.
+    programs.home-manager.enable = true;
 }

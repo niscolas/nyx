@@ -1,8 +1,7 @@
 /** Created by saimoom, edited by niscolas **/
 * {
     all: unset;
-    font-family: feather;
-    font-family: IntelOne Mono Medium;
+    font-family: Mononoki Nerd Font;
 }
 
 .bar_class {
@@ -182,7 +181,6 @@ scale trough {
 }
 // Calendar
 .cal {
-    font-family: JetBrainsMono Nerd Font;
     font-size: 18px;
     font-weight: normal;
 
@@ -310,7 +308,6 @@ calendar:indeterminate {
 }
 
 .music_btn_prev, .music_btn_play, .music_btn_next {
-    font-family: Iosevka Nerd Font;
 }
 .music_btn_prev {
     color: #bbc5d7;

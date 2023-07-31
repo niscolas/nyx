@@ -14,6 +14,7 @@ return {
         "NeoAIInjectContextCode",
         "NeoAIOpen",
         "NeoAIToggle",
+        "NeoAIShortcut",
     },
     config = config.setup,
     cond = require("aeonia.core.util").check_is_personal_setup,
@@ -22,12 +23,12 @@ return {
     },
     keys = {
         {
-            config.keymap.generate_commit_msg.keys,
-            desc = config.keymap.generate_commit_msg.desc,
+            config.shortcuts_config.gitcommit.keys,
+            desc = config.shortcuts_config.gitcommit.desc,
         },
         {
-            config.keymap.summarize_text.keys,
-            desc = config.keymap.summarize_text.desc,
+            config.shortcuts_config.summarize_text.keys,
+            desc = config.shortcuts_config.summarize_text.desc,
         },
     },
 }

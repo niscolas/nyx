@@ -319,8 +319,12 @@ M.setup = function()
 
         {
             "folke/twilight.nvim",
-            enabled = false,
             opts = {
+                context = 100,
+                dimming = {
+                    alpha = 0.5,
+                    inactive = true,
+                },
                 exclude = { "help" },
             },
         },
@@ -401,6 +405,7 @@ M.setup = function()
                 vim.o.equalalways = false
                 require("windows").setup {
                     animation = {
+                        enable = false,
                         fps = 60,
                         duration = 1000,
                     },

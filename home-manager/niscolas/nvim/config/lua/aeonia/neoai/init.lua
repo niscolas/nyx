@@ -1,15 +1,28 @@
 local M = {}
 
-M.keymap = {
+M.shortcuts_config = {
     summarize_text = {
         keys = "<Leader>as",
         desc = "[A]I [S]ummarize Text",
     },
-    generate_commit_msg = {
+    gitcommit = {
         keys = "<Leader>ac",
+        name = "gitcommit",
         desc = "[A]I Generate [C]ommit Message",
     },
 }
+
+M.setup_keymap = function()
+    new_keymap("n", "<Leader>ac", function()
+        cmd("Git commit")
+        if not vim.bo.filetype == "gitcommit" then
+            return
+        end
+
+        print("gitcommit!")
+        cmd("NeoAIShortcut " .. M.shortcuts_config.gitcommit.name)
+    end)
+end
 
 M.setup = function()
     require("neoai").setup {
@@ -52,8 +65,8 @@ M.setup = function()
         shortcuts = {
             {
                 name = "textify",
-                key = M.keymap.summarize_text.keys,
-                desc = M.keymap.summarize_text.desc,
+                key = M.shortcuts_config.summarize_text.keys,
+                desc = M.shortcuts_config.summarize_text.desc,
                 use_context = true,
                 prompt = [[
                     Please rewrite the text to make it more readable, clear,
@@ -64,9 +77,8 @@ M.setup = function()
                 strip_function = nil,
             },
             {
-                name = "gitcommit",
-                key = M.keymap.generate_commit_msg.keys,
-                desc = M.keymap.generate_commit_msg.desc,
+                name = M.shortcuts_config.gitcommit.name,
+                desc = M.shortcuts_config.gitcommit.desc,
                 use_context = false,
                 prompt = function()
                     return [[
@@ -85,6 +97,8 @@ M.setup = function()
             },
         },
     }
+
+    M.setup_keymap()
 end
 
 return M

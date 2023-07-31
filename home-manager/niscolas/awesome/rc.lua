@@ -212,6 +212,7 @@ awful.screen.connect_for_each_screen(function(s)
             awful.layout.inc(-1)
         end)
     ))
+
     -- Create a taglist widget
     s.mytaglist = awful.widget.taglist {
         screen = s,
@@ -227,39 +228,33 @@ awful.screen.connect_for_each_screen(function(s)
     }
 
     -- Create the wibox
-    s.mywibox = awful.wibar { position = "top", screen = s }
-
-    -- Add widgets to the wibox
-    s.mywibox:setup {
-        layout = wibox.layout.align.horizontal,
-        { -- Left widgets
-            layout = wibox.layout.fixed.horizontal,
-            mylauncher,
-            s.mytaglist,
-            s.mypromptbox,
-        },
-        s.mytasklist, -- Middle widget
-        { -- Right widgets
-            layout = wibox.layout.fixed.horizontal,
-            mykeyboardlayout,
-            wibox.widget.systray(),
-            mytextclock,
-            s.mylayoutbox,
-        },
-    }
+    -- s.mywibox = awful.wibar {
+    --     position = "top",
+    --     screen = s,
+    --     opacity = 0,
+    --     bg = beautiful.bg_normal .. "00",
+    -- }
+    --
+    -- local systray = wibox.widget.systray()
+    -- systray.opacity = 0
+    --
+    -- s.mywibox:setup {
+    --     layout = wibox.layout.align.horizontal,
+    --     nil,
+    --     nil,
+    --     {
+    --         layout = wibox.layout.fixed.horizontal,
+    --         mykeyboardlayout,
+    --         systray,
+    --     },
+    -- }
 end)
 -- }}}
 
 -- {{{ Mouse bindings
-root.buttons(
-    gears.table.join(
-        awful.button({}, 3, function()
-            mymainmenu:toggle()
-        end),
-        awful.button({}, 4, awful.tag.viewnext),
-        awful.button({}, 5, awful.tag.viewprev)
-    )
-)
+root.buttons(gears.table.join(awful.button({}, 3, function()
+    mymainmenu:toggle()
+end)))
 -- }}}
 
 -- {{{ Key bindings
@@ -637,6 +632,7 @@ awful.rules.rules = {
             class = {
                 "Hidamari",
                 "eww-bar",
+                "trayer",
             },
         },
         properties = {
@@ -644,6 +640,20 @@ awful.rules.rules = {
             buttons = {},
             focusable = false, -- Prevent the client from receiving focus
             raise = false, -- Prevent the client from being raised above other windows
+            sticky = true,
+        },
+    },
+
+    {
+        rule = {
+            class = "stalonetray",
+        },
+        properties = {
+            border_width = 0,
+            buttons = {},
+            focusable = false,
+            raise = false,
+            screen = 1,
             sticky = true,
         },
     },
@@ -784,7 +794,7 @@ spawn("hidamari --background")
 
 shell("picom")
 if not command_executed then
-    shell("xrandr_util.nu auto")
+    -- shell("xrandr_util.nu auto")
     command_executed = true
 end
 
@@ -792,3 +802,9 @@ shell("setxkbmap us")
 shell('setxkbmap -option "compose:menu"')
 
 require("eww")
+
+shell("pkill eww")
+shell("eww_bar")
+
+shell("pkill stalonetray")
+shell("stalonetray")

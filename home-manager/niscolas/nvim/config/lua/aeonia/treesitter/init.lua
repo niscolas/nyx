@@ -32,6 +32,7 @@ M.setup = function()
             "rust",
             "vim",
             "yaml",
+            "yuck",
         },
         highlight = {
             enable = true,
