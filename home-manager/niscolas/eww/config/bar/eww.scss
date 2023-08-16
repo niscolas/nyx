@@ -1,13 +1,22 @@
 /** Created by saimoom, edited by niscolas **/
+
+$aqua: #689D6A;
+$dark-soft: #32302F;
+$default-prefix-icon-size: 18px;
+$light-soft: #F2E5BC;
+$yellow: #FABD2F;
+$purple: #D3869B;
+
 * {
     all: unset;
     font-family: Mononoki Nerd Font;
 }
 
-.bar_class {
-    background-color: #32302f;
+.bar {
+    background-color: $dark-soft;
     border-radius: 16px;
 }
+
 .module {
     margin: 0px 0px 0px 0px;
     border-radius: 10px 16px 0px 10px;
@@ -70,17 +79,10 @@ tooltip label {
     margin: 0px 10px 0px 10px;
 }
 
-
 .module_essid {
     font-size: 18;
     color: #a1bdce;
     margin: 0px 10px 0px 0px;
-}
-.module-wif {
-    font-size: 22;
-    color: #a1bdce;
-    border-radius: 100%;
-    margin: 0px 10px 0px 5px;
 }
 
 .iconmem {
@@ -100,11 +102,9 @@ tooltip label {
 }
 
 
-.separ {
-    color: #3e424f;
-    font-weight: bold;
+.separator {
     font-size: 22px;
-    margin: 0px 8px 0px 8px;
+    margin: 0 12px 0 8;
 }
 
 .mem_module {
@@ -116,7 +116,6 @@ tooltip label {
     margin: 0px 10px 0px 10px;
 }
 
-
 scale trough {
     all: unset;
     box-shadow: 0 2px 3px 2px #06060b;
@@ -126,28 +125,82 @@ scale trough {
     margin: 0px 10px 0px 0px;
 }
 
-.works {
+.workspaces-widget {
     font-size: 27px;
     font-weight: normal;
-    margin: 5px 0px 0px 20px;
+}
+
+.round-sep {
+    font-size: 32px;
+}
+
+.section-prefix {
+    border-radius: 10px 0 0 10px;
+    font-size: $default-prefix-icon-size;
+    padding: 0 10px;
+    margin: 0 12px 0 0;
+}
+
+.workspaces-prefix {
+    @extend .section-prefix;
+
+    background-color: $yellow;
+    color: $dark-soft;
+}
+
+.section-suffix {
+    border-radius: 0 10px 10px 0;
+    padding: 0 8px;
+    margin: 0 0 0 12px;
+}
+
+.workspaces-suffix {
+    @extend .section-suffix;
+    background-color: $yellow;
+}
+
+.workspaces-content {
+    margin: 5px 6px 0 0;
 }
 
 .workspace {
-    margin: 0px 10px 0px 0px;
 }
 
 .workspace-unoccupied {
-    color: #3e424f;
+    color: #7C6F64;
 }
 
 .workspace-occupied {
-    color: #bfc9db;
+    color: $yellow;
 }
 
 .workspace-focused {
+    color: $yellow;
+}
+
+.workspace-urgent {
     color: #a1bdce;
 }
 
+.calendar-prefix {
+    @extend .section-prefix;
+    background-color: $aqua;
+}
+
+.calendar-suffix {
+    @extend .section-suffix;
+    background-color: $aqua;
+}
+
+.system-prefix {
+    @extend .section-prefix;
+    background-color: $purple;
+}
+
+.system-suffix {
+    @extend .section-suffix;
+    background-color: $purple;
+}
 
 .song_cover_art {
     background-size: cover;	

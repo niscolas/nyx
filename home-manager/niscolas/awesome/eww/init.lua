@@ -15,11 +15,8 @@ local function on_tag_changed()
     local not_focused_icon = ""
     local focused_icon = ""
 
-    local log = "(box "
-        .. ':class "works" '
-        .. ':orientation "h" '
-        .. ":spacing 5 "
-        .. ':space-evenly "false" '
+    local log =
+        "(box :class 'workspaces-content' :spacing 12 :space-evenly 'false'"
 
     local tags = awful.screen.focused().tags
     for _, t in ipairs(tags) do

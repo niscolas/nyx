@@ -3,9 +3,10 @@
 {
     imports = [
         ./eww/default.nix
-            ./nvim/default.nix
-            ./mangohud/default.nix
-            ./nushell/default.nix
+        ./mangohud/default.nix
+        ./nushell/default.nix
+        ./nvim/default.nix
+        ./ssh/default.nix
     ];
 
     nixpkgs = {
@@ -30,7 +31,10 @@
         ".config/i3".source = ./i3;
         ".config/ideavim".source = ./ideavim;
         ".config/keyd".source = ./keyd;
-        ".config/ludusavi".source = ./ludusavi;
+
+        ".config/ludusavi".source = config.lib.file.mkOutOfStoreSymlink
+            "${config.home.homeDirectory}/bonfire/nyx/home-manager/niscolas/ludusavi";
+
         ".config/neofetch".source = ./neofetch;
         ".config/omnisharp".source = ./omnisharp;
         ".config/optimus-manager".source = ./optimus-manager;
@@ -63,20 +67,18 @@
     services.network-manager-applet.enable = true;
     services.syncthing = {
         enable = true;
-        tray.enable = true;
     };
-    services.pasystray.enable = true;
 
     services.stalonetray = {
         enable = true;
         # https://github.com/kolbusa/stalonetray/blob/master/stalonetrayrc.sample.in
         config = {
-            geometry = "1x1-8+12";
+            background = "#32302F";
             grow_gravity = "E";
-            icon_size = "32";
-            transparent = true;
-            slot_size = "40x40";
+            icon_size = "24";
             kludges = "fix_window_pos,force_icons_size";
+            slot_size = "32x32";
+            window_layer = "top";
         };
     };
 
@@ -137,6 +139,8 @@
     };
 
     home.packages = with pkgs; [
+        steam
+        snixembed
         armcord
         barrier
         bat
@@ -180,19 +184,19 @@
         nodejs
         opensnitch-ui
         p7zip
-        parsec-bin
         pavucontrol
         pciutils # lspci
         picom
         pritunl-client
         protonup-qt
+        rclone
         ripgrep
         rofi
         rustup
         starship
         strace # system call monitoring
-        sunshine
         stylua
+        sunshine
         trayer
         unzip
         usbutils # lsusb
@@ -200,6 +204,7 @@
         wezterm
         wget
         xclip
+        xorg.xdpyinfo
         xz
         zip
         zoxide

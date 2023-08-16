@@ -33,7 +33,10 @@
         MACHINE_THEME = "gruvbox";
     };
 
+    environment.localBinInPath = true;
     environment.shells = with pkgs; [ nushell zsh ];
+
+    systemd.services.opensnitchd.wantedBy = lib.mkForce [ ];
 
     systemd.timers.backup_logseq = {
         wantedBy = [ "timers.target" ];
@@ -68,14 +71,21 @@
         wantedBy = [ "default.target" ];
     };
 
+    systemd.services.pritunl = {
+        serviceConfig = {
+            Type = "simple";
+            User = "root";
+        };
+        script = "${pkgs.pritunl-client}/bin/pritunl-client-service";
+        wantedBy = [ "default.target" ];
+    };
+
     services.undervolt = {
         enable = true;
         temp = 85;
         coreOffset = -80;
         gpuOffset = -20;
     };
-
-    services.auto-cpufreq.enable = true;
 
     services.thermald.enable = true;
 
@@ -91,27 +101,21 @@
             CPU_ENERGY_PERF_POLICY_ON_AC = "performance";
             CPU_ENERGY_PERF_POLICY_ON_BAT = "power";
 
-#CPU_MIN_PERF_ON_AC = 0;
+            #CPU_MIN_PERF_ON_AC = 0;
             CPU_MAX_PERF_ON_AC = 99;
-#CPU_MIN_PERF_ON_BAT = 0;
+            #CPU_MIN_PERF_ON_BAT = 0;
             CPU_MAX_PERF_ON_BAT = 20;
 
-# The following prevents the battery from charging fully to
-# preserve lifetime. Run `tlp fullcharge` to temporarily force
-# full charge.
-# https://linrunner.de/tlp/faq/battery.html#how-to-choose-good-battery-charge-thresholds
+            # The following prevents the battery from charging fully to
+            # preserve lifetime. Run `tlp fullcharge` to temporarily force
+            # full charge.
+            # https://linrunner.de/tlp/faq/battery.html#how-to-choose-good-battery-charge-thresholds
             START_CHARGE_THRESH_BAT0=40;
             STOP_CHARGE_THRESH_BAT0=50;
         };
     };
 
     programs.dconf.enable = true;
-
-    programs.steam = {
-        enable = true;
-        remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
-            dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
-    };
 
     programs.xss-lock = {
         enable = true;
@@ -319,7 +323,7 @@
         zsh
     ];
 
-    fonts.fonts = with pkgs; [
+    fonts.packages = with pkgs; [
         intel-one-mono
         (nerdfonts.override { fonts = [ "Mononoki" "NerdFontsSymbolsOnly" ]; })
     ];
@@ -360,16 +364,21 @@
         nvidiaBusId = "PCI:1:0:0";
     };
 
-# specialisation = {
-#   external-display.configuration = {
-#     system.nixos.tags = [ "external-display" ];
-#     hardware.nvidia = {
-#       prime.offload.enable = lib.mkForce false;
-#       powerManagement.enable = lib.mkForce false;
-#     };
-#   };
-# };
-#
+    specialisation = {
+        eco_mode.configuration = {
+            services.tlp = {
+                enable = true;
+                settings = {
+                    CPU_SCALING_GOVERNOR_ON_AC = lib.mkForce "powersave";
+
+                    CPU_ENERGY_PERF_POLICY_ON_AC = lib.mkForce "power";
+
+                    CPU_MAX_PERF_ON_AC = lib.mkForce 30;
+                };
+            };
+        };
+    };
+
     nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
     nix.gc.automatic = true;
@@ -412,13 +421,13 @@
     ];
 
     services.opensnitch = {
-        enable = false;
+        enable = true;
         rules = {
             "steam_family_share_bypass" = {
                 "created" = "2023-07-09T18:54:31.048633146-03:00";
                 "updated" = "2023-07-09T18:54:31.048703462-03:00";
                 "name" = "steam_family_share_bypass";
-                "enabled" = true;
+                "enabled" = false;
                 "precedence" = false;
                 "action" = "allow";
                 "duration" = "always";
@@ -460,6 +469,8 @@
             };
         };
     };
+
+    virtualisation.docker.enable = true;
 
 # This value determines the NixOS release from which the default
 # settings for stateful data, like file locations and database versions
