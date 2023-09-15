@@ -1,0 +1,10 @@
+Host nokron
+    HostName 139.144.170.177
+    User niscolas
+
+Host github.com
+    HostName github.com
+    User git
+    IdentityFile ~/.ssh/niscolas_github
+
+AddKeysToAgent yes

@@ -139,8 +139,6 @@
     };
 
     home.packages = with pkgs; [
-        steam
-        snixembed
         armcord
         barrier
         bat
@@ -168,6 +166,7 @@
         inkscape-with-extensions
         input-leap
         kanata
+        krita
         libnotify
         lm_sensors # for `sensors` command
         logseq
@@ -183,6 +182,7 @@
         nix-output-monitor # it provides the command `nom` works just like `nix` with more details log output
         nodejs
         opensnitch-ui
+        opentabletdriver
         p7zip
         pavucontrol
         pciutils # lspci
@@ -193,7 +193,9 @@
         ripgrep
         rofi
         rustup
+        snixembed
         starship
+        steam
         strace # system call monitoring
         stylua
         sunshine

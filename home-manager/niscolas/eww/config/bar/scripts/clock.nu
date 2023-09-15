@@ -1,3 +1,3 @@
 #!/usr/bin/env nu
 
-date now | date format "%a, %e de %b. %H:%M"
+date now | date format "%a, %e de %b. (%m) - 󰥔  %H:%M"

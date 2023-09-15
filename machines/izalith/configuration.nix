@@ -124,6 +124,11 @@
             '';
     };
 
+    programs.thunar = {
+        enable = true;
+        plugins = with pkgs.xfce; [ thunar-archive-plugin thunar-volman ];
+    };
+
     boot = {
         kernelPackages = pkgs.linuxKernel.packages.linux_xanmod;
 
@@ -315,11 +320,11 @@
     environment.systemPackages = with pkgs; [
         awesome
         coreutils
+        gnome.file-roller
         lightlocker
         nix-index
         nushell
         rar
-        xfce.thunar-archive-plugin
         zsh
     ];
 
@@ -373,7 +378,7 @@
 
                     CPU_ENERGY_PERF_POLICY_ON_AC = lib.mkForce "power";
 
-                    CPU_MAX_PERF_ON_AC = lib.mkForce 30;
+                    CPU_MAX_PERF_ON_AC = lib.mkForce 50;
                 };
             };
         };
