@@ -36,8 +36,6 @@
     environment.localBinInPath = true;
     environment.shells = with pkgs; [ nushell zsh ];
 
-    systemd.services.opensnitchd.wantedBy = lib.mkForce [ ];
-
     systemd.timers.backup_logseq = {
         wantedBy = [ "timers.target" ];
         timerConfig = {
@@ -106,6 +104,8 @@
             #CPU_MIN_PERF_ON_BAT = 0;
             CPU_MAX_PERF_ON_BAT = 20;
 
+            DEVICES_TO_DISABLE_ON_STARTUP = "bluetooth";
+
             # The following prevents the battery from charging fully to
             # preserve lifetime. Run `tlp fullcharge` to temporarily force
             # full charge.
@@ -127,6 +127,16 @@
     programs.thunar = {
         enable = true;
         plugins = with pkgs.xfce; [ thunar-archive-plugin thunar-volman ];
+    };
+
+    programs.gamemode = {
+        enable = true;
+        settings = {
+            custom = {
+                start = "pkill picom";
+                end = "${pkgs.picom}/bin/picom";
+            };
+        };
     };
 
     boot = {
@@ -318,6 +328,7 @@
     # List packages installed in system profile. To search, run:
     # $ nix search wget
     environment.systemPackages = with pkgs; [
+        heroic
         awesome
         coreutils
         gnome.file-roller
@@ -382,6 +393,58 @@
                 };
             };
         };
+
+        steam_off.configuration = {
+            services.opensnitch = {
+                enable = true;
+                rules = {
+                    "steam_family_share_bypass" = {
+                        "created" = "2023-07-09T18:54:31.048633146-03:00";
+                        "updated" = "2023-07-09T18:54:31.048703462-03:00";
+                        "name" = "steam_family_share_bypass";
+                        "enabled" = false;
+                        "precedence" = false;
+                        "action" = "allow";
+                        "duration" = "always";
+                        "operator" = {
+                            "type" = "list";
+                            "operand" = "list";
+                            "sensitive" = false;
+                            "data" = [
+                            {
+                                "type" = "regexp";
+                                "operand" = "process.path";
+                                "data" = ".*steam.*";
+                                "sensitive" = false;
+                            }
+                            {
+                                "type" = "regexp";
+                                "operand" = "dest.ip";
+                                "data" = "(192.[0-168].[0-2].[1-249])|(254.254.254.254)";
+                                "sensitive" = false;
+                            }
+                            ];
+                            "list" = [
+                            {
+                                "type" = "regexp";
+                                "operand" = "process.path";
+                                "sensitive" = false;
+                                "data" = ".*steam.*";
+                                "list" = null;
+                            }
+                            {
+                                "type" = "regexp";
+                                "operand" = "dest.ip";
+                                "sensitive" = false;
+                                "data" = "(192\\.[0-168]\\.[0-2]\\.[1-249])|(254.254.254.254)";
+                                "list" = null;
+                            }
+                            ];
+                        };
+                    };
+                };
+            };
+        };
     };
 
     nix.settings.experimental-features = [ "nix-command" "flakes" ];
@@ -425,55 +488,6 @@
             50000 59100 59200 59716
     ];
 
-    services.opensnitch = {
-        enable = true;
-        rules = {
-            "steam_family_share_bypass" = {
-                "created" = "2023-07-09T18:54:31.048633146-03:00";
-                "updated" = "2023-07-09T18:54:31.048703462-03:00";
-                "name" = "steam_family_share_bypass";
-                "enabled" = false;
-                "precedence" = false;
-                "action" = "allow";
-                "duration" = "always";
-                "operator" = {
-                    "type" = "list";
-                    "operand" = "list";
-                    "sensitive" = false;
-                    "data" = [
-                    {
-                        "type" = "regexp";
-                        "operand" = "process.path";
-                        "data" = ".*steam.*";
-                        "sensitive" = false;
-                    }
-                    {
-                        "type" = "regexp";
-                        "operand" = "dest.ip";
-                        "data" = "(192.[0-168].[0-2].[1-249])|(254.254.254.254)";
-                        "sensitive" = false;
-                    }
-                    ];
-                    "list" = [
-                    {
-                        "type" = "regexp";
-                        "operand" = "process.path";
-                        "sensitive" = false;
-                        "data" = ".*steam.*";
-                        "list" = null;
-                    }
-                    {
-                        "type" = "regexp";
-                        "operand" = "dest.ip";
-                        "sensitive" = false;
-                        "data" = "(192\\.[0-168]\\.[0-2]\\.[1-249])|(254.254.254.254)";
-                        "list" = null;
-                    }
-                    ];
-                };
-            };
-        };
-    };
 
     virtualisation.docker.enable = true;
 
