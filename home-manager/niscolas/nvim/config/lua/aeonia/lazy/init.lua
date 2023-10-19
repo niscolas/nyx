@@ -6,13 +6,10 @@ M.setup = function()
     require("lazy").setup {
         {
             "ellisonleao/gruvbox.nvim",
-            init = function()
-                require("aeonia.themes").before_plugin()
-            end,
             lazy = false,
             priority = 1000,
             config = function()
-                require("aeonia.themes").after_plugin()
+                require("aeonia.themes.gruvbox").setup()
             end,
         },
 
@@ -291,8 +288,8 @@ M.setup = function()
         },
 
         {
-            "jose-elias-alvarez/null-ls.nvim",
-            as = "null-ls",
+            "nvimtools/none-ls.nvim",
+            as = "none-ls",
             config = require("aeonia.null-ls").setup,
         },
 

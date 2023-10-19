@@ -3,17 +3,29 @@ local M = {}
 M.contrast = "soft"
 
 M.get_colors = function()
-    local result =
-        require("gruvbox.palette").get_base_colors(vim.o.background, M.contrast)
+    -- local result = require("gruvbox").palette
+    local themes_util = require("aeonia.themes.util")
 
-    result.bg = result.bg0
-    result.fg = result.fg0
+    local result = {
+        bg = themes_util.get_fg_from("GruvboxBg0"),
+        fg = themes_util.get_fg_from("GruvboxFg0"),
+
+        aqua = themes_util.get_fg_from("GruvboxAqua"),
+        blue = themes_util.get_fg_from("GruvboxBlue"),
+        green = themes_util.get_fg_from("GruvboxGreen"),
+        orange = themes_util.get_fg_from("GruvboxOrange"),
+        purple = themes_util.get_fg_from("GruvboxPurple"),
+        red = themes_util.get_fg_from("GruvboxRed"),
+        yellow = themes_util.get_fg_from("GruvboxYellow"),
+    }
+
     return result
 end
 
-M.before_plugin = function() end
+M.setup = function()
+    local themes = require("aeonia.themes")
+    themes.theme_mod = require("aeonia.themes.gruvbox")
 
-M.after_plugin = function()
     require("gruvbox").setup {
         contrast = M.contrast,
         palette_overrides = {},
@@ -21,9 +33,11 @@ M.after_plugin = function()
         dim_inactive = false,
         transparent_mode = true,
     }
-end
 
-M.after_colorscheme = function()
+    cmd.colorscheme("gruvbox")
+
+    themes.force_background_transparency()
+
     local colors = M.get_colors()
     set_hl(0, "FloatBorder", { fg = colors.yellow })
 end

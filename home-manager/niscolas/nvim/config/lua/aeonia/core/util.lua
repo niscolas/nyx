@@ -11,7 +11,7 @@ _G.new_autocmd = api.nvim_create_autocmd
 _G.new_keymap = vim.keymap.set
 _G.new_user_command = api.nvim_create_user_command
 _G.set = vim.opt
-_G.get_hl_by_name = api.nvim_get_hl_by_name
+_G.get_hl = api.nvim_get_hl
 _G.set_hl = api.nvim_set_hl
 
 _G.set_hls = function(hls)

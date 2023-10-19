@@ -45,8 +45,6 @@ _G.niscolas = {
         setup = os.getenv("MACHINE_SETUP"),
     },
     theme = {
-        colorscheme = "gruvbox",
-        modname = "gruvbox",
         use_transparency = true,
     },
 }
