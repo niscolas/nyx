@@ -78,7 +78,7 @@
             icon_size = "24";
             kludges = "fix_window_pos,force_icons_size";
             slot_size = "32x32";
-            window_layer = "top";
+            window_layer = "bottom";
         };
     };
 
@@ -139,7 +139,8 @@
     };
 
     home.packages = with pkgs; [
-        armcord
+        anytype
+        appimage-run
         barrier
         bat
         bottom
@@ -148,21 +149,19 @@
         delta
         discord
         easyeffects
-        exa
         fd
         flameshot
         fluent-reader
         font-manager
         fzf
-        gamemode
         gamescope
         gcc
         git
         git-lfs
         glxinfo
         gnome.gnome-disk-utility
+        gnome.zenity
         google-chrome
-        heroic
         inkscape-with-extensions
         input-leap
         kanata
@@ -197,6 +196,7 @@
         starship
         steam
         strace # system call monitoring
+        stremio
         stylua
         sunshine
         trayer
