@@ -20,7 +20,7 @@ roots:
     store: gog
 redirects: []
 backup:
-  path: /home/niscolas/bonfire/saves_ludusavi
+  path: /home/niscolas/bonfire/saves-ludusavi2
   ignoredGames:
     - Apex Legends
     - Barotrauma
@@ -35,10 +35,13 @@ backup:
     - Darkest Dungeon
     - Deep Rock Galactic
     - Devil May Cry 5
+    - Disco Elysium
     - Dishonored 2
     - "Don't Starve Together"
     - Doom (2016)
+    - ELDEN RING (Custom All Saves)
     - Elden Ring
+    - En Garde!
     - Enter the Gungeon
     - Full Metal Furies
     - "Guns, Gore & Cannoli 2"
@@ -46,13 +49,17 @@ backup:
     - Heave Ho
     - Helldivers
     - Hollow Knight
+    - Killer Instinct
+    - Lone Fungus
     - "Naraka: Bladepoint"
+    - OTXO
     - Resident Evil Village
     - Risk of Rain 2
     - Rocket League
     - Rogue Legacy 2
     - "Sekiro: Shadows Die Twice"
     - Shadow of War
+    - Sifu
     - "Stick Fight: The Game"
     - Streets of Rogue
     - Sundered
@@ -61,6 +68,7 @@ backup:
     - "Tiny Tina's Wonderlands"
     - Tribes of Midgard
     - Vagante
+    - Voidigo
     - Wizard of Legend
   filter:
     excludeStoreScreenshots: false
@@ -86,7 +94,7 @@ backup:
       zstd:
         level: 10
 restore:
-  path: /home/niscolas/_vault/ludusavi
+  path: /home/niscolas/bonfire/saves-ludusavi2
   ignoredGames: []
   toggledPaths: {}
   toggledRegistry: {}
@@ -98,7 +106,9 @@ scan:
   showUnchangedGames: true
   showUnscannedGames: true
 cloud:
-  remote: ~
+  remote:
+    GoogleDrive:
+      id: ludusavi-1697211189
   path: my_game_my_rules/saves-ludusavi
   synchronize: true
 apps:
@@ -106,11 +116,15 @@ apps:
     path: rclone
     arguments: ""
 customGames:
-  - name: Elden Ring
-    files:
-      - "<winAppData>/EldenRing"
-    registry: []
   - name: Shadow of War
     files:
       - /home/niscolas/.local/share/Steam/steamapps/compatdata/3858932643/pfx/drive_c/users/steamuser/AppData/Local/WB Games/Shadow of War
+    registry: []
+  - name: Elden Ring
+    files:
+      - /mnt/storage/SteamLibrary/steamapps/compatdata/1245620/pfx/drive_c/users/steamuser/AppData/Roaming/EldenRing
+    registry: []
+  - name: OTXO
+    files:
+      - /mnt/storage/SteamLibrary/steamapps/compatdata/1608640/pfx/drive_c/users/steamuser/AppData/Local/OTXO_Release
     registry: []
