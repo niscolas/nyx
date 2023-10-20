@@ -1,121 +1,143 @@
 local M = {}
 
 M.setup_hl = function()
-    local colors = require("aeonia.themes.gruvbox").get_colors()
-    local usr_theme_util = require("aeonia.themes.util")
-    local get_fg_from = usr_theme_util.get_fg_from
+    local colors = require("aeonia.themes.gruvbox").get_colors_decimal()
 
     local hl_groups = {
         NavicIconsArray = {
-            fg = get_fg_from("NavicIconsArray", true),
+            default = false,
+            fg = colors.orange,
             bg = colors.bg,
         },
         NavicIconsBoolean = {
-            fg = get_fg_from("NavicIconsBoolean", true),
+            default = false,
+            fg = colors.orange,
             bg = colors.bg,
         },
         NavicIconsClass = {
-            fg = get_fg_from("NavicIconsClass", true),
+            default = false,
+            fg = colors.yellow,
             bg = colors.bg,
         },
         NavicIconsConstant = {
-            fg = get_fg_from("NavicIconsConstant", true),
+            default = false,
+            fg = colors.orange,
             bg = colors.bg,
         },
         NavicIconsConstructor = {
-            fg = get_fg_from("NavicIconsConstructor", true),
+            default = false,
+            fg = colors.blue,
             bg = colors.bg,
         },
         NavicIconsEnum = {
-            fg = get_fg_from("NavicIconsEnum", true),
+            default = false,
+            fg = colors.purple,
             bg = colors.bg,
         },
         NavicIconsEnumMember = {
-            fg = get_fg_from("NavicIconsEnumMember", true),
+            default = false,
+            fg = colors.yellow,
             bg = colors.bg,
         },
         NavicIconsEvent = {
-            fg = get_fg_from("NavicIconsEvent", true),
+            default = false,
+            fg = colors.yellow,
             bg = colors.bg,
         },
         NavicIconsField = {
-            fg = get_fg_from("NavicIconsField", true),
+            default = false,
+            fg = colors.purple,
             bg = colors.bg,
         },
         NavicIconsFile = {
-            fg = get_fg_from("NavicIconsFile", true),
+            default = false,
+            fg = colors.blue,
             bg = colors.bg,
         },
         NavicIconsFunction = {
-            fg = get_fg_from("NavicIconsFunction", true),
+            default = false,
+            fg = colors.blue,
             bg = colors.bg,
         },
         NavicIconsInterface = {
-            fg = get_fg_from("NavicIconsInterface", true),
+            default = false,
+            fg = colors.green,
             bg = colors.bg,
         },
-        NavicIconsKey = {
-            fg = get_fg_from("NavicIconsKey", true),
-            bg = colors.bg,
-        },
+        NavicIconsKey = { default = false, fg = colors.aqua, bg = colors.bg },
         NavicIconsMethod = {
-            fg = get_fg_from("NavicIconsMethod", true),
+            default = false,
+            fg = colors.blue,
             bg = colors.bg,
         },
         NavicIconsModule = {
-            fg = get_fg_from("NavicIconsModule", true),
+            default = false,
+            fg = colors.orange,
             bg = colors.bg,
         },
         NavicIconsNamespace = {
-            fg = get_fg_from("NavicIconsNamespace", true),
+            default = false,
+            fg = colors.blue,
             bg = colors.bg,
         },
         NavicIconsNull = {
-            fg = get_fg_from("NavicIconsNull", true),
+            default = false,
+            fg = colors.orange,
             bg = colors.bg,
         },
         NavicIconsNumber = {
-            fg = get_fg_from("NavicIconsNumber", true),
+            default = false,
+            fg = colors.orange,
             bg = colors.bg,
         },
         NavicIconsObject = {
-            fg = get_fg_from("NavicIconsObject", true),
+            default = false,
+            fg = colors.orange,
             bg = colors.bg,
         },
         NavicIconsOperator = {
-            fg = get_fg_from("NavicIconsOperator", true),
+            default = false,
+            fg = colors.red,
             bg = colors.bg,
         },
         NavicIconsPackage = {
-            fg = get_fg_from("NavicIconsPackage", true),
+            default = false,
+            fg = colors.aqua,
             bg = colors.bg,
         },
         NavicIconsProperty = {
-            fg = get_fg_from("NavicIconsProperty", true),
+            default = false,
+            fg = colors.aqua,
             bg = colors.bg,
         },
         NavicIconsString = {
-            fg = get_fg_from("NavicIconsString", true),
+            default = false,
+            fg = colors.green,
             bg = colors.bg,
         },
         NavicIconsStruct = {
-            fg = get_fg_from("NavicIconsStruct", true),
+            default = false,
+            fg = colors.purple,
             bg = colors.bg,
         },
         NavicIconsTypeParameter = {
-            fg = get_fg_from("NavicIconsTypeParameter", true),
+            default = false,
+            fg = colors.red,
             bg = colors.bg,
         },
         NavicIconsVariable = {
-            fg = get_fg_from("NavicIconsVariable", true),
+            default = false,
+            fg = colors.purple,
             bg = colors.bg,
         },
         NavicSeparator = {
-            fg = get_fg_from("NavicSeparator", true),
+            default = false,
+            fg = colors.fg,
             bg = colors.bg,
         },
         NavicText = {
-            fg = get_fg_from("NavicText", true),
+            default = false,
+            fg = colors.fg,
             bg = colors.bg,
         },
     }

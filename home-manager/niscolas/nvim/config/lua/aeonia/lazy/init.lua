@@ -16,7 +16,7 @@ M.setup = function()
         {
             "folke/neodev.nvim",
             config = function()
-                require("neodev").setup {}
+                -- require("neodev").setup {}
             end,
             lazy = false,
             priority = 51,

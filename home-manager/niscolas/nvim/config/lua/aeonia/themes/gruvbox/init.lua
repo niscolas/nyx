@@ -2,7 +2,7 @@ local M = {}
 
 M.contrast = "soft"
 
-M.get_colors = function()
+M.get_colors_decimal = function()
     -- local result = require("gruvbox").palette
     local themes_util = require("aeonia.themes.util")
 
@@ -22,6 +22,18 @@ M.get_colors = function()
     return result
 end
 
+M.get_colors_hex = function()
+    local colors = M.get_colors_decimal()
+    local themes_util = require("aeonia.themes.util")
+
+    for color_name, color_decimal_hex in pairs(colors) do
+        colors[color_name] = "#"
+            .. themes_util.convert_decimal_hex_to_6_digit_hex(color_decimal_hex)
+    end
+
+    return colors
+end
+
 M.setup = function()
     local themes = require("aeonia.themes")
     themes.theme_mod = require("aeonia.themes.gruvbox")
@@ -38,7 +50,7 @@ M.setup = function()
 
     themes.force_background_transparency()
 
-    local colors = M.get_colors()
+    local colors = M.get_colors_decimal()
     set_hl(0, "FloatBorder", { fg = colors.yellow })
 end
 

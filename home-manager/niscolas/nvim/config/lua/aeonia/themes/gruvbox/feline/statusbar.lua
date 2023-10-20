@@ -1,7 +1,5 @@
 local feline_theme = require("aeonia.themes.gruvbox.feline")
-local colors = require("aeonia.themes.gruvbox").get_colors()
-local usr_dir_path_component =
-    require("aeonia.feline.components.core.dir_path")
+local usr_dir_path_component = require("aeonia.feline.components.core.dir_path")
 local usr_feline_util = require("aeonia.feline.util")
 local usr_file_info_component =
     require("aeonia.feline.components.core.file_info")
@@ -9,8 +7,7 @@ local usr_git_component = require("aeonia.feline.components.core.git")
 local usr_lsp_component = require("aeonia.feline.components.core.lsp")
 local usr_mode_component = require("aeonia.feline.components.core.mode")
 local usr_noice_component = require("aeonia.feline.components.core.noice")
-local usr_spacer_component =
-    require("aeonia.feline.components.core.spacer")
+local usr_spacer_component = require("aeonia.feline.components.core.spacer")
 
 local M = {}
 

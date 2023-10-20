@@ -32,14 +32,7 @@ M.default_seps = {
     right_sep = M.default_right_sep,
 }
 
-local colors = require("aeonia.themes.gruvbox").get_colors()
-local themes_util = require("aeonia.themes.util")
-
-local theme = {}
-for color_name, color_decimal_hex in pairs(colors) do
-    theme[color_name] = "#"
-        .. themes_util.convert_decimal_hex_to_6_digit_hex(color_decimal_hex)
-end
+local theme = require("aeonia.themes.gruvbox").get_colors_hex()
 
 M.setup = function()
     local feline = require("feline")
