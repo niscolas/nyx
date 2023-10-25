@@ -167,7 +167,6 @@
         heroic
         inkscape-with-extensions
         input-leap
-        kanata
         krita
         libnotify
         lm_sensors # for `sensors` command
