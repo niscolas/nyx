@@ -14,9 +14,9 @@ def main [action: string] {
 }
 
 def use_with_offset [] {
-    stalonetray --geometry 1x1-1952+12
+    stalonetray --geometry 1x1-1952+14
 }
 
 def use_in_place [] {
-    stalonetray --geometry 1x1-32+12
+    stalonetray --geometry 1x1-32+14
 }

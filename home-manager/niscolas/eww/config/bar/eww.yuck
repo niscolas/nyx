@@ -1,7 +1,6 @@
-(defpoll clock_time :interval "1m" "scripts/clock.nu")
-
 (defpoll battery :interval "15s" "scripts/battery --bat")
 (defpoll battery_status :interval "1m" "scripts/battery --bat-st")
+(defpoll clock_time :interval "1m" "scripts/clock.nu")
 
 (defpoll memory :interval "15s" "scripts/ram_usage_percent.nu")
 
@@ -57,25 +56,35 @@
 
 (defwidget clock_widget []
     (box
-        :space-evenly "false"
+        :class "clock-widget"
         :orientation "h"
+        :space-evenly "false"
         :spacing "3"
-        (label :text " " :class "calendar-prefix")
+        (label :text " " :class "clock-prefix")
         (button
-            :class "calendar-label"
-            :onclick "firefox calendar.google.com" clock_time)
-        (label :class "calendar-suffix")
+            :class "clock-label"
+            :onclick "firefox clock.google.com" clock_time)
+        (label :class "clock-suffix")
 ))
 
-(defwidget system_widgets []
+(defwidget system_widget []
 	(box
+        :class "system-widget"
+        :halign "start"
         :orientation "h"
         :space-evenly false
-        :halign "start"
         (label :text " " :class "system-prefix")
         (bat)
         (ram_widget)
         (label :class "system-suffix")
+))
+
+(defwidget tray_widget []
+	(box
+        :class "tray-widget"
+        :halign "end"
+        :orientation "h"
+        (label :class "tray-content")
 ))
 
 (defwidget left []
@@ -93,7 +102,7 @@
         :space-evenly false
         :halign "center"
         :class "center_modules"
-        (system_widgets)
+        ;; (system_widget)
         (separator)
         (clock_widget)
 ))
@@ -101,9 +110,9 @@
 (defwidget right []
 	(box
         :orientation "h"
-        :space-evenly false
         :halign "end"
         :class "right_modules"
+        (tray_widget)
 ))
 
 (defwidget bar_1 []

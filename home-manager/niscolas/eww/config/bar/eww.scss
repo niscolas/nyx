@@ -1,12 +1,14 @@
 /** Created by saimoom, edited by niscolas **/
 
-$aqua: #689D6A;
-$dark-soft: #32302F;
+$color-aqua: #689D6A;
+$color-dark-soft: #32302F;
+$color-light-soft: #F2E5BC;
+$color-purple: #D3869B;
+$color-red: #FB4934;
+$color-yellow: #FABD2F;
 $default-prefix-icon-size: 18px;
-$light-soft: #F2E5BC;
-$purple: #D3869B;
-$red: #FB4934;
-$yellow: #FABD2F;
+$widget-border-radius: 20px;
+$prefix-suffix-border-radius: 16px;
 
 * {
     all: unset;
@@ -14,8 +16,6 @@ $yellow: #FABD2F;
 }
 
 .bar {
-    background-color: $dark-soft;
-    border-radius: 16px;
 }
 
 .membar {
@@ -46,37 +46,45 @@ $yellow: #FABD2F;
     margin: 0px 10px 0px 10px;
 }
 
-.workspaces-widget {
-    font-size: 27px;
-    font-weight: normal;
-}
-
-.section-prefix {
-    border-radius: 16px 0 0 16px;
+.default-widget-prefix {
+    border-radius: $prefix-suffix-border-radius 0 0 $prefix-suffix-border-radius;
     font-size: $default-prefix-icon-size;
     padding: 0 8px 0 10px;
     margin: 0 12px 0 0;
 }
 
-.section-suffix {
-    border-radius: 0 16px 16px 0;
+.default-widget-suffix {
+    border-radius: 0 $widget-border-radius $widget-border-radius 0;
     padding: 0 8px;
     margin: 0 0 0 12px;
 }
 
+.default-widget {
+    background-color: $color-dark-soft;
+    border-radius: $widget-border-radius;
+    border: 3px solid;
+}
+
+.workspaces-widget {
+    @extend .default-widget;
+    border-color: $color-yellow;
+    font-weight: normal;
+}
+
 .workspaces-prefix {
-    @extend .section-prefix;
-    background-color: $yellow;
-    color: $dark-soft;
+    @extend .default-widget-prefix;
+    background-color: $color-yellow;
+    color: $color-dark-soft;
 }
 
 .workspaces-suffix {
-    @extend .section-suffix;
-    background-color: $yellow;
+    @extend .default-widget-suffix;
+    background-color: $color-yellow;
 }
 
 .workspaces-content {
-    margin: 5px 6px 0 0;
+    font-size: 27px;
+    margin: 2px 6px 0 0;
 }
 
 .workspace {
@@ -87,41 +95,57 @@ $yellow: #FABD2F;
 }
 
 .workspace-occupied {
-    color: $yellow;
+    color: $color-yellow;
 }
 
 .workspace-focused {
-    color: $yellow;
+    color: $color-yellow;
 }
 
 .workspace-urgent {
-    color: $red;
+    color: $color-red;
 }
 
-.calendar-prefix {
-    @extend .section-prefix;
-    color: $dark-soft;
-    background-color: $aqua;
+.clock-widget {
+    @extend .default-widget;
+    border-color: $color-aqua;
 }
 
-.calendar-label {
+.clock-prefix {
+    @extend .default-widget-prefix;
+    color: $color-dark-soft;
+    background-color: $color-aqua;
+}
+
+.clock-label {
     font-size: 18;
-    color: $aqua;
+    color: $color-aqua;
     font-weight: bold;
 }
 
-.calendar-suffix {
-    @extend .section-suffix;
-    background-color: $aqua;
+.clock-suffix {
+    @extend .default-widget-suffix;
+    background-color: $color-aqua;
+}
+
+.system-widget {
+    background-color: $color-dark-soft;
+    border-radius: $widget-border-radius;
 }
 
 .system-prefix {
-    @extend .section-prefix;
-    color: $dark-soft;
-    background-color: $purple;
+    @extend .default-widget-prefix;
+    color: $color-dark-soft;
+    background-color: $color-purple;
 }
 
 .system-suffix {
-    @extend .section-suffix;
-    background-color: $purple;
+    @extend .default-widget-suffix;
+    background-color: $color-purple;
+}
+
+.tray-content {
+    @extend .default-widget;
+    border-color: $color-purple;
+    padding: 0 300px 0 10px;
 }
