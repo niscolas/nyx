@@ -1,0 +1,19 @@
+{:logseq-agenda {:version "v2.17.2", :repo "haydenull/logseq-plugin-agenda", :effect true, :theme false}
+ :logseq-bullet-threading {:version "v1.1.4", :repo "pengx17/logseq-plugin-bullet-threading", :effect false, :theme false}
+ :logseq-tags {:version "v0.1.2", :repo "gidongkwon/logseq-plugin-tags", :effect false, :theme false}
+ :logseq-todo-master {:version "v1.10.3", :repo "pengx17/logseq-plugin-todo-master", :effect false, :theme false}
+ :logseq-vim-shortcuts {:version "v0.1.20", :repo "vipzhicheng/logseq-plugin-vim-shortcuts", :effect true, :theme false}
+ :logseq-tocgen {:version "v2.11.1", :repo "sethyuan/logseq-plugin-tocgen", :effect true, :theme false}
+ :logseq-banners-plugin {:version "v3.4.11", :repo "yoyurec/logseq-banners-plugin", :effect true, :theme false}
+ :logseq-awesome-links {:version "v1.15.16", :repo "yoyurec/logseq-awesome-links", :effect true, :theme false}
+ :logseq-awesome-ui {:version "v2.4.0", :repo "yoyurec/logseq-awesome-ui", :effect true, :theme false}
+ :logseq-awesome-styler {:version "v3.7.1", :repo "yoyurec/logseq-awesome-styler", :effect true, :theme false}
+ :logseq-helium-plugin {:version "v.2.1.2", :repo "vyleung/logseq-helium-plugin", :effect true, :theme false}
+ :logseq-file-manager {:version "v1.4.0", :repo "haydenull/logseq-plugin-file-manager", :effect true, :theme false}
+ :logseq-awesome-props {:version "v1.10.0", :repo "yoyurec/logseq-awesome-props", :effect true, :theme false}
+ :logseq-todo-exploder {:version "1.0.3", :repo "sawhney17/logseq-todo-exploder", :effect true, :theme false}
+ :logseq-awesome-content {:version "v1.2.1", :repo "yoyurec/logseq-awesome-content", :effect true, :theme false}
+ :logseq-quick-capture {:version "0.0.7", :repo "tankcool/logseq-quick-capture", :effect false, :theme false}
+ :logseq-vim-editor {:version "v0.0.6", :repo "vipzhicheng/logseq-plugin-vim-editor", :effect false, :theme false}
+ :logseq-flow-nord-theme {:version "v0.9.73", :repo "henices/logseq-flow-nord", :effect false, :theme true}
+ :logseq-sticky-headers {:version "v1.4.4", :repo "yoyurec/logseq-sticky-headers", :effect true, :theme false}}
