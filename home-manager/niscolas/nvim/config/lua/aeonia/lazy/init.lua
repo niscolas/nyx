@@ -15,20 +15,12 @@ M.setup = function()
 
         {
             "folke/neodev.nvim",
+            enabled = false,
             config = function()
-                -- require("neodev").setup {}
+                require("neodev").setup {}
             end,
             lazy = false,
             priority = 51,
-        },
-
-        {
-            "williamboman/mason.nvim",
-            build = ":MasonUpdate",
-            config = require("aeonia.mason").setup,
-            dependencies = {
-                "williamboman/mason-lspconfig.nvim",
-            },
         },
 
         {
@@ -118,14 +110,7 @@ M.setup = function()
         {
             "lukas-reineke/indent-blankline.nvim",
             config = function()
-                require("indent_blankline").setup {
-                    char = "▎",
-                    char_priority = 50,
-                    context_char = "┃",
-                    show_current_context = true,
-                    show_current_context_start = true,
-                    space_char_blankline = " ",
-                }
+                require("ibl").setup()
             end,
         },
 
@@ -234,10 +219,7 @@ M.setup = function()
         {
             "folke/noice.nvim",
             config = require("aeonia.noice").setup,
-        },
-
-        {
-            "MunifTanjim/nui.nvim",
+            dependencies = { "MunifTanjim/nui.nvim" },
         },
 
         {
@@ -330,21 +312,21 @@ M.setup = function()
         --     "pwntester/octo.nvim",
         -- },
 
-        {
-            "nvim-treesitter/nvim-treesitter-context",
-            config = true,
-        },
+        -- {
+        --     "nvim-treesitter/nvim-treesitter-context",
+        --     config = true,
+        -- },
 
-        {
-            "m4xshen/smartcolumn.nvim",
-            config = true,
-        },
+        -- {
+        --     "m4xshen/smartcolumn.nvim",
+        --     config = true,
+        -- },
 
-        {
-            "akinsho/git-conflict.nvim",
-            config = require("aeonia.git-conflict").setup,
-            version = "*",
-        },
+        -- {
+        --     "akinsho/git-conflict.nvim",
+        --     config = require("aeonia.git-conflict").setup,
+        --     version = "*",
+        -- },
 
         {
             "IndianBoy42/tree-sitter-just",
@@ -369,11 +351,11 @@ M.setup = function()
             config = true,
         },
 
-        {
-            "akinsho/toggleterm.nvim",
-            config = require("aeonia.toggleterm").setup,
-            version = "*",
-        },
+        -- {
+        --     "akinsho/toggleterm.nvim",
+        --     config = require("aeonia.toggleterm").setup,
+        --     version = "*",
+        -- },
 
         {
             "nvim-neotest/neotest",
@@ -394,32 +376,33 @@ M.setup = function()
             },
         },
 
-        {
-            "anuvyklack/windows.nvim",
-            config = function()
-                vim.o.winwidth = 10
-                vim.o.winminwidth = 10
-                vim.o.equalalways = false
-                require("windows").setup {
-                    animation = {
-                        enable = false,
-                        fps = 60,
-                        duration = 1000,
-                    },
-                    ignore = {
-                        buftype = { "toggleterm" },
-                        filetype = { "toggleterm" },
-                    },
-                }
-            end,
-            dependencies = {
-                "anuvyklack/middleclass",
-                "anuvyklack/animation.nvim",
-            },
-        },
+        -- {
+        --     "anuvyklack/windows.nvim",
+        --     config = function()
+        --         vim.o.winwidth = 10
+        --         vim.o.winminwidth = 10
+        --         vim.o.equalalways = false
+        --         require("windows").setup {
+        --             animation = {
+        --                 enable = false,
+        --                 fps = 60,
+        --                 duration = 1000,
+        --             },
+        --             ignore = {
+        --                 buftype = { "toggleterm" },
+        --                 filetype = { "toggleterm" },
+        --             },
+        --         }
+        --     end,
+        --     dependencies = {
+        --         "anuvyklack/middleclass",
+        --         "anuvyklack/animation.nvim",
+        --     },
+        -- },
 
         {
             "lvimuser/lsp-inlayhints.nvim",
+            enabled = false,
             config = function()
                 require("lsp-inlayhints").setup()
 
@@ -513,6 +496,23 @@ M.setup = function()
         },
 
         { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
+
+        {
+            "ray-x/lsp_signature.nvim",
+            event = "VeryLazy",
+            config = function()
+                require("lsp_signature").setup {
+                    hint_prefix = niscolas.icons.fn .. " ",
+                }
+            end,
+        },
+
+        {
+            "folke/neoconf.nvim",
+            config = function()
+                require("neoconf").setup()
+            end,
+        },
     }
 end
 

@@ -2,18 +2,20 @@
 
 {
   home.packages = with pkgs; [
-    neovim
-
-    gnumake
-
-    fd
-    fzf
-    ripgrep
-
-    stylua
-
-    dotnet-sdk_8
-    lua-language-server
+      csharp-ls
+      dotnet-sdk_8
+      fd
+      fzf
+      gnumake
+      lua-language-server
+      neovim
+      nil
+      ripgrep
+      stylua
+      vscode-langservers-extracted
+      libclang
+      nodePackages.bash-language-server
+      yaml-language-server
   ];
 
   home.file.".config/nvim".source = config.lib.file.mkOutOfStoreSymlink

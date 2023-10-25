@@ -6,7 +6,7 @@ M.kind_icons = {
     Codeium = niscolas.icons.codeium,
     Constant = niscolas.icons.constant,
     Constructor = niscolas.icons.constructor,
-    Copilot = niscolas.icons.github,
+    Copilot = niscolas.icons.copilot,
     Enum = niscolas.icons.enum,
     EnumMember = niscolas.icons.enum_member,
     Event = niscolas.icons.event,
@@ -23,6 +23,7 @@ M.kind_icons = {
     Reference = niscolas.icons.reference,
     Snippet = niscolas.icons.snippet,
     Struct = niscolas.icons.struct,
+    TabNine = niscolas.icons.robot,
     Text = niscolas.icons.text,
     TypeParameter = niscolas.icons.type_parameter,
     Unit = niscolas.icons.unit,
@@ -73,25 +74,26 @@ M.setup = function()
             format = function(entry, vim_item)
                 local kind_name = vim_item.kind
                 local source_name = ({
-                    buffer = "buf",
-                    luasnip = "snip",
-                    nvim_lsp = "lsp",
-                    path = "path",
+                    buffer = "[buf]",
+                    cmp_tabnine = "",
+                    luasnip = "[snip]",
+                    nvim_lsp = "[lsp]",
+                    path = "[path]",
                 })[entry.source.name]
 
                 vim_item.kind = string.format("%s ", M.kind_icons[kind_name])
-                vim_item.menu = string.format("%s [%s]", kind_name, source_name)
+                vim_item.menu = string.format("%s %s", kind_name, source_name)
 
                 return vim_item
             end,
         },
         sources = {
             { name = "luasnip" },
+            { name = "path" },
             { name = "copilot" },
             { name = "codeium" },
             { name = "cmp_tabnine" },
             { name = "nvim_lsp" },
-            { name = "path" },
             { name = "neorg" },
             { name = "emoji" },
             { name = "buffer" },
