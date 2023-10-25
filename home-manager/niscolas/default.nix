@@ -3,6 +3,7 @@
 {
     imports = [
         ./eww/default.nix
+        ./logseq/default.nix
         ./mangohud/default.nix
         ./nushell/default.nix
         ./nvim/default.nix
@@ -139,6 +140,7 @@
     };
 
     home.packages = with pkgs; [
+        alacritty
         anytype
         appimage-run
         barrier
@@ -162,13 +164,13 @@
         gnome.gnome-disk-utility
         gnome.zenity
         google-chrome
+        heroic
         inkscape-with-extensions
         input-leap
         kanata
         krita
         libnotify
         lm_sensors # for `sensors` command
-        logseq
         lsof # list open files
         ltrace # library call monitoring
         ludusavi
@@ -195,6 +197,7 @@
         snixembed
         starship
         steam
+        steamtinkerlaunch
         strace # system call monitoring
         stremio
         stylua
@@ -210,6 +213,10 @@
         xz
         zip
         zoxide
+        xdotool
+        unixtools.xxd
+        xorg.xwininfo
+        soundux
     ];
 
 # This value determines the home Manager release that your

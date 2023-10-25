@@ -104,8 +104,6 @@
             #CPU_MIN_PERF_ON_BAT = 0;
             CPU_MAX_PERF_ON_BAT = 20;
 
-            DEVICES_TO_DISABLE_ON_STARTUP = "bluetooth";
-
             # The following prevents the battery from charging fully to
             # preserve lifetime. Run `tlp fullcharge` to temporarily force
             # full charge.
@@ -133,8 +131,8 @@
         enable = true;
         settings = {
             custom = {
-                start = "pkill picom";
-                end = "${pkgs.picom}/bin/picom";
+                start = "${pkgs.procps}/bin/pkill picom";
+                end = "''${pkgs.picom}/bin/picom -b";
             };
         };
     };
@@ -328,7 +326,6 @@
     # List packages installed in system profile. To search, run:
     # $ nix search wget
     environment.systemPackages = with pkgs; [
-        heroic
         awesome
         coreutils
         gnome.file-roller
