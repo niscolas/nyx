@@ -630,7 +630,8 @@ awful.rules.rules = {
         rule_any = {
             class = {
                 "Hidamari",
-                "eww-bar",
+                "eww",
+                "Eww",
                 "trayer",
             },
         },
@@ -764,3 +765,5 @@ require("eww")
 
 spawn("easyeffects")
 spawn("pritunl-client-electron")
+
+shell("sleep 1sec; display_setup.nu internal")
