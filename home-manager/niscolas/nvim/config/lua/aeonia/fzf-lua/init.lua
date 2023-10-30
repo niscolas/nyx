@@ -9,17 +9,13 @@ local setup_keymap = function()
 end
 
 local get_fzf_colors = function()
-    local get_fzf_colors =
-        require("aeonia.themes").get_field("fzf_lua_get_fzf_colors")
-    local result = get_fzf_colors and get_fzf_colors() or {}
-
+    local result =
+        require("aeonia.themes").call_from_theme("fzf_lua_get_fzf_colors")
     return result
 end
 
 local get_hl = function()
-    local get_hl = require("aeonia.themes").get_field("fzf_lua_get_hl")
-    local result = get_hl and get_hl() or {}
-
+    local result = require("aeonia.themes").call_from_theme("fzf_lua_get_hl")
     return result
 end
 

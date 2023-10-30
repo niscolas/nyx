@@ -137,8 +137,7 @@ M.setup = function()
         }),
     })
 
-    local setup_hl = require("aeonia.themes").get_field("cmp_setup_hl")
-    setup_hl()
+    require("aeonia.themes").call_from_theme("cmp_setup_hl")
 end
 
 return M

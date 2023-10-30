@@ -36,7 +36,7 @@ end
 
 M.setup = function()
     local themes = require("aeonia.themes")
-    themes.theme_mod = require("aeonia.themes.gruvbox")
+    themes.theme_module = require("aeonia.themes.gruvbox")
 
     require("gruvbox").setup {
         contrast = M.contrast,
@@ -69,6 +69,8 @@ end
 M.fzf_lua_get_hl = function()
     return require("aeonia.themes.gruvbox.fzf_lua").hl
 end
+
+M.navic_should_highlight = true
 
 M.navic_setup_hl = function()
     require("aeonia.themes.gruvbox.navic").setup_hl()

@@ -1,8 +1,7 @@
 local M = {}
 
 M.setup = function()
-    local feline_setup = require("aeonia.themes").get_field("feline_setup")
-    feline_setup()
+    require("aeonia.themes").call_from_theme("feline_setup")
 end
 
 return M

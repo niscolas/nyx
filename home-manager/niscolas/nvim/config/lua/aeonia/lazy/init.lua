@@ -308,9 +308,12 @@ M.setup = function()
             },
         },
 
-        -- {
-        --     "pwntester/octo.nvim",
-        -- },
+        {
+            "pwntester/octo.nvim",
+            config = function()
+                require("octo").setup()
+            end,
+        },
 
         -- {
         --     "nvim-treesitter/nvim-treesitter-context",
@@ -351,11 +354,11 @@ M.setup = function()
             config = true,
         },
 
-        -- {
-        --     "akinsho/toggleterm.nvim",
-        --     config = require("aeonia.toggleterm").setup,
-        --     version = "*",
-        -- },
+        {
+            "akinsho/toggleterm.nvim",
+            config = require("aeonia.toggleterm").setup,
+            version = "*",
+        },
 
         {
             "nvim-neotest/neotest",

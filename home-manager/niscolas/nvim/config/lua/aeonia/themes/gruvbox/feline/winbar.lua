@@ -1,11 +1,9 @@
 local feline_theme = require("aeonia.themes.gruvbox.feline")
-local usr_window_number_component =
+local window_number_component =
     require("aeonia.feline.components.core.windor_number")
 local usr_file_path_component =
     require("aeonia.feline.components.core.file_path")
-local usr_navic_component = require("aeonia.feline.components.core.navic")
-local usr_spacer_component =
-    require("aeonia.feline.components.core.spacer")
+local usr_spacer_component = require("aeonia.feline.components.core.spacer")
 
 local M = {}
 
@@ -13,7 +11,7 @@ M.components = {
     active = {
         {
             join_tables_forced(
-                usr_window_number_component,
+                window_number_component,
                 feline_theme.default_seps,
                 {
                     hl = {
@@ -26,26 +24,15 @@ M.components = {
 
             usr_spacer_component,
 
-            join_tables_forced(
-                usr_file_path_component.simple,
-                feline_theme.default_seps
-            ),
-
-            {
-                provider = niscolas.icons.right_arrow,
-                enabled = usr_navic_component.enabled,
-                hl = {
-                    style = "bold",
+            join_tables_forced({
+                provider = {
+                    name = "file_info",
+                    opts = {
+                        file_readonly_icon = niscolas.icons.lock .. " ",
+                        type = "relative-short",
+                    },
                 },
-            },
-
-            join_tables_forced(usr_spacer_component, {
-                enabled = usr_navic_component.enabled,
-            }),
-
-            join_tables_forced(usr_navic_component, { hl = { bg = "red" } }),
-
-            usr_spacer_component,
+            }, feline_theme.default_seps),
         },
         {},
         {},
@@ -53,7 +40,7 @@ M.components = {
     inactive = {
         {
             join_tables_forced(
-                usr_window_number_component,
+                window_number_component,
                 feline_theme.default_seps,
                 {
                     hl = {
@@ -70,22 +57,6 @@ M.components = {
                 usr_file_path_component.simple,
                 feline_theme.default_seps
             ),
-
-            {
-                provider = niscolas.icons.right_arrow,
-                enabled = usr_navic_component.enabled,
-                hl = {
-                    style = "bold",
-                },
-            },
-
-            join_tables_forced(usr_spacer_component, {
-                enabled = usr_navic_component.enabled,
-            }),
-
-            join_tables_forced(usr_navic_component, { hl = { bg = "red" } }),
-
-            usr_spacer_component,
         },
         {},
         {},

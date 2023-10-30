@@ -51,8 +51,7 @@ M.setup = function(opts)
         },
     }
 
-    local setup_hl = require("aeonia.themes").get_field("noice_setup_hl")
-    pcall(setup_hl)
+    require("aeonia.themes").call_from_theme("noice_setup_hl")
 end
 
 return M
