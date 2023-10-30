@@ -1,9 +1,11 @@
 import:
-  - ~/dotfiles/alacritty/fonts/iosevka-windows.yml
-  - ~/dotfiles/alacritty/windows-settings.yml
+  - ~/.config/alacritty/themes/gruvbox_dark.yml
 
 env:
   TERM: xterm-256color
+
+shell:
+  program: nu
 
 window:
   dimensions:
@@ -20,7 +22,7 @@ window:
   history: 10000
   multiplier: 3
 
-background_opacity: 0.9
+  opacity: 0.8
 
 cursor:
   style:
