@@ -3,11 +3,13 @@
 {
     imports = [
         ./eww/default.nix
+        ./kanata/default.nix
         ./logseq/default.nix
         ./mangohud/default.nix
         ./nushell/default.nix
         ./nvim/default.nix
         ./ssh/default.nix
+        ./tmux/default.nix
     ];
 
     nixpkgs = {
@@ -26,7 +28,10 @@
         ".config/bspwm".source = ./bspwm;
         ".config/cpupower_gui".source = ./cpupower_gui;
         ".config/flameshot".source = ./flameshot;
-        ".config/gh".source = ./gh;
+
+        ".config/gh".source = config.lib.file.mkOutOfStoreSymlink
+            "${config.home.homeDirectory}/bonfire/nyx/home-manager/niscolas/gh";
+
         ".config/git".source = ./git;
         ".config/hidamari".source = ./hidamari;
         ".config/i3".source = ./i3;
@@ -140,6 +145,8 @@
     };
 
     home.packages = with pkgs; [
+        epick
+        gh
         alacritty
         anytype
         appimage-run
@@ -156,7 +163,6 @@
         fluent-reader
         font-manager
         fzf
-        gamescope
         gcc
         git
         git-lfs
@@ -164,7 +170,6 @@
         gnome.gnome-disk-utility
         gnome.zenity
         google-chrome
-        heroic
         inkscape-with-extensions
         input-leap
         krita
@@ -195,7 +200,6 @@
         rustup
         snixembed
         starship
-        steam
         steamtinkerlaunch
         strace # system call monitoring
         stremio

@@ -137,6 +137,43 @@
         };
     };
 
+    programs.steam = {
+        enable = true;
+        package = pkgs.steam.override {
+            extraPkgs = pkgs: with pkgs; [
+                xorg.libXcursor
+                xorg.libXi
+                xorg.libXinerama
+                xorg.libXScrnSaver
+                libpng
+                libpulseaudio
+                libvorbis
+                stdenv.cc.cc.lib
+                libkrb5
+                keyutils
+            ];
+        };
+        remotePlay.openFirewall = true;
+    };
+
+    programs.gamescope = {
+        enable = true;
+        # capSysNice = true;
+        args = [
+            # "--rt"
+            # "--prefer-vk-device 10de:249d"
+        ];
+        env = {
+            # SDL_VIDEODRIVER = "x11";
+            # GBM_BACKEND = "nvidia-drm";
+            # ENABLE_VKBASALT = "1";
+            # __GLX_VENDOR_LIBRARY_NAME = "nvidia";
+            # __GL_THREADED_OPTIMIZATIONS = "0";
+            # __NV_PRIME_RENDER_OFFLOAD = "1";
+            # __VK_LAYER_NV_optimus = "NVIDIA_only";
+        };
+    };
+
     boot = {
         kernelPackages = pkgs.linuxKernel.packages.linux_xanmod;
 
@@ -329,6 +366,7 @@
         awesome
         coreutils
         gnome.file-roller
+        heroic
         lightlocker
         nix-index
         nushell
@@ -337,8 +375,7 @@
     ];
 
     fonts.packages = with pkgs; [
-        intel-one-mono
-        (nerdfonts.override { fonts = [ "Mononoki" "NerdFontsSymbolsOnly" ]; })
+        (nerdfonts.override { fonts = [ "Mononoki" "IntelOneMono" "NerdFontsSymbolsOnly" ]; })
     ];
 
     # Make sure opengl is enabled
