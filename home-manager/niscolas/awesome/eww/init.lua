@@ -31,10 +31,10 @@ local function update_eww_workspaces_widget()
             end
         end
 
-        if #t:clients() > 0 then
-            classes = classes .. "workspace-occupied "
-        elseif is_urgent then
+        if is_urgent then
             classes = classes .. "workspace-urgent "
+        elseif #t:clients() > 0 then
+            classes = classes .. "workspace-occupied "
         else
             classes = classes .. "workspace-unoccupied "
         end
@@ -62,18 +62,25 @@ local function update_eww_workspaces_widget()
     log_file:close()
 end
 
-tag.connect_signal("property::selected", function()
-    update_eww_workspaces_widget()
-end)
+local tag_signals_to_listen_to = {
+    "property::selected",
+    "property::urgent",
+}
 
-client.connect_signal("focus", function()
-    update_eww_workspaces_widget()
-end)
+for _, tag_signal in ipairs(tag_signals_to_listen_to) do
+    tag.connect_signal(tag_signal, function()
+        update_eww_workspaces_widget()
+    end)
+end
 
-client.connect_signal("unfocus", function()
-    update_eww_workspaces_widget()
-end)
+local client_signals_to_listen_to = {
+    "focus",
+    "manage",
+    "unfocus",
+}
 
-client.connect_signal("manage", function(c)
-    update_eww_workspaces_widget()
-end)
+for _, client_signal in ipairs(client_signals_to_listen_to) do
+    client.connect_signal(client_signal, function()
+        update_eww_workspaces_widget()
+    end)
+end

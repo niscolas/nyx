@@ -52,7 +52,7 @@ end
 beautiful.init("/home/niscolas/.config/awesome/themes/gruvbox.lua")
 
 -- This is used later as the default terminal and editor to run.
-terminal = "wezterm"
+terminal = "alacritty"
 terminal_cmd = terminal .. " -e "
 editor = os.getenv("EDITOR") or "nvim"
 editor_cmd = terminal_cmd .. editor
@@ -744,6 +744,12 @@ client.connect_signal("property::minimized", function(c)
 end)
 -- }}}
 
+client.connect_signal("property::urgent", function(c)
+    if c.urgent then
+        awful.client.urgent.jumpto()
+    end
+end)
+
 shell("nm-applet")
 shell("xfce4-power-manager")
 shell("syncthing -no-browser")
@@ -764,6 +770,5 @@ shell('setxkbmap -option "compose:menu"')
 require("eww")
 
 spawn("easyeffects")
-spawn("pritunl-client-electron")
 
 shell("sleep 1sec; display_setup.nu internal")
