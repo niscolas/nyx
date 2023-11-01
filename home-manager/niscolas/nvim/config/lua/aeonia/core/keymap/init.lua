@@ -48,5 +48,5 @@ end
 
 new_keymap("n", "<Leader>s", ":w<CR>")
 
-require("aeonia.core.keymaps.quickfix")
-require("aeonia.core.keymaps.window_resizing")
+require("aeonia.core.keymap.quickfix")
+require("aeonia.core.keymap.window_resizing")

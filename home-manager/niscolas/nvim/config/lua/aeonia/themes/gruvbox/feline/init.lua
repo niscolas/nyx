@@ -48,6 +48,7 @@ M.setup = function()
         theme = theme,
         components = require("aeonia.themes.gruvbox.feline.winbar").components,
         force_inactive = {},
+        vi_mode_colors = M.vi_mode_colors,
     }
 end
 

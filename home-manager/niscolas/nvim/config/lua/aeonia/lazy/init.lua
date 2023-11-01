@@ -3,7 +3,11 @@ local M = {}
 M.setup = function()
     require("aeonia.lazy.util").bootstrap()
 
-    require("lazy").setup {
+    require("lazy").setup({
+        {
+            import = "aeonia.neoai.spec",
+        },
+
         {
             "ellisonleao/gruvbox.nvim",
             lazy = false,
@@ -25,17 +29,18 @@ M.setup = function()
 
         {
             "neovim/nvim-lspconfig",
-            config = require("aeonia.lsp").setup,
             dependencies = {
                 "Hoffs/omnisharp-extended-lsp.nvim",
-            },
-        },
 
-        {
-            "L3MON4D3/LuaSnip",
-            config = require("aeonia.luasnip").setup,
-            dependencies = {
-                "rafamadriz/friendly-snippets",
+                {
+                    "ray-x/lsp_signature.nvim",
+                    event = "VeryLazy",
+                    config = function()
+                        require("lsp_signature").setup {
+                            hint_prefix = niscolas.icons.fn .. " ",
+                        }
+                    end,
+                },
             },
         },
 
@@ -43,14 +48,32 @@ M.setup = function()
             "nvim-treesitter/nvim-treesitter",
             build = ":TSUpdate",
             config = require("aeonia.treesitter").setup,
+            event = "VeryLazy",
             dependencies = {
                 "nvim-treesitter/nvim-treesitter-textobjects",
                 "nvim-treesitter/playground",
+
+                {
+                    "nvim-treesitter/nvim-treesitter-context",
+                    config = true,
+                },
             },
         },
 
         {
             "mfussenegger/nvim-dap",
+            cmd = {
+                "DapShowLog",
+                "DapContinue",
+                "DapToggleBreakpoint",
+                "DapToggleRepl",
+                "DapStepOver",
+                "DapStepInto",
+                "DapStepOut",
+                "DapTerminate",
+                "DapLoadLaunchJSON",
+                "DapRestartFrame",
+            },
             config = require("aeonia.dap").setup,
             dependencies = {
                 "rcarriga/nvim-dap-ui",
@@ -60,7 +83,6 @@ M.setup = function()
 
         {
             "nvim-lua/plenary.nvim",
-            lazy = true,
         },
 
         {
@@ -73,11 +95,44 @@ M.setup = function()
                 "hrsh7th/cmp-nvim-lsp",
                 "hrsh7th/cmp-path",
                 "hrsh7th/cmp-emoji",
+
+                {
+                    "tzachar/cmp-tabnine",
+                    build = "./install.sh",
+                    cond = require("aeonia.core.util").check_is_personal_setup,
+                    config = function()
+                        local tabnine = require("cmp_tabnine.config")
+
+                        tabnine:setup {
+                            max_lines = 1000,
+                            max_num_results = 20,
+                            sort = true,
+                            run_on_every_keystroke = true,
+                            snippet_placeholder = "..",
+                            ignored_file_types = {
+                                -- default is not to ignore
+                                -- uncomment to ignore in lua:
+                                -- lua = true
+                            },
+                            show_prediction_strength = false,
+                        }
+                    end,
+                },
+
+                {
+                    "L3MON4D3/LuaSnip",
+                    config = require("aeonia.luasnip").setup,
+                    dependencies = {
+                        "rafamadriz/friendly-snippets",
+                    },
+                },
             },
+            event = "InsertEnter",
         },
 
         {
             "lewis6991/gitsigns.nvim",
+            event = "VeryLazy",
             config = require("aeonia.gitsigns").setup,
         },
 
@@ -91,6 +146,18 @@ M.setup = function()
         },
 
         {
+            "tpope/vim-eunuch",
+        },
+
+        {
+            "tpope/vim-repeat",
+        },
+
+        {
+            "tpope/vim-sleuth",
+        },
+
+        {
             "andymass/vim-matchup",
         },
 
@@ -101,10 +168,11 @@ M.setup = function()
 
         {
             "glacambre/firenvim",
-            config = require("aeonia.firenvim").setup,
             build = function()
                 fn["firenvim#install"](0)
             end,
+            cond = require("aeonia.firenvim").is_env,
+            config = require("aeonia.firenvim").setup,
         },
 
         {
@@ -112,39 +180,37 @@ M.setup = function()
             config = function()
                 require("ibl").setup()
             end,
+            event = "VeryLazy",
         },
 
         {
             "luukvbaal/stabilize.nvim",
             config = true,
+            event = "VeryLazy",
         },
 
         {
             "windwp/nvim-autopairs",
             config = require("aeonia.autopairs").setup,
-        },
-
-        {
-            "tpope/vim-eunuch",
-        },
-
-        {
-            "tpope/vim-repeat",
+            event = "InsertEnter",
         },
 
         {
             "kylechui/nvim-surround",
             config = true,
+            event = "InsertEnter",
         },
 
         {
             "gbprod/substitute.nvim",
             config = require("aeonia.substitute").setup,
+            event = "InsertEnter",
         },
 
         {
             "folke/zen-mode.nvim",
             config = true,
+            cmd = "ZenMode",
         },
 
         {
@@ -158,26 +224,45 @@ M.setup = function()
 
         {
             "mbbill/undotree",
+            cmd = "UndotreeToggle",
             config = require("aeonia.undotree").setup,
+            keys = {
+                require("aeonia.core.keymap.util").lazy_keys_spec_from_keymap_spec(
+                    require("aeonia.undotree").keymap.toggle
+                ),
+            },
         },
 
         {
             "ojroques/nvim-bufdel",
             config = require("aeonia.bufdel").setup,
+            keys = require("aeonia.core.keymap.util").lazy_keys_from_keymap_spec_list(
+                require("aeonia.bufdel").keymap
+            ),
         },
 
         {
             "kyazdani42/nvim-web-devicons",
-            lazy = true,
+            event = "VeryLazy",
         },
 
         {
             "rcarriga/nvim-notify",
             config = require("aeonia.notify").setup,
+            event = "VeryLazy",
         },
 
         {
             "wakatime/vim-wakatime",
+            cmd = {
+                "WakaTimeApiKey",
+                "WakaTimeDebugEnable",
+                "WakaTimeDebugDisable",
+                "WakaTimeScreenRedrawEnable",
+                "WakaTimeScreenRedrawEnableAuto",
+                "WakaTimeScreenRedrawDisable",
+                "WakaTimeToday",
+            },
             cond = require("aeonia.core.util").check_is_personal_setup,
         },
 
@@ -195,6 +280,7 @@ M.setup = function()
         {
             "folke/which-key.nvim",
             config = true,
+            event = "VeryLazy",
         },
 
         {
@@ -207,6 +293,7 @@ M.setup = function()
         {
             "freddiehaddad/feline.nvim",
             config = require("aeonia.feline").setup,
+            event = "VeryLazy",
         },
 
         {
@@ -219,7 +306,9 @@ M.setup = function()
         {
             "folke/noice.nvim",
             config = require("aeonia.noice").setup,
-            dependencies = { "MunifTanjim/nui.nvim" },
+            dependencies = {
+                "MunifTanjim/nui.nvim",
+            },
         },
 
         {
@@ -228,6 +317,12 @@ M.setup = function()
 
         {
             "folke/trouble.nvim",
+            cmd = {
+                "Trouble",
+                "TroubleClose",
+                "TroubleToggle",
+                "TroubleRefresh",
+            },
         },
 
         {
@@ -241,6 +336,12 @@ M.setup = function()
 
         {
             "stevearc/oil.nvim",
+            cmd = "Oil",
+            keys = {
+                require("aeonia.core.keymap.util").lazy_keys_spec_from_keymap_spec(
+                    require("aeonia.oil").keymap.open
+                ),
+            },
             config = require("aeonia.oil").setup,
         },
 
@@ -273,10 +374,6 @@ M.setup = function()
             "nvimtools/none-ls.nvim",
             as = "none-ls",
             config = require("aeonia.null-ls").setup,
-        },
-
-        {
-            "tpope/vim-sleuth",
         },
 
         {
@@ -316,11 +413,6 @@ M.setup = function()
         },
 
         -- {
-        --     "nvim-treesitter/nvim-treesitter-context",
-        --     config = true,
-        -- },
-
-        -- {
         --     "m4xshen/smartcolumn.nvim",
         --     config = true,
         -- },
@@ -340,18 +432,16 @@ M.setup = function()
             "zbirenbaum/copilot.lua",
             cmd = "Copilot",
             dependencies = {
-                "zbirenbaum/copilot-cmp",
+                {
+                    "zbirenbaum/copilot-cmp",
+                    config = true,
+                },
             },
             event = "InsertEnter",
             opts = {
                 suggestion = { enabled = false },
                 panel = { enabled = false },
             },
-        },
-
-        {
-            "zbirenbaum/copilot-cmp",
-            config = true,
         },
 
         {
@@ -432,62 +522,37 @@ M.setup = function()
         },
 
         {
-            import = "aeonia.neoai.spec",
-        },
-
-        {
             "jcdickinson/codeium.nvim",
             commit = "b1ff0d6c993e3d87a4362d2ccd6c660f7444599f",
             cond = require("aeonia.core.util").check_is_personal_setup,
             config = true,
             enabled = false,
             dependencies = {
-                "jcdickinson/http.nvim",
                 "nvim-lua/plenary.nvim",
-                "hrsh7th/nvim-cmp",
+
+                {
+                    "jcdickinson/http.nvim",
+                    build = "cargo build --workspace --release",
+                },
             },
         },
 
         {
-            "jcdickinson/http.nvim",
-            build = "cargo build --workspace --release",
-        },
-
-        {
-            "tzachar/cmp-tabnine",
-            build = "./install.sh",
-            cond = require("aeonia.core.util").check_is_personal_setup,
-            config = function()
-                local tabnine = require("cmp_tabnine.config")
-
-                tabnine:setup {
-                    max_lines = 1000,
-                    max_num_results = 20,
-                    sort = true,
-                    run_on_every_keystroke = true,
-                    snippet_placeholder = "..",
-                    ignored_file_types = {
-                        -- default is not to ignore
-                        -- uncomment to ignore in lua:
-                        -- lua = true
-                    },
-                    show_prediction_strength = false,
-                }
-            end,
-            dependencies = "hrsh7th/nvim-cmp",
-        },
-
-        {
             "cappyzawa/trim.nvim",
+            cmd = {
+                "Trim",
+                "TrimToggle",
+            },
             config = function()
-                require("trim").setup {}
-                cmd("TrimToggle")
+                require("trim").setup {
+                    trim_on_write = false,
+                }
             end,
         },
 
         {
             "okuuva/auto-save.nvim",
-            cmd = "ASToggle", -- optional for lazy loading on command
+            cmd = "ASToggle",
             config = require("aeonia.auto-save").setup,
         },
 
@@ -495,28 +560,31 @@ M.setup = function()
             "nvim-telescope/telescope.nvim",
             config = require("aeonia.telescope").setup,
             tag = "0.1.2",
-            dependencies = { "nvim-lua/plenary.nvim" },
-        },
-
-        { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
-
-        {
-            "ray-x/lsp_signature.nvim",
-            event = "VeryLazy",
-            config = function()
-                require("lsp_signature").setup {
-                    hint_prefix = niscolas.icons.fn .. " ",
-                }
-            end,
+            dependencies = {
+                "nvim-lua/plenary.nvim",
+                { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
+            },
         },
 
         {
             "folke/neoconf.nvim",
+            priority = 999,
             config = function()
                 require("neoconf").setup()
             end,
         },
-    }
+    }, {
+        defaults = {
+            cond = function(plugin)
+                local disabled_plugins =
+                    require("neoconf").get("plugins.disabled", {})
+                local result =
+                    not vim.tbl_contains(disabled_plugins, plugin.name)
+                return result
+            end,
+            lazy = false,
+        },
+    })
 end
 
 return M

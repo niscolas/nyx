@@ -16,6 +16,6 @@ return {
             return result
         end,
         enabled = require("noice").api.status.search.has,
-        icon = " ",
+        icon = " ",
     },
 }

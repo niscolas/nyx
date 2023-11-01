@@ -1,11 +1,19 @@
 local M = {}
 
+M.keymap = {
+    open = {
+        mode = "n",
+        lhs = "<Leader>e",
+        rhs = function()
+            require("oil").open()
+        end,
+        opts = { desc = "Open Oil ([E]xplorer)" },
+    },
+}
+
 M.setup_keymap = function()
-    new_keymap(
-        "n",
-        "<Leader>e",
-        require("oil").open,
-        { desc = "Open Oil ([E]xplorer)" }
+    require("aeonia.core.keymap.util").new_keymap_from_keymap_spec(
+        M.keymap.open
     )
 end
 

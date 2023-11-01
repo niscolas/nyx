@@ -4,7 +4,7 @@ return {
         enabled = function()
             return vim.b.gitsigns_head
         end,
-        icon = niscolas.icons.branch .. " ",
+        icon = niscolas.icons.git .. " ",
     },
     diff_added = {
         provider = "git_diff_added",

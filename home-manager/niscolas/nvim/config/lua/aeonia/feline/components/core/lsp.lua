@@ -2,7 +2,11 @@ return {
     client_names = {
         provider = "lsp_client_names",
         enabled = require("feline.providers.lsp").is_lsp_attached,
-        icon = "  ",
+    },
+    any_diagnostic = {
+        enabled = function()
+            return require("feline.providers.lsp").diagnostics_exist()
+        end,
     },
     diagnostic_errors = {
         provider = "diagnostic_errors",

@@ -1,5 +1,5 @@
 require("luasnip.loaders.from_lua").load {
-    paths = "./lua/usr/luasnip/snippets/specs",
+    paths = "./lua/aeonia/luasnip/snippets/specs",
 }
 
 local augroup = new_augroup("my-luasnips", { clear = true })

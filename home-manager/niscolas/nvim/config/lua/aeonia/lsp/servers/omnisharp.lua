@@ -1,4 +1,4 @@
-local usr_lsp_core = require("aeonia.lsp.core")
+local usr_lsp_core = require("aeonia.lsp.servers")
 local util = require("lspconfig.util")
 
 local custom_on_attach = function(bufnr)
@@ -91,8 +91,7 @@ local on_attach = function(client, bufnr)
     -- custom_on_attach(bufnr)
 end
 
-local omnisharp_path = usr_lsp_core.lsp_servers_path
-    .. "/omnisharp/Omnisharp.dll"
+local omnisharp_path = usr_lsp_core.install_path .. "/omnisharp/Omnisharp.dll"
 
 return {
     cmd = { "dotnet", omnisharp_path },

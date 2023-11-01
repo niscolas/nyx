@@ -11,8 +11,8 @@ local function setup_listeners(dap)
 end
 
 local get_intall_path = function()
-    local usr_lsp_core = require("aeonia.lsp.core")
-    local result = usr_lsp_core.lsp_servers_path
+    local servers_mod = require("aeonia.lsp.servers")
+    local result = servers_mod.install_path
     return result
 end
 

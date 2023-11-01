@@ -1,8 +1,6 @@
 local feline_theme = require("aeonia.themes.gruvbox.feline")
 local window_number_component =
     require("aeonia.feline.components.core.windor_number")
-local usr_file_path_component =
-    require("aeonia.feline.components.core.file_path")
 local usr_spacer_component = require("aeonia.feline.components.core.spacer")
 
 local M = {}
@@ -24,15 +22,15 @@ M.components = {
 
             usr_spacer_component,
 
-            join_tables_forced({
+            {
                 provider = {
                     name = "file_info",
                     opts = {
                         file_readonly_icon = niscolas.icons.lock .. " ",
-                        type = "relative-short",
+                        type = "unique",
                     },
                 },
-            }, feline_theme.default_seps),
+            },
         },
         {},
         {},
@@ -53,10 +51,15 @@ M.components = {
 
             usr_spacer_component,
 
-            join_tables_forced(
-                usr_file_path_component.simple,
-                feline_theme.default_seps
-            ),
+            {
+                provider = {
+                    name = "file_info",
+                    opts = {
+                        file_readonly_icon = niscolas.icons.lock .. " ",
+                        type = "unique-short",
+                    },
+                },
+            },
         },
         {},
         {},

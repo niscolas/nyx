@@ -1,3 +1,67 @@
 {
-    "a": 1
+    "plugins": {
+        "disabled": [
+            "firenvim",
+            "neorg"
+        ]
+    },
+    "lsp": {
+        "servers": {
+            "clangd":  {
+                "enabled": true,
+                "ensure_installed": false,
+                "has_custom_config": false
+            },
+            "gdscript": {
+                "enabled": true,
+                "ensure_installed": false,
+                "has_custom_config": false
+            },
+            "jsonls": {
+                "enabled": true,
+                "ensure_installed": false,
+                "has_custom_config": false
+            },
+            "csharp_ls": {
+                "enabled": true,
+                "ensure_installed": false,
+                "has_custom_config": false
+            },
+            "omnisharp": {
+                "enabled": false,
+                "ensure_installed": true,
+                "has_custom_config": true
+            },
+            "rust_analyzer": {
+                "enabled": true,
+                "ensure_installed": false,
+                "has_custom_config": false
+            },
+            "lua_ls": {
+                "enabled": true,
+                "ensure_installed": false,
+                "has_custom_config": true
+            },
+            "vimls": {
+                "enabled": true,
+                "ensure_installed": false,
+                "has_custom_config": false
+            },
+            "bashls": {
+                "enabled": true,
+                "ensure_installed": false,
+                "has_custom_config": false
+            },
+            "nil_ls": {
+                "enabled": true,
+                "ensure_installed": false,
+                "has_custom_config": false
+            },
+            "yamlls": {
+                "enabled": true,
+                "ensure_installed": false,
+                "has_custom_config": false
+            }
+        }
+    }
 }

@@ -28,16 +28,16 @@ end
 
 M.setup = function()
     local lspconfig = require("lspconfig")
-    local usr_lsp_core = require("aeonia.lsp.core")
+    local servers_mod = require("aeonia.lsp.servers")
     local usr_handlers = require("aeonia.lsp.handlers")
 
-    for server, config in pairs(usr_lsp_core.servers) do
+    for server, config in pairs(servers_mod.settings) do
         local opts
 
         if config.has_custom_config then
             opts = get_server_custom_opts(
                 server,
-                usr_lsp_core.servers,
+                servers_mod.settings,
                 usr_handlers
             )
         else
