@@ -144,8 +144,23 @@ $prefix-suffix-border-radius: 16px;
     background-color: $color-purple;
 }
 
-.tray-content {
+.tray-prefix {
+    @extend .default-widget-prefix;
+    color: $color-dark-soft;
+    background-color: $color-purple;
+}
+
+.tray-widget {
     @extend .default-widget;
     border-color: $color-purple;
-    padding: 0 300px 0 10px;
 }
+
+.tray-content {
+    margin: 0 200px;
+}
+
+.tray-suffix {
+    @extend .default-widget-suffix;
+    background-color: $color-purple;
+}
+

@@ -63,7 +63,7 @@
         (label :text " " :class "clock-prefix")
         (button
             :class "clock-label"
-            :onclick "firefox clock.google.com" clock_time)
+            :onclick "firefox https://calendar.google.com/" clock_time)
         (label :class "clock-suffix")
 ))
 
@@ -84,7 +84,10 @@
         :class "tray-widget"
         :halign "end"
         :orientation "h"
+        :space-evenly "false"
+        (label :text " " :class "tray-prefix")
         (label :class "tray-content")
+        (label :class "tray-suffix")
 ))
 
 (defwidget left []
