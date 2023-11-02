@@ -1,11 +1,11 @@
 local M = {}
 
-M._formatters = {}
+M.formatters = {}
 
-M._get_format_fn = function()
+M.create_format_fn = function()
     return function(bufnr)
         require("aeonia.core.util").call_multi_function(
-            M._formatters,
+            M.formatters,
             vim.lsp.buf.format,
             bufnr
         )

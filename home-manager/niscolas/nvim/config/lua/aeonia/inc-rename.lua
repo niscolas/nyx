@@ -1,13 +1,15 @@
 local M = {}
 
-M.setup_keymap = function(client, bufnr)
+local setup_keymap = function()
     new_keymap("n", "<Leader>rn", function()
         return ":IncRename " .. vim.fn.expand("<cword>")
-    end, { expr = true, silent = true, buffer = bufnr })
+    end, { expr = true })
 end
 
 M.setup = function()
-    require("aeonia.lsp.handlers").add_post_on_attach_callback(setup_keymap)
+    require("inc_rename").setup()
+    print("inc rename")
+    setup_keymap()
 end
 
 return M

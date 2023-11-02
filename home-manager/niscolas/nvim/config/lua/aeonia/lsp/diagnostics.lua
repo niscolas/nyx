@@ -1,6 +1,6 @@
 local M = {}
 
-local function setup_diagnostic_signs()
+local setup_diagnostic_signs = function()
     local signs = {
         { name = "DiagnosticSignError", text = niscolas.icons.error },
         { name = "DiagnosticSignWarn", text = niscolas.icons.warning },

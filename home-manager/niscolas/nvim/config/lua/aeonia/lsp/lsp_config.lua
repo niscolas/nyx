@@ -9,8 +9,8 @@ end
 
 local function get_default_opts(handlers)
     local result = {
-        on_attach = handlers._on_attach,
-        capabilities = handlers._capabilities,
+        on_attach = handlers.on_attach,
+        capabilities = handlers.capabilities,
     }
 
     return result
@@ -28,20 +28,20 @@ end
 
 M.setup = function()
     local lspconfig = require("lspconfig")
-    local servers_mod = require("aeonia.lsp.servers")
-    local usr_handlers = require("aeonia.lsp.handlers")
+    local lsp_servers_mod = require("aeonia.lsp.servers")
+    local lsp_handlers_mod = require("aeonia.lsp.handlers")
 
-    for server, config in pairs(servers_mod.settings) do
+    for server, config in pairs(lsp_servers_mod.settings) do
         local opts
 
         if config.has_custom_config then
             opts = get_server_custom_opts(
                 server,
-                servers_mod.settings,
-                usr_handlers
+                lsp_servers_mod.settings,
+                lsp_handlers_mod
             )
         else
-            opts = get_default_opts(usr_handlers)
+            opts = get_default_opts(lsp_handlers_mod)
         end
 
         lspconfig[server].setup(opts)

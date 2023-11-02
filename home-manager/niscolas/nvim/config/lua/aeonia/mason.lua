@@ -1,11 +1,8 @@
 local M = {}
 
-M.extra_ensure_installed = {
-
-}
+M.extra_ensure_installed = {}
 
 M.setup = function()
-    local usr_lsp = require("aeonia.lsp")
     local mason = require("mason")
 
     mason.setup()
@@ -13,7 +10,7 @@ M.setup = function()
     local mason_lspconfig = require("mason-lspconfig")
 
     mason_lspconfig.setup {
-        ensure_installed = usr_lsp.get_ensure_installed_servers(),
+        ensure_installed = require("aeonia.lsp.servers").ensure_installed_servers_settings,
     }
 end
 

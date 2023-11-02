@@ -1,12 +1,12 @@
 local M = {}
 
-M._setup = function(opts)
-    local bufnr = opts.bufnr
+M.setup = function(client, bufnr)
     local silent_opts = { silent = true, buffer = bufnr }
-    local format_fn = require("aeonia.lsp.format")._get_format_fn()
+    local format_fn = require("aeonia.lsp.format").create_format_fn()
 
     --- actions
     new_keymap("n", "<Leader>ca", vim.lsp.buf.code_action, silent_opts)
+    print("lsp keymap")
     new_keymap("n", "<Leader>rn", vim.lsp.buf.rename, silent_opts)
     new_keymap("n", "<Leader>cf", function()
         format_fn(bufnr)

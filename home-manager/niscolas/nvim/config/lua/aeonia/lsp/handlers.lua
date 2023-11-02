@@ -1,6 +1,6 @@
 local M = {}
 
-local get_capabilities = function()
+local process_capabilities = function()
     local cmp_nvim_lsp = require("cmp_nvim_lsp")
 
     local result = cmp_nvim_lsp.default_capabilities()
@@ -16,23 +16,15 @@ local get_capabilities = function()
     return result
 end
 
+M.capabilities = nil
 M.post_on_attach_callbacks = {}
-M._capabilities = nil
 
 M.setup = function()
-    M._capabilities = get_capabilities()
+    M.capabilities = process_capabilities()
 end
 
-M.add_post_on_attach_callback = function(callback)
-    table.insert(M.post_on_attach_callbacks, callback)
-end
-
-M._on_attach = function(client, bufnr)
-    require("aeonia.lsp.keymap")._setup { bufnr = bufnr }
-
-    for _, callback in ipairs(M.post_on_attach_callbacks) do
-        callback(client, bufnr)
-    end
+M.on_attach = function(client, bufnr)
+    require("aeonia.lsp.keymap").setup(client, bufnr)
 end
 
 return M

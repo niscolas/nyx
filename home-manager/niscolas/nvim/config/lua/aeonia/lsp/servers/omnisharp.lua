@@ -1,4 +1,4 @@
-local usr_lsp_core = require("aeonia.lsp.servers")
+local lsp_servers_mod = require("aeonia.lsp.servers")
 local util = require("lspconfig.util")
 
 local custom_on_attach = function(bufnr)
@@ -10,9 +10,9 @@ local custom_on_attach = function(bufnr)
 end
 
 local on_attach = function(client, bufnr)
-    local usr_handlers = require("aeonia.lsp.handlers")
+    local handlers_mod = require("aeonia.lsp.handlers")
 
-    usr_handlers._on_attach(client, bufnr)
+    handlers_mod.on_attach(client, bufnr)
     client.server_capabilities.semanticTokensProvider = nil
     -- client.server_capabilities.semanticTokensProvider = {
     --     full = vim.empty_dict(),
@@ -91,7 +91,8 @@ local on_attach = function(client, bufnr)
     -- custom_on_attach(bufnr)
 end
 
-local omnisharp_path = usr_lsp_core.install_path .. "/omnisharp/Omnisharp.dll"
+local omnisharp_path = lsp_servers_mod.install_path
+    .. "/omnisharp/Omnisharp.dll"
 
 return {
     cmd = { "dotnet", omnisharp_path },

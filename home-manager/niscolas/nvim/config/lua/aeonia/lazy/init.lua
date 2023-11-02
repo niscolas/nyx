@@ -379,6 +379,7 @@ M.setup = function()
         {
             "smjonas/inc-rename.nvim",
             config = require("aeonia.inc-rename").setup,
+            event = "LspAttach",
         },
 
         {

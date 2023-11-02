@@ -48,7 +48,7 @@ M.setup = function()
         },
     }
 
-    table.insert(require("aeonia.lsp").formatters, null_ls_format)
+    table.insert(require("aeonia.lsp.format").formatters, null_ls_format)
 end
 
 return M
