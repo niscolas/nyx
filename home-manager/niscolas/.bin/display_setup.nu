@@ -61,15 +61,15 @@ def use_dual [] {
     let hdmi = (get_hdmi)
 
     (xrandr
+        --output $internal
+            --mode 1920x1080
+            --pos 0x0
+            --rate 144.0
         --output $hdmi
             --primary
             --mode 1920x1080
             --rate 144.0
-            --pos 0x0
-        --output $internal
-            --mode 1920x1080
-            --pos 1920x0
-            --rate 144.0)
+            --pos 1920x0)
 }
 
 def use_internal [] {

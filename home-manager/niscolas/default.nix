@@ -145,8 +145,7 @@
     };
 
     home.packages = with pkgs; [
-        epick
-        gh
+        r2modman
         alacritty
         anytype
         appimage-run
@@ -158,12 +157,14 @@
         delta
         discord
         easyeffects
+        epick
         fd
         flameshot
         fluent-reader
         font-manager
         fzf
         gcc
+        gh
         git
         git-lfs
         glxinfo
@@ -174,6 +175,7 @@
         input-leap
         krita
         libnotify
+        linux-wallpaperengine
         lm_sensors # for `sensors` command
         lsof # list open files
         ltrace # library call monitoring
@@ -199,6 +201,7 @@
         rofi
         rustup
         snixembed
+        soundux
         starship
         steamtinkerlaunch
         strace # system call monitoring
@@ -206,20 +209,19 @@
         stylua
         sunshine
         trayer
+        unixtools.xxd
         unzip
         usbutils # lsusb
         vulkan-tools
         wezterm
         wget
         xclip
+        xdotool
         xorg.xdpyinfo
+        xorg.xwininfo
         xz
         zip
         zoxide
-        xdotool
-        unixtools.xxd
-        xorg.xwininfo
-        soundux
     ];
 
 # This value determines the home Manager release that your

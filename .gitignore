@@ -2,6 +2,7 @@ home-manager/niscolas/gh/hosts.yml
 home-manager/niscolas/git/credentials
 home-manager/niscolas/ludusavi/*.log
 home-manager/niscolas/ludusavi/cache.yaml
+home-manager/niscolas/r2modman/config/RiskOfRain2/cache
 home-manager/niscolas/wakatime
 home-manager/niscolas/zsh/.cache
 home-manager/niscolas/zsh/.zcompdump

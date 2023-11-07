@@ -4,11 +4,11 @@
 { config, lib, pkgs, inputs, ... }:
 
 {
-    imports =
-        [
+    imports = [
         ./hardware-configuration.nix
-            inputs.home-manager.nixosModules.home-manager
-        ];
+        ./mach-nix-pkgs.nix
+        inputs.home-manager.nixosModules.home-manager
+    ];
 
     home-manager = {
         extraSpecialArgs = { inherit inputs; };
@@ -362,16 +362,16 @@
 
     # List packages installed in system profile. To search, run:
     # $ nix search wget
-    environment.systemPackages = with pkgs; [
-        awesome
-        coreutils
-        gnome.file-roller
-        heroic
-        lightlocker
-        nix-index
-        nushell
-        rar
-        zsh
+    environment.systemPackages = [
+        pkgs.awesome
+        pkgs.coreutils
+        pkgs.gnome.file-roller
+        pkgs.heroic
+        pkgs.lightlocker
+        pkgs.nix-index
+        pkgs.nushell
+        pkgs.rar
+        pkgs.zsh
     ];
 
     fonts.packages = with pkgs; [

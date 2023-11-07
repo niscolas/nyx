@@ -6,11 +6,7 @@ def main [action: string] {
         $mut_action = (display_setup.nu format)
     }
 
-    if $mut_action == "dual" {
-        use_with_offset
-    } else if ($mut_action == "hdmi" or $mut_action == "internal") {
-        use_in_place
-    }
+    use_in_place
 }
 
 def use_with_offset [] {
