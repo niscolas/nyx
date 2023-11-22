@@ -752,6 +752,8 @@ client.connect_signal("property::urgent", function(c)
     end
 end)
 
+naughty.config.defaults["icon_size"] = 100
+
 shell("nm-applet")
 shell("xfce4-power-manager")
 shell("syncthing -no-browser")

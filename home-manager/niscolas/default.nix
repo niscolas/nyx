@@ -2,10 +2,10 @@
 
 {
     imports = [
+        ./mangohud/default.nix
         ./eww/default.nix
         ./kanata/default.nix
         ./logseq/default.nix
-        ./mangohud/default.nix
         ./nushell/default.nix
         ./nvim/default.nix
         ./ssh/default.nix
@@ -147,7 +147,6 @@
     home.packages = with pkgs; [
         r2modman
         alacritty
-        anytype
         appimage-run
         barrier
         bat
@@ -182,7 +181,6 @@
         ludusavi
         lutris
         lxappearance
-        mangohud
         mprocs
         neofetch
         networkmanagerapplet
@@ -222,6 +220,7 @@
         xz
         zip
         zoxide
+        scrcpy
     ];
 
 # This value determines the home Manager release that your

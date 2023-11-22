@@ -10,4 +10,6 @@ bindurl music.youtube.com --mode=normal ;l hint -c #button-shape-like>button, #b
 
 bindurl chat.openai.com --mode-normal <Enter> focusinput
 
+bind <C-o> tab #
+
 " " vim: set filetype=tridactyl
