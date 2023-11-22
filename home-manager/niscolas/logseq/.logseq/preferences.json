@@ -9,7 +9,7 @@
       "description": "Dark customizable theme theme with extra stuff",
       "mode": "dark",
       "pid": "logseq-awesome-styler",
-      "selected": false
+      "selected": true
     }
   },
   "externals": [],

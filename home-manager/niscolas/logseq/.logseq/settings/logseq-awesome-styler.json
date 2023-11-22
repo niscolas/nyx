@@ -68,7 +68,7 @@
     "colorDarkInlineCodeBg": "#1D2021",
     "backgroundURLLight": "lsp://logseq.io/logseq-awesome-styler/dist/img/bg.webp",
     "backgroundURLDark": "",
-    "bannersAsBackground": true,
+    "bannersAsBackground": false,
     "bannersIconGlow": false
   },
   "presetCustom2": {
@@ -278,7 +278,7 @@
   "backgroundURLLight": "lsp://logseq.io/logseq-awesome-styler/dist/img/bg.webp",
   "backgroundURLDark": "",
   "bannersPluginHeading": null,
-  "bannersAsBackground": true,
+  "bannersAsBackground": false,
   "bannersIconGlow": false,
   "sizeHeading": null,
   "contentMaxWidth": "1100px",

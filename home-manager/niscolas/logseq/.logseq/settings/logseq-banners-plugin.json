@@ -13,7 +13,7 @@
   "widgetsQuoteMaxWidth": "48ch",
   "widgetsQuoteSize": "100%",
   "widgetsCustomHeading": null,
-  "widgetsCustomEnabled": "everywhere",
+  "widgetsCustomEnabled": "off",
   "widgetsCustomCode": "<iframe id=\"banner-widgets-pomo\" src=\"https://pomofocus.io/app\"></iframe>",
   "journalHeading": null,
   "defaultJournalBanner": "https://images.unsplash.com/photo-1646026371686-79950ceb6daa?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1034&q=80",

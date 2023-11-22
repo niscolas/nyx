@@ -16,4 +16,5 @@
  :logseq-quick-capture {:version "0.0.7", :repo "tankcool/logseq-quick-capture", :effect false, :theme false}
  :logseq-vim-editor {:version "v0.0.6", :repo "vipzhicheng/logseq-plugin-vim-editor", :effect false, :theme false}
  :logseq-flow-nord-theme {:version "v0.9.73", :repo "henices/logseq-flow-nord", :effect false, :theme true}
- :logseq-sticky-headers {:version "v1.4.4", :repo "yoyurec/logseq-sticky-headers", :effect true, :theme false}}
+ :logseq-sticky-headers {:version "v1.4.4", :repo "yoyurec/logseq-sticky-headers", :effect true, :theme false}
+ :logseq-tabs {:version "v1.19.3", :repo "pengx17/logseq-plugin-tabs", :effect true, :theme false}}
