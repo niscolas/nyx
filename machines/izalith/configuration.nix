@@ -141,23 +141,23 @@
         enable = true;
         package = pkgs.steam.override {
             extraPkgs = pkgs: with pkgs; [
-                xorg.libXcursor
-                xorg.libXi
-                xorg.libXinerama
-                xorg.libXScrnSaver
+                keyutils
+                libkrb5
                 libpng
                 libpulseaudio
                 libvorbis
-                stdenv.cc.cc.lib
-                libkrb5
-                keyutils
+                # stdenv.cc.cc.lib
+                xorg.libXScrnSaver
+                xorg.libXcursor
+                xorg.libXi
+                xorg.libXinerama
             ];
         };
         remotePlay.openFirewall = true;
     };
 
     programs.gamescope = {
-        enable = true;
+        enable = false;
         # capSysNice = true;
         args = [
             # "--rt"
@@ -358,11 +358,14 @@
     nixpkgs = {
         config.allowUnfreePredicate = (pkg: true);
         config.allowUnfree = true;
+        overlays = [ (import ./overlays.nix) ];
     };
 
     # List packages installed in system profile. To search, run:
     # $ nix search wget
     environment.systemPackages = [
+        pkgs.mangohud
+        (builtins.getFlake "github:nbfc-linux/nbfc-linux/0d109723b8c9c407d80272e22d5b2bb12765550b")
         pkgs.awesome
         pkgs.coreutils
         pkgs.gnome.file-roller
@@ -383,6 +386,8 @@
         enable = true;
         driSupport = true;
         driSupport32Bit = true;
+        # extraPackages = with pkgs; [mangohud];
+        # extraPackages32 = with pkgs; [mangohud];
     };
 
     hardware.nvidia = {
