@@ -2,7 +2,7 @@ local M = {}
 
 local process_ensure_installed_servers = function()
     for server_name, server_settings in pairs(M.settings) do
-        if server_settings.ensure_installed then
+        if server_settings.enabled and server_settings.ensure_installed then
             table.insert(M.ensure_installed_servers_settings, server_name)
         end
     end

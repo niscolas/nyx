@@ -470,29 +470,30 @@ M.setup = function()
             },
         },
 
-        -- {
-        --     "anuvyklack/windows.nvim",
-        --     config = function()
-        --         vim.o.winwidth = 10
-        --         vim.o.winminwidth = 10
-        --         vim.o.equalalways = false
-        --         require("windows").setup {
-        --             animation = {
-        --                 enable = false,
-        --                 fps = 60,
-        --                 duration = 1000,
-        --             },
-        --             ignore = {
-        --                 buftype = { "toggleterm" },
-        --                 filetype = { "toggleterm" },
-        --             },
-        --         }
-        --     end,
-        --     dependencies = {
-        --         "anuvyklack/middleclass",
-        --         "anuvyklack/animation.nvim",
-        --     },
-        -- },
+        {
+            "anuvyklack/windows.nvim",
+            config = function()
+                vim.o.winwidth = 10
+                vim.o.winminwidth = 10
+                vim.o.equalalways = false
+                require("windows").setup {
+                    animation = {
+                        enable = false,
+                        fps = 60,
+                        duration = 1000,
+                    },
+                    ignore = {
+                        buftype = { "toggleterm" },
+                        filetype = { "toggleterm" },
+                    },
+                }
+            end,
+            event = "VeryLazy",
+            dependencies = {
+                "anuvyklack/middleclass",
+                "anuvyklack/animation.nvim",
+            },
+        },
 
         {
             "lvimuser/lsp-inlayhints.nvim",

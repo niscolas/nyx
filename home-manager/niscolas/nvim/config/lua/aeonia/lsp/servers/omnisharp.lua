@@ -13,7 +13,7 @@ local on_attach = function(client, bufnr)
     local handlers_mod = require("aeonia.lsp.handlers")
 
     handlers_mod.on_attach(client, bufnr)
-    client.server_capabilities.semanticTokensProvider = nil
+    -- client.server_capabilities.semanticTokensProvider = nil
     -- client.server_capabilities.semanticTokensProvider = {
     --     full = vim.empty_dict(),
     --     legend = {
