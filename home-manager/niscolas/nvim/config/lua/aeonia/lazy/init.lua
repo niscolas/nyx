@@ -1,5 +1,7 @@
 local M = {}
 
+M.neoconf_setup_done = false
+
 M.setup = function()
     require("aeonia.lazy.util").bootstrap()
 
@@ -572,16 +574,39 @@ M.setup = function()
             "folke/neoconf.nvim",
             priority = 999,
             config = function()
+                if M.neoconf_setup_done then
+                    return
+                end
+
                 require("neoconf").setup()
             end,
+        },
+
+        {
+            "williamboman/mason.nvim",
+            build = ":MasonUpdate",
+            config = require("aeonia.mason").setup,
+            dependencies = {
+                "williamboman/mason-lspconfig.nvim",
+            },
         },
     }, {
         defaults = {
             cond = function(plugin)
-                local disabled_plugins =
-                    require("neoconf").get("plugins.disabled", {})
+                local has_neoconf, neoconf = pcall(require, "neoconf")
+                if not has_neoconf then
+                    return true
+                end
+
+                if not M.neoconf_setup_done then
+                    neoconf.setup()
+                end
+
+                local disabled_plugins = neoconf.get("plugins.disabled", {})
+
                 local result =
                     not vim.tbl_contains(disabled_plugins, plugin.name)
+
                 return result
             end,
             lazy = false,
