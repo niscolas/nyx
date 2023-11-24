@@ -17,4 +17,6 @@
  :logseq-vim-editor {:version "v0.0.6", :repo "vipzhicheng/logseq-plugin-vim-editor", :effect false, :theme false}
  :logseq-flow-nord-theme {:version "v0.9.73", :repo "henices/logseq-flow-nord", :effect false, :theme true}
  :logseq-sticky-headers {:version "v1.4.4", :repo "yoyurec/logseq-sticky-headers", :effect true, :theme false}
- :logseq-tabs {:version "v1.19.3", :repo "pengx17/logseq-plugin-tabs", :effect true, :theme false}}
+ :logseq-tabs {:version "v1.19.3", :repo "pengx17/logseq-plugin-tabs", :effect true, :theme false}
+ :logseq-link-preview {:version "v2.2.10", :repo "pengx17/logseq-plugin-link-preview", :effect true, :theme false}
+ :logseq-raindrop {:version "v0.5.1", :repo "phildenhoff/logseq-raindrop", :effect false, :theme false}}

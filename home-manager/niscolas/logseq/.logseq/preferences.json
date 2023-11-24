@@ -20,6 +20,7 @@
     "logseq-tidy-blocks-plugin:logseq-tidy-blocks",
     "logseq-tocgen:open-toc",
     "logseq-tags:tags-plugin-open",
-    "logseq-awesome-styler:AwesomeStyler"
+    "logseq-awesome-styler:AwesomeStyler",
+    "logseq-raindrop:logseq-raindrop"
   ]
 }
