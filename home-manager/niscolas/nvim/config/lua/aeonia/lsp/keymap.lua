@@ -6,7 +6,6 @@ M.setup = function(client, bufnr)
 
     --- actions
     new_keymap("n", "<Leader>ca", vim.lsp.buf.code_action, silent_opts)
-    print("lsp keymap")
     new_keymap("n", "<Leader>rn", vim.lsp.buf.rename, silent_opts)
     new_keymap("n", "<Leader>cf", function()
         format_fn(bufnr)

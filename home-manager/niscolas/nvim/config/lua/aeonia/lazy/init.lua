@@ -1,6 +1,8 @@
 local M = {}
 
 M.neoconf_setup_done = false
+M.neoconf_disabled_plugins = {}
+M.neoconf_disabled_plugins_has_cache = {}
 
 M.setup = function()
     require("aeonia.lazy.util").bootstrap()
@@ -574,11 +576,7 @@ M.setup = function()
             "folke/neoconf.nvim",
             priority = 999,
             config = function()
-                if M.neoconf_setup_done then
-                    return
-                end
-
-                require("neoconf").setup()
+                require("aeonia.neoconf").setup()
             end,
         },
 
@@ -593,19 +591,12 @@ M.setup = function()
     }, {
         defaults = {
             cond = function(plugin)
-                local has_neoconf, neoconf = pcall(require, "neoconf")
-                if not has_neoconf then
-                    return true
-                end
+                require("aeonia.neoconf").setup()
 
-                if not M.neoconf_setup_done then
-                    neoconf.setup()
-                end
-
-                local disabled_plugins = neoconf.get("plugins.disabled", {})
-
-                local result =
-                    not vim.tbl_contains(disabled_plugins, plugin.name)
+                local result = not vim.tbl_contains(
+                    M.neoconf_disabled_plugins,
+                    plugin.name
+                )
 
                 return result
             end,

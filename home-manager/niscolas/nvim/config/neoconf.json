@@ -1,5 +1,5 @@
 {
-    "plugins": {
+   "plugins": {
         "disabled": [
             "firenvim",
             "neorg",
@@ -25,7 +25,7 @@
                 "has_custom_config": false
             },
             "csharp_ls": {
-                "enabled": true,
+                "enabled": false,
                 "ensure_installed": false,
                 "has_custom_config": false
             },
