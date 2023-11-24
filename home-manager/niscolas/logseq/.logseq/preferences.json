@@ -14,13 +14,12 @@
   },
   "externals": [],
   "pinnedToolbarItems": [
-    "logseq-awesome-props:AwesomeProps",
-    "logseq-agenda:logseq-plugin-agenda",
     "logseq-quick-capture:logseq-quick-capture",
     "logseq-tidy-blocks-plugin:logseq-tidy-blocks",
     "logseq-tocgen:open-toc",
     "logseq-tags:tags-plugin-open",
-    "logseq-awesome-styler:AwesomeStyler",
-    "logseq-raindrop:logseq-raindrop"
+    "logseq-raindrop:logseq-raindrop",
+    "logseq-agenda:Agenda3",
+    "logseq-git:git"
   ]
 }

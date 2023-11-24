@@ -17,5 +17,5 @@
   "template_deleted": "🗑 {content}",
   "namespace_label": "",
   "enable_empty_page_state": true,
-  "disabled": false
+  "disabled": true
 }

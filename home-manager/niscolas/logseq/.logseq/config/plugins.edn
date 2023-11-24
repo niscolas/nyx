@@ -1,4 +1,4 @@
-{:logseq-agenda {:version "v2.17.2", :repo "haydenull/logseq-plugin-agenda", :effect true, :theme false}
+{:logseq-agenda {:version "v3.6.4", :repo "haydenull/logseq-plugin-agenda", :effect true, :theme false}
  :logseq-bullet-threading {:version "v1.1.4", :repo "pengx17/logseq-plugin-bullet-threading", :effect false, :theme false}
  :logseq-tags {:version "v0.1.2", :repo "gidongkwon/logseq-plugin-tags", :effect false, :theme false}
  :logseq-todo-master {:version "v1.10.3", :repo "pengx17/logseq-plugin-todo-master", :effect false, :theme false}
@@ -13,7 +13,6 @@
  :logseq-awesome-props {:version "v1.10.0", :repo "yoyurec/logseq-awesome-props", :effect true, :theme false}
  :logseq-todo-exploder {:version "1.0.3", :repo "sawhney17/logseq-todo-exploder", :effect true, :theme false}
  :logseq-awesome-content {:version "v1.2.1", :repo "yoyurec/logseq-awesome-content", :effect true, :theme false}
- :logseq-quick-capture {:version "0.0.7", :repo "tankcool/logseq-quick-capture", :effect false, :theme false}
  :logseq-vim-editor {:version "v0.0.6", :repo "vipzhicheng/logseq-plugin-vim-editor", :effect false, :theme false}
  :logseq-flow-nord-theme {:version "v0.9.73", :repo "henices/logseq-flow-nord", :effect false, :theme true}
  :logseq-sticky-headers {:version "v1.4.4", :repo "yoyurec/logseq-sticky-headers", :effect true, :theme false}
