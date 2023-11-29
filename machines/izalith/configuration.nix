@@ -79,18 +79,16 @@
     };
 
     services.undervolt = {
-        enable = true;
+        enable = false;
         temp = 85;
         coreOffset = -80;
         gpuOffset = -20;
     };
 
-    services.thermald.enable = true;
-
     services.tlp = {
-        enable = true;
+        enable = false;
         settings = {
-            CPU_BOOST_ON_AC = 0;
+            CPU_BOOST_ON_AC = 1;
             CPU_BOOST_ON_BAT = 0;
 
             CPU_SCALING_GOVERNOR_ON_AC = "performance";
@@ -100,7 +98,7 @@
             CPU_ENERGY_PERF_POLICY_ON_BAT = "power";
 
             #CPU_MIN_PERF_ON_AC = 0;
-            CPU_MAX_PERF_ON_AC = 99;
+            CPU_MAX_PERF_ON_AC = 100;
             #CPU_MIN_PERF_ON_BAT = 0;
             CPU_MAX_PERF_ON_BAT = 20;
 
@@ -111,6 +109,91 @@
             START_CHARGE_THRESH_BAT0=40;
             STOP_CHARGE_THRESH_BAT0=50;
         };
+    };
+
+    services.thermald.enable = false;
+    services.auto-cpufreq.enable = false;
+    services.throttled = {
+        enable = true;
+        extraConfig = ''
+            [GENERAL]
+            # Enable or disable the script execution
+            Enabled: True
+            # SYSFS path for checking if the system is running on AC power
+            Sysfs_Power_Path: /sys/class/power_supply/AC*/online
+            # Auto reload config on changes
+            Autoreload: True
+
+            ## Settings to apply while connected to Battery power
+            [BATTERY]
+            # Update the registers every this many seconds
+            Update_Rate_s: 30
+            # Max package power for time window #1
+            PL1_Tdp_W: 29
+            # Time window #1 duration
+            PL1_Duration_s: 28
+            # Max package power for time window #2
+            PL2_Tdp_W: 44
+            # Time window #2 duration
+            PL2_Duration_S: 0.002
+            # Max allowed temperature before throttling
+            Trip_Temp_C: 75
+            # Set cTDP to normal=0, down=1 or up=2 (EXPERIMENTAL)
+            cTDP: 0
+            # Disable BDPROCHOT (EXPERIMENTAL)
+            Disable_BDPROCHOT: False
+
+            ## Settings to apply while connected to AC power
+            [AC]
+            # Update the registers every this many seconds
+            Update_Rate_s: 5
+            # Max package power for time window #1
+            PL1_Tdp_W: 44
+            # Time window #1 duration
+            PL1_Duration_s: 28
+            # Max package power for time window #2
+            PL2_Tdp_W: 44
+            # Time window #2 duration
+            PL2_Duration_S: 0.002
+            # Max allowed temperature before throttling
+            Trip_Temp_C: 85
+            # Set HWP energy performance hints to 'performance' on high load (EXPERIMENTAL)
+            # Uncomment only if you really want to use it
+            # HWP_Mode: False
+            # Set cTDP to normal=0, down=1 or up=2 (EXPERIMENTAL)
+            cTDP: 0
+            # Disable BDPROCHOT (EXPERIMENTAL)
+            Disable_BDPROCHOT: False
+
+            # All voltage values are expressed in mV and *MUST* be negative (i.e. undervolt)!
+            [UNDERVOLT]
+            # CPU core voltage offset (mV)
+            CORE: -90
+            # Integrated GPU voltage offset (mV)
+            GPU: -40
+            # CPU cache voltage offset (mV)
+            CACHE: -90
+            # System Agent voltage offset (mV)
+            UNCORE: -50
+            # Analog I/O voltage offset (mV)
+            ANALOGIO: 0
+
+            # [ICCMAX.AC]
+            # # CPU core max current (A)
+            # CORE:
+            # # Integrated GPU max current (A)
+            # GPU:
+            # # CPU cache max current (A)
+            # CACHE:
+
+            # [ICCMAX.BATTERY]
+            # # CPU core max current (A)
+            # CORE:
+            # # Integrated GPU max current (A)
+            # GPU:
+            # # CPU cache max current (A)
+            # CACHE:
+        '';
     };
 
     programs.dconf.enable = true;
@@ -177,7 +260,11 @@
     boot = {
         kernelPackages = pkgs.linuxKernel.packages.linux_xanmod;
 
-        kernelParams = [ "acpi_rev_override" "nvidia-drm.modeset=1" ];
+        kernelParams = [
+            # "intel_pstate=passive"
+            "acpi_rev_override"
+            "nvidia-drm.modeset=1"
+        ];
 
         loader = {
             efi = {
@@ -320,12 +407,19 @@
         };
     };
 
-# Enable CUPS to print documents.
+    # Enable CUPS to print documents.
     services.printing.enable = true;
 
-# Enable sound with pipewire.
+    # Enable sound with pipewire.
     sound.enable = true;
-    hardware.pulseaudio.enable = false;
+    hardware.pulseaudio = {
+        enable = false;
+        extraConfig = ''
+            .nofail
+            unload-module module-suspend-on-idle
+            .fail
+        '';
+    };
     security.rtkit.enable = true;
     services.pipewire = {
         enable = true;
@@ -333,12 +427,19 @@
         alsa.support32Bit = true;
         pulse.enable = true;
 
-    # If you want to use JACK applications, uncomment this
-    #jack.enable = true;
+        # If you want to use JACK applications, uncomment this
+        #jack.enable = true;
 
-    # use the example session manager (no others are packaged yet so this is enabled by default,
-    # no need to redefine it in your config for now)
-    #media-session.enable = true;
+        # use the example session manager (no others are packaged yet so this is enabled by default,
+        # no need to redefine it in your config for now)
+        #media-session.enable = true;
+    };
+    environment.etc."wireplumber/main.lua.d/90-suspend-timeout.lua" = {
+      text = ''
+        apply_properties = {
+            ["session.suspend-timeout-seconds"] = 0,
+        }
+      '';
     };
 
     hardware.bluetooth.enable = true;
@@ -365,7 +466,7 @@
     # $ nix search wget
     environment.systemPackages = [
         pkgs.mangohud
-        (builtins.getFlake "github:nbfc-linux/nbfc-linux/0d109723b8c9c407d80272e22d5b2bb12765550b")
+        (builtins.getFlake "github:nbfc-linux/nbfc-linux/0d109723b8c9c407d80272e22d5b2bb12765550b").packages."x86_64-linux".nbfc
         pkgs.awesome
         pkgs.coreutils
         pkgs.gnome.file-roller
@@ -422,7 +523,7 @@
     specialisation = {
         eco_mode.configuration = {
             services.tlp = {
-                enable = true;
+                enable = false;
                 settings = {
                     CPU_SCALING_GOVERNOR_ON_AC = lib.mkForce "powersave";
 
