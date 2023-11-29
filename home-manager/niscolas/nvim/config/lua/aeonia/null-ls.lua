@@ -42,8 +42,13 @@ M.setup = function()
             -- },
             null_ls.builtins.diagnostics.eslint,
 
+            -- bash
             null_ls.builtins.diagnostics.shellcheck,
             null_ls.builtins.code_actions.shellcheck,
+
+            -- nix
+            null_ls.builtins.diagnostics.deadnix,
+            null_ls.builtins.formatting.alejandra,
 
             null_ls.builtins.formatting.gdformat,
             null_ls.builtins.formatting.stylua,
