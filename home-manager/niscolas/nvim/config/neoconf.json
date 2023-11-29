@@ -10,7 +10,7 @@
     "lsp": {
         "servers": {
             "clangd":  {
-                "enabled": false,
+                "enabled": true,
                 "ensure_installed": false,
                 "has_custom_config": false
             },
