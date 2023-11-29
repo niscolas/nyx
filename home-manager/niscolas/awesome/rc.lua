@@ -66,19 +66,19 @@ modkey = "Mod4"
 
 -- Table of layouts to cover with awful.layout.inc, order matters.
 awful.layout.layouts = {
-    awful.layout.suit.spiral,
     awful.layout.suit.tile,
-    awful.layout.suit.tile.left,
-    awful.layout.suit.tile.bottom,
-    awful.layout.suit.tile.top,
-    awful.layout.suit.fair,
-    awful.layout.suit.fair.horizontal,
-    awful.layout.suit.spiral.dwindle,
-    awful.layout.suit.max,
-    awful.layout.suit.max.fullscreen,
-    awful.layout.suit.magnifier,
-    awful.layout.suit.corner.nw,
-    awful.layout.suit.floating,
+    -- awful.layout.suit.spiral,
+    -- awful.layout.suit.tile.left,
+    -- awful.layout.suit.tile.bottom,
+    -- awful.layout.suit.tile.top,
+    -- awful.layout.suit.fair,
+    -- awful.layout.suit.fair.horizontal,
+    -- awful.layout.suit.spiral.dwindle,
+    -- awful.layout.suit.max,
+    -- awful.layout.suit.max.fullscreen,
+    -- awful.layout.suit.magnifier,
+    -- awful.layout.suit.corner.nw,
+    -- awful.layout.suit.floating,
     -- awful.layout.suit.corner.ne,
     -- awful.layout.suit.corner.sw,
     -- awful.layout.suit.corner.se,
@@ -359,21 +359,21 @@ globalkeys = gears.table.join(
         { description = "quit awesome", group = "awesome" }
     ),
 
-    -- awful.key({ modkey }, "l", function()
-    -- 	awful.tag.incmwfact(0.05)
-    -- end, { description = "increase master width factor", group = "layout" }),
+    awful.key({ modkey, "Mod1" }, "l", function()
+        awful.tag.incmwfact(0.05, awful.screen.focused().selected_tag)
+    end, { description = "increase master width factor", group = "layout" }),
 
-    -- awful.key({ modkey }, "h", function()
-    -- 	awful.tag.incmwfact(-0.05)
-    -- end, { description = "decrease master width factor", group = "layout" }),
+    awful.key({ modkey, "Mod1" }, "h", function()
+        awful.tag.incmwfact(-0.05, awful.screen.focused().selected_tag)
+    end, { description = "decrease master width factor", group = "layout" }),
 
-    -- awful.key({ modkey, "Shift" }, "h", function()
+    -- awful.key({ modkey, "" }, "h", function()
     --     awful.tag.incnmaster(1, nil, true)
     -- end, {
     --     description = "increase the number of master clients",
     --     group = "layout",
     -- }),
-
+    --
     -- awful.key({ modkey, "Shift" }, "l", function()
     --     awful.tag.incnmaster(-1, nil, true)
     -- end, {
@@ -381,18 +381,19 @@ globalkeys = gears.table.join(
     --     group = "layout",
     -- }),
 
-    awful.key({ modkey, "Control" }, "h", function()
-        awful.tag.incncol(1, nil, true)
-    end, { description = "increase the number of columns", group = "layout" }),
-
-    awful.key({ modkey, "Control" }, "l", function()
-        awful.tag.incncol(-1, nil, true)
-    end, { description = "decrease the number of columns", group = "layout" }),
-
-    -- awful.key({ modkey }, "space", function()
-    --     awful.layout.inc(1)
-    -- end, { description = "select next", group = "layout" }),
+    -- awful.key({ modkey, "Control" }, "h", function()
+    --     awful.tag.incncol(1, nil, true)
+    -- end, { description = "increase the number of columns", group = "layout" }),
     --
+    -- awful.key({ modkey, "Control" }, "l", function()
+    --     awful.tag.incncol(-1, nil, true)
+    -- end, { description = "decrease the number of columns", group = "layout" }),
+
+    awful.key({ modkey, "Control" }, "n", function()
+        awful.layout.inc(1)
+        naughty.notify { title = tostring(awful.layout.getname()) }
+    end, { description = "select next", group = "layout" }),
+
     -- awful.key({ modkey, "Shift" }, "space", function()
     --     awful.layout.inc(-1)
     -- end, { description = "select previous", group = "layout" }),
@@ -473,11 +474,11 @@ clientkeys = gears.table.join(
         c.ontop = not c.ontop
     end, { description = "toggle keep on top", group = "client" }),
 
-    awful.key({ modkey }, "n", function(c)
-        -- The client currently has the input focus, so it cannot be
-        -- minimized, since minimized clients can't have the focus.
-        c.minimized = true
-    end, { description = "minimize", group = "client" }),
+    -- awful.key({ modkey }, "n", function(c)
+    --     -- The client currently has the input focus, so it cannot be
+    --     -- minimized, since minimized clients can't have the focus.
+    --     c.minimized = true
+    -- end, { description = "minimize", group = "client" }),
 
     awful.key({ modkey }, "m", function(c)
         c.maximized = not c.maximized
