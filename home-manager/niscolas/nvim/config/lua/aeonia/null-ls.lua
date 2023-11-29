@@ -41,6 +41,10 @@ M.setup = function()
             --     end,
             -- },
             null_ls.builtins.diagnostics.eslint,
+
+            null_ls.builtins.diagnostics.shellcheck,
+            null_ls.builtins.code_actions.shellcheck,
+
             null_ls.builtins.formatting.gdformat,
             null_ls.builtins.formatting.stylua,
             -- null_ls.builtins.formatting.csharpier,
