@@ -17,65 +17,53 @@
         };
     };
 
-    environment.sessionVariables = rec {
-        XDG_CACHE_HOME = "$HOME/.cache";
-        XDG_CONFIG_HOME = "$HOME/.config";
-        XDG_DATA_HOME = "$HOME/.local/share";
-        XDG_STATE_HOME = "$HOME/.local/state";
-        XDG_DATA_DIRS = lib.mkDefault "$XDG_DATA_DIRS:/usr/share:/var/lib/flatpak/exports/share:$HOME/.local/share/flatpak/exports/share";
+    environment = {
+        localBinInPath = true;
 
-        XDG_BIN_HOME = "$HOME/.bin";
-        PATH = [
-            "${XDG_BIN_HOME}"
-        ];
+        sessionVariables = rec {
+            XDG_CACHE_HOME = "$HOME/.cache";
+            XDG_CONFIG_HOME = "$HOME/.config";
+            XDG_DATA_HOME = "$HOME/.local/share";
+            XDG_STATE_HOME = "$HOME/.local/state";
+            XDG_DATA_DIRS = lib.mkDefault "$XDG_DATA_DIRS:/usr/share:/var/lib/flatpak/exports/share:$HOME/.local/share/flatpak/exports/share";
 
-        MACHINE_SETUP = "personal";
-        MACHINE_THEME = "gruvbox";
+            XDG_BIN_HOME = "$HOME/.bin";
+            PATH = [
+                "${XDG_BIN_HOME}"
+            ];
+
+            MACHINE_SETUP = "personal";
+            MACHINE_THEME = "gruvbox";
+        };
+
+        shells = with pkgs; [ nushell zsh ];
     };
 
-    environment.localBinInPath = true;
-    environment.shells = with pkgs; [ nushell zsh ];
+    systemd = {
+        services = {
+            kanata = {
+                serviceConfig = {
+                    Environment = "DISPLAY=:0";
+                    Type = "simple";
+                    User = "root";
+                };
+                script = "${pkgs.kanata}/bin/kanata --cfg /home/niscolas/.config/kanata/kanata.kbd";
+                unitConfig = {
+                    Description = "Kanata keyboard remapper";
+                    Documentation = "https://github.com/jtroo/kanata";
+                };
+                wantedBy = [ "default.target" ];
+            };
 
-    systemd.timers.backup_logseq = {
-        wantedBy = [ "timers.target" ];
-        timerConfig = {
-            OnBootSec = "1m";
-            OnUnitActiveSec = "1m";
-            Unit = "backup_logseq.service";
-            User = "niscolas";
+            pritunl = {
+                serviceConfig = {
+                    Type = "simple";
+                    User = "root";
+                };
+                script = "${pkgs.pritunl-client}/bin/pritunl-client-service";
+                wantedBy = [ "default.target" ];
+            };
         };
-    };
-
-    systemd.services.backup_logseq = {
-        path = with pkgs; [ bash git openssh ];
-        serviceConfig = {
-            Type = "oneshot";
-            User = "niscolas";
-        };
-        script = "$HOME/scripts/crons/tasks/linux-every_minute.sh";
-    };
-
-    systemd.services.kanata = {
-        serviceConfig = {
-            Environment = "DISPLAY=:0";
-            Type = "simple";
-            User = "root";
-        };
-        script = "${pkgs.kanata}/bin/kanata --cfg /home/niscolas/.config/kanata/kanata.kbd";
-        unitConfig = {
-            Description = "Kanata keyboard remapper";
-            Documentation = "https://github.com/jtroo/kanata";
-        };
-        wantedBy = [ "default.target" ];
-    };
-
-    systemd.services.pritunl = {
-        serviceConfig = {
-            Type = "simple";
-            User = "root";
-        };
-        script = "${pkgs.pritunl-client}/bin/pritunl-client-service";
-        wantedBy = [ "default.target" ];
     };
 
     services.undervolt = {
