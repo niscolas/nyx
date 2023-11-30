@@ -13,6 +13,7 @@
     fzf
     gnumake
     lua-language-server
+    marksman
     neovim
     nil
     nodePackages.bash-language-server
