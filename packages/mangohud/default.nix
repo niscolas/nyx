@@ -1,5 +1,9 @@
-{ callPackage, fetchFromGitHub, git, ... }@args:
-
+{
+  callPackage,
+  fetchFromGitHub,
+  git,
+  ...
+} @ args:
 (callPackage ./upstream (removeAttrs args ["callPackage" "git"])).overrideAttrs (old: {
   version = "0.7.0.r68";
   src = fetchFromGitHub {
@@ -10,5 +14,5 @@
     hash = "sha256-ZvpAQsM7KV3fQLxNBzWNCYVSjR0ILESIgZq9AigiqGg=";
   };
 
-  nativeBuildInputs = old.nativeBuildInputs ++ [ git ];
+  nativeBuildInputs = old.nativeBuildInputs ++ [git];
 })
