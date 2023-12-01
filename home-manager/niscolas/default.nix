@@ -18,6 +18,7 @@
   nixpkgs = {
     config.allowUnfreePredicate = pkg: true;
     config.allowUnfree = true;
+    overlays = [(import ./overlays.nix)];
   };
 
   home.username = "niscolas";
@@ -150,6 +151,8 @@
   };
 
   home.packages = with pkgs; [
+    s-tui
+    stress
     r2modman
     alacritty
     appimage-run
@@ -210,7 +213,6 @@
     strace # system call monitoring
     stremio
     stylua
-    sunshine
     trayer
     unixtools.xxd
     unzip

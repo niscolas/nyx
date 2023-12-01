@@ -1,16 +1,26 @@
 # Edit this configuration file to define what should be installed on
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 {
-  config,
   lib,
   pkgs,
   inputs,
   ...
-}: {
+}: let
+  newSunshine = pkgs.sunshine.override {
+    cudaSupport = true;
+    stdenv = pkgs.cudaPackages.backendStdenv;
+  };
+in {
   imports = [
+    inputs.home-manager.nixosModules.home-manager
+
+    ./audio.nix
+    ./bluetooth.nix
+    ./gaming.nix
     ./hardware-configuration.nix
     ./mach-nix-pkgs.nix
-    inputs.home-manager.nixosModules.home-manager
+    ./performance.nix
+    ./video.nix
   ];
 
   home-manager = {
@@ -40,6 +50,20 @@
     };
 
     shells = with pkgs; [nushell zsh];
+
+    # List packages installed in system profile. To search, run:
+    # $ nix search wget
+    systemPackages = [
+      (builtins.getFlake "github:nbfc-linux/nbfc-linux/0d109723b8c9c407d80272e22d5b2bb12765550b").packages."x86_64-linux".nbfc
+      pkgs.awesome
+      pkgs.coreutils
+      pkgs.gnome.file-roller
+      pkgs.lightlocker
+      pkgs.nix-index
+      pkgs.nushell
+      pkgs.rar
+      pkgs.zsh
+    ];
   };
 
   systemd = {
@@ -69,188 +93,28 @@
     };
   };
 
-  services.undervolt = {
-    enable = false;
-    temp = 85;
-    coreOffset = -80;
-    gpuOffset = -20;
-  };
+  programs = {
+    dconf.enable = true;
 
-  services.tlp = {
-    enable = false;
-    settings = {
-      CPU_BOOST_ON_AC = 1;
-      CPU_BOOST_ON_BAT = 0;
-
-      CPU_SCALING_GOVERNOR_ON_AC = "performance";
-      CPU_SCALING_GOVERNOR_ON_BAT = "powersave";
-
-      CPU_ENERGY_PERF_POLICY_ON_AC = "performance";
-      CPU_ENERGY_PERF_POLICY_ON_BAT = "power";
-
-      #CPU_MIN_PERF_ON_AC = 0;
-      CPU_MAX_PERF_ON_AC = 100;
-      #CPU_MIN_PERF_ON_BAT = 0;
-      CPU_MAX_PERF_ON_BAT = 20;
-
-      # The following prevents the battery from charging fully to
-      # preserve lifetime. Run `tlp fullcharge` to temporarily force
-      # full charge.
-      # https://linrunner.de/tlp/faq/battery.html#how-to-choose-good-battery-charge-thresholds
-      START_CHARGE_THRESH_BAT0 = 40;
-      STOP_CHARGE_THRESH_BAT0 = 50;
+    xss-lock = {
+      enable = true;
+      lockerCommand = ''
+        ${pkgs.lightlocker}/bin/light-locker-command -l
+      '';
     };
-  };
 
-  services.thermald.enable = true;
-  services.auto-cpufreq.enable = false;
-  services.throttled = {
-    enable = true;
-    extraConfig = ''
-      [GENERAL]
-      # Enable or disable the script execution
-      Enabled: True
-      # SYSFS path for checking if the system is running on AC power
-      Sysfs_Power_Path: /sys/class/power_supply/AC*/online
-      # Auto reload config on changes
-      Autoreload: True
-
-      ## Settings to apply while connected to Battery power
-      [BATTERY]
-      # Update the registers every this many seconds
-      Update_Rate_s: 30
-      # Max package power for time window #1
-      PL1_Tdp_W: 29
-      # Time window #1 duration
-      PL1_Duration_s: 28
-      # Max package power for time window #2
-      PL2_Tdp_W: 44
-      # Time window #2 duration
-      PL2_Duration_S: 0.002
-      # Max allowed temperature before throttling
-      Trip_Temp_C: 75
-      # Set cTDP to normal=0, down=1 or up=2 (EXPERIMENTAL)
-      cTDP: 0
-      # Disable BDPROCHOT (EXPERIMENTAL)
-      Disable_BDPROCHOT: False
-
-      ## Settings to apply while connected to AC power
-      [AC]
-      # Update the registers every this many seconds
-      Update_Rate_s: 5
-      # Max package power for time window #1
-      PL1_Tdp_W: 44
-      # Time window #1 duration
-      PL1_Duration_s: 28
-      # Max package power for time window #2
-      PL2_Tdp_W: 44
-      # Time window #2 duration
-      PL2_Duration_S: 0.002
-      # Max allowed temperature before throttling
-      Trip_Temp_C: 85
-      # Set HWP energy performance hints to 'performance' on high load (EXPERIMENTAL)
-      # Uncomment only if you really want to use it
-      # HWP_Mode: False
-      # Set cTDP to normal=0, down=1 or up=2 (EXPERIMENTAL)
-      cTDP: 0
-      # Disable BDPROCHOT (EXPERIMENTAL)
-      Disable_BDPROCHOT: False
-
-      # All voltage values are expressed in mV and *MUST* be negative (i.e. undervolt)!
-      [UNDERVOLT]
-      # CPU core voltage offset (mV)
-      CORE: -100
-      # Integrated GPU voltage offset (mV)
-      GPU: -60
-      # CPU cache voltage offset (mV)
-      CACHE: -100
-      # System Agent voltage offset (mV)
-      UNCORE: -60
-      # Analog I/O voltage offset (mV)
-      ANALOGIO: 0
-
-      # [ICCMAX.AC]
-      # # CPU core max current (A)
-      # CORE:
-      # # Integrated GPU max current (A)
-      # GPU:
-      # # CPU cache max current (A)
-      # CACHE:
-
-      # [ICCMAX.BATTERY]
-      # # CPU core max current (A)
-      # CORE:
-      # # Integrated GPU max current (A)
-      # GPU:
-      # # CPU cache max current (A)
-      # CACHE:
-    '';
-  };
-
-  programs.dconf.enable = true;
-
-  programs.xss-lock = {
-    enable = true;
-    lockerCommand = ''
-      ${pkgs.lightlocker}/bin/light-locker-command -l
-    '';
-  };
-
-  programs.thunar = {
-    enable = true;
-    plugins = with pkgs.xfce; [thunar-archive-plugin thunar-volman];
-  };
-
-  programs.gamemode = {
-    enable = true;
-    settings = {
-      custom = {
-        start = "${pkgs.procps}/bin/pkill picom";
-        end = "''${pkgs.picom}/bin/picom -b";
-      };
-    };
-  };
-
-  programs.steam = {
-    enable = true;
-    package = pkgs.steam.override {
-      extraPkgs = pkgs:
-        with pkgs; [
-          keyutils
-          libkrb5
-          libpng
-          libpulseaudio
-          libvorbis
-          # stdenv.cc.cc.lib
-          xorg.libXScrnSaver
-          xorg.libXcursor
-          xorg.libXi
-          xorg.libXinerama
-        ];
-    };
-    remotePlay.openFirewall = true;
-  };
-
-  programs.gamescope = {
-    enable = false;
-    # capSysNice = true;
-    args = [
-      # "--rt"
-      # "--prefer-vk-device 10de:249d"
-    ];
-    env = {
-      # SDL_VIDEODRIVER = "x11";
-      # GBM_BACKEND = "nvidia-drm";
-      # ENABLE_VKBASALT = "1";
-      # __GLX_VENDOR_LIBRARY_NAME = "nvidia";
-      # __GL_THREADED_OPTIMIZATIONS = "0";
-      # __NV_PRIME_RENDER_OFFLOAD = "1";
-      # __VK_LAYER_NV_optimus = "NVIDIA_only";
+    thunar = {
+      enable = true;
+      plugins = with pkgs.xfce; [thunar-archive-plugin thunar-volman];
     };
   };
 
   boot = {
     kernelPackages = pkgs.linuxKernel.packages.linux_xanmod;
+
+    blacklistedKernelModules = [
+      "i2c_nvidia_gpu"
+    ];
 
     kernelParams = [
       # "intel_pstate=passive"
@@ -277,175 +141,51 @@
     plymouth.enable = true;
   };
 
-  networking.hostName = "izalith";
-  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
-
-  # Configure network proxy if necessary
-  # networking.proxy.default = "http://user:password@proxy:port/";
-  # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
-
-  # Enable networking
-  networking.networkmanager.enable = true;
-
   xdg.portal = {
     enable = true;
     extraPortals = [pkgs.xdg-desktop-portal-gtk];
   };
 
-  services.flatpak.enable = true;
-
-  services.tailscale.enable = true;
-
   # Set your time zone.
   time.timeZone = "America/Sao_Paulo";
 
-  # Select internationalisation properties.
-  i18n.defaultLocale = "en_US.UTF-8";
+  i18n = {
+    # Select internationalisation properties.
+    defaultLocale = "en_US.UTF-8";
 
-  i18n.extraLocaleSettings = {
-    LC_ADDRESS = "pt_BR.UTF-8";
-    LC_IDENTIFICATION = "pt_BR.UTF-8";
-    LC_MEASUREMENT = "pt_BR.UTF-8";
-    LC_MONETARY = "pt_BR.UTF-8";
-    LC_NAME = "pt_BR.UTF-8";
-    LC_NUMERIC = "pt_BR.UTF-8";
-    LC_PAPER = "pt_BR.UTF-8";
-    LC_TELEPHONE = "pt_BR.UTF-8";
-    LC_TIME = "pt_BR.UTF-8";
-  };
-
-  services.xserver = {
-    enable = true;
-
-    excludePackages = with pkgs; [
-      xterm
-    ];
-
-    config = ''
-      Section "ServerLayout"
-      Identifier "Default Layout"
-      Screen "nvidia" 0 0
-      EndSection
-
-      Section "Module"
-      Load "modesetting"
-      Load "glx"
-      EndSection
-
-      Section "Device"
-      Identifier "nvidia"
-      Driver "nvidia"
-      BusID "PCI:1:0:0"
-      Option "AllowEmptyInitialConfiguration"
-      Option "PrimaryGPU" "yes
-      EndSection
-
-      Section "Device"
-      Identifier "intel"
-      Driver "modesetting"
-      Option "AccelMethod" "sna"
-      EndSection
-
-      Section "Screen"
-      Identifier "nvidia"
-      Device "nvidia"
-      Option "AllowEmptyInitialConfiguration"
-      EndSection
-
-      Section "Screen"
-      Identifier "intel"
-      Device "intel"
-      EndSection
-    '';
-
-    # Configure keymap in X11
-    layout = "us";
-    xkbVariant = "";
-
-    # Enable touchpad support (enabled default in most desktopManager).
-    libinput.enable = true;
-
-    # Tell Xorg to use the nvidia driver
-    videoDrivers = ["nvidia"];
-
-    desktopManager.xfce = {
-      enable = true;
-      noDesktop = true;
-      enableXfwm = false;
-    };
-
-    displayManager = {
-      lightdm = {
-        enable = true;
-      };
-
-      sessionCommands = ''
-        ${pkgs.lightlocker}/bin/light-locker --lock-on-suspend &
-      '';
-
-      setupCommands = ''
-        ${pkgs.xorg.xrandr}/bin/xrandr --auto
-      '';
-
-      defaultSession = "none+awesome";
-    };
-
-    windowManager.awesome = {
-      enable = true;
-      luaModules = with pkgs.luaPackages; [
-        luarocks # is the package manager for Lua modules
-        luadbi-mysql # Database abstraction layer
-      ];
+    extraLocaleSettings = {
+      LC_ADDRESS = "pt_BR.UTF-8";
+      LC_IDENTIFICATION = "pt_BR.UTF-8";
+      LC_MEASUREMENT = "pt_BR.UTF-8";
+      LC_MONETARY = "pt_BR.UTF-8";
+      LC_NAME = "pt_BR.UTF-8";
+      LC_NUMERIC = "pt_BR.UTF-8";
+      LC_PAPER = "pt_BR.UTF-8";
+      LC_TELEPHONE = "pt_BR.UTF-8";
+      LC_TIME = "pt_BR.UTF-8";
     };
   };
 
-  # Enable CUPS to print documents.
-  services.printing.enable = true;
-
-  # Enable sound with pipewire.
-  sound.enable = true;
-  hardware.pulseaudio = {
-    enable = false;
-    extraConfig = ''
-      .nofail
-      unload-module module-suspend-on-idle
-      .fail
-    '';
-  };
   security.rtkit.enable = true;
-  services.pipewire = {
-    enable = true;
-    alsa.enable = true;
-    alsa.support32Bit = true;
-    pulse.enable = true;
 
-    # If you want to use JACK applications, uncomment this
-    #jack.enable = true;
-
-    # use the example session manager (no others are packaged yet so this is enabled by default,
-    # no need to redefine it in your config for now)
-    #media-session.enable = true;
-  };
-  environment.etc."wireplumber/main.lua.d/90-suspend-timeout.lua" = {
-    text = ''
-      apply_properties = {
-          ["session.suspend-timeout-seconds"] = 0,
-      }
-    '';
+  security.wrappers.sunshine = {
+    capabilities = "cap_sys_admin+p";
+    group = "root";
+    owner = "root";
+    source = "${newSunshine}/bin/sunshine";
   };
 
-  hardware.bluetooth.enable = true;
-  services.blueman.enable = true;
+  users = {
+    defaultUserShell = pkgs.nushell;
 
-  users.defaultUserShell = pkgs.nushell;
-
-  # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.niscolas = {
-    isNormalUser = true;
-    description = "Nícolas Catarina Parreiras";
-    extraGroups = ["networkmanager" "wheel"];
-    packages = with pkgs; [];
-    shell = pkgs.nushell;
+    # Define a user account. Don't forget to set a password with ‘passwd’.
+    users.niscolas = {
+      isNormalUser = true;
+      description = "Nícolas Catarina Parreiras";
+      extraGroups = ["networkmanager" "wheel" "uinput"];
+      packages = with pkgs; [];
+      shell = pkgs.nushell;
+    };
   };
 
   nixpkgs = {
@@ -454,63 +194,9 @@
     overlays = [(import ./overlays.nix)];
   };
 
-  # List packages installed in system profile. To search, run:
-  # $ nix search wget
-  environment.systemPackages = [
-    pkgs.mangohud
-    (builtins.getFlake "github:nbfc-linux/nbfc-linux/0d109723b8c9c407d80272e22d5b2bb12765550b").packages."x86_64-linux".nbfc
-    pkgs.awesome
-    pkgs.coreutils
-    pkgs.gnome.file-roller
-    pkgs.heroic
-    pkgs.lightlocker
-    pkgs.nix-index
-    pkgs.nushell
-    pkgs.rar
-    pkgs.zsh
-  ];
-
   fonts.packages = with pkgs; [
     (nerdfonts.override {fonts = ["Mononoki" "IntelOneMono" "NerdFontsSymbolsOnly"];})
   ];
-
-  # Make sure opengl is enabled
-  hardware.opengl = {
-    enable = true;
-    driSupport = true;
-    driSupport32Bit = true;
-    # extraPackages = with pkgs; [mangohud];
-    # extraPackages32 = with pkgs; [mangohud];
-  };
-
-  hardware.nvidia = {
-    # Modesetting is needed for most wayland compositors
-    modesetting.enable = true;
-
-    forceFullCompositionPipeline = true;
-
-    # Use the open source version of the kernel module
-    # Only available on driver 515.43.04+
-    open = false;
-
-    # Enable the nvidia settings menu
-    nvidiaSettings = true;
-
-    # Optionally, you may need to select the appropriate driver version for your specific GPU.
-    package = config.boot.kernelPackages.nvidiaPackages.stable;
-
-    powerManagement.enable = true;
-  };
-
-  hardware.nvidia.prime = {
-    offload = {
-      enable = true;
-      enableOffloadCmd = true;
-    };
-
-    intelBusId = "PCI:0:2:0";
-    nvidiaBusId = "PCI:1:0:0";
-  };
 
   specialisation = {
     eco_mode.configuration = {
@@ -579,58 +265,77 @@
     };
   };
 
-  nix.settings.experimental-features = ["nix-command" "flakes"];
+  nix = {
+    gc.automatic = true;
+    gc.options = "--delete-older-than 7d";
+    settings.experimental-features = ["nix-command" "flakes"];
+  };
 
-  nix.gc.automatic = true;
-  nix.gc.options = "--delete-older-than 7d";
+  services = {
+    flatpak.enable = true;
 
-  services.udev.extraRules = ''
-    KERNEL=="uinput", MODE="0660", GROUP="uinput", OPTIONS+="static_node=uinput"
-  '';
+    tailscale.enable = true;
 
-  # Some programs need SUID wrappers, can be configured further or are
-  # started in user sessions.
-  # programs.mtr.enable = true;
-  # programs.gnupg.agent = {
-  #   enable = true;
-  #   enableSSHSupport = true;
-  # };
+    # Enable CUPS to print documents.
+    printing.enable = true;
 
-  # List services that you want to enable:
+    udev.extraRules = ''
+      KERNEL=="uinput", MODE="0660", GROUP="uinput", OPTIONS+="static_node=uinput"
+    '';
 
-  # Enable the OpenSSH daemon.
-  services.openssh.enable = true;
+    # Some programs need SUID wrappers, can be configured further or are
+    # started in user sessions.
+    # programs.mtr.enable = true;
+    # programs.gnupg.agent = {
+    #   enable = true;
+    #   enableSSHSupport = true;
+    # };
 
-  # Open ports in the firewall.
-  networking.firewall.allowedTCPPorts = [
-    24800
+    openssh.enable = true;
+  };
 
-    # sunshine
-    47984
-    47989
-    48010
+  networking = {
+    hostName = "izalith";
+    # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
-    50000
-    59100
-    59200
-    59716
-  ];
+    # Configure network proxy if necessary
+    # networking.proxy.default = "http://user:password@proxy:port/";
+    # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
 
-  networking.firewall.allowedUDPPorts = [
-    24800
+    # Enable networking
+    networkmanager.enable = true;
 
-    # sunshine
-    47998
-    47999
-    48000
-    48002
-    48010
+    # Open ports in the firewall.
+    firewall.allowedTCPPorts = [
+      24800
 
-    50000
-    59100
-    59200
-    59716
-  ];
+      # sunshine
+      47984
+      47989
+      48010
+
+      50000
+      59100
+      59200
+      59716
+    ];
+
+    firewall.allowedUDPPorts = [
+      24800
+
+      # sunshine
+      47998
+      47999
+      48000
+      48002
+      48010
+
+      50000
+      59100
+      59200
+      59716
+    ];
+  };
 
   virtualisation.docker.enable = true;
 
