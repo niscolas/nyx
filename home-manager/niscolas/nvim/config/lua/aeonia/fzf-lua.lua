@@ -94,14 +94,6 @@ M.setup = function()
 
     require("fzf-lua").setup {
         fzf_colors = fzf_colors,
-        keymap = {
-            fzf = {
-                ["tab"] = "down",
-                ["shift-tab"] = "up",
-                ["ctrl-n"] = "toggle+down",
-                ["ctrl-p"] = "toggle+up",
-            },
-        },
         winopts = {
             hl = hl,
         },
