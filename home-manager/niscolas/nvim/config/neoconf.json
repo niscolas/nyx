@@ -9,8 +9,18 @@
     },
     "lsp": {
         "servers": {
+            "bashls": {
+                "enabled": true,
+                "ensure_installed": false,
+                "has_custom_config": false
+            },
             "clangd":  {
                 "enabled": true,
+                "ensure_installed": false,
+                "has_custom_config": false
+            },
+            "csharp_ls": {
+                "enabled": false,
                 "ensure_installed": false,
                 "has_custom_config": false
             },
@@ -24,14 +34,24 @@
                 "ensure_installed": false,
                 "has_custom_config": false
             },
-            "csharp_ls": {
-                "enabled": false,
+            "lua_ls": {
+                "enabled": true,
+                "ensure_installed": false,
+                "has_custom_config": true
+            },
+            "marksman": {
+                "enabled": true,
+                "ensure_installed": false,
+                "has_custom_config": false
+            },
+            "nil_ls": {
+                "enabled": true,
                 "ensure_installed": false,
                 "has_custom_config": false
             },
             "omnisharp": {
                 "enabled": false,
-                "ensure_installed": true,
+                "ensure_installed": false,
                 "has_custom_config": true
             },
             "rust_analyzer": {
@@ -39,22 +59,7 @@
                 "ensure_installed": false,
                 "has_custom_config": false
             },
-            "lua_ls": {
-                "enabled": true,
-                "ensure_installed": false,
-                "has_custom_config": true
-            },
             "vimls": {
-                "enabled": true,
-                "ensure_installed": false,
-                "has_custom_config": false
-            },
-            "bashls": {
-                "enabled": true,
-                "ensure_installed": false,
-                "has_custom_config": false
-            },
-            "nil_ls": {
                 "enabled": true,
                 "ensure_installed": false,
                 "has_custom_config": false
