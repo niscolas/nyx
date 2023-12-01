@@ -1,40 +1,7 @@
 {...}: {
   services = {
-    undervolt = {
-      enable = false;
-      temp = 85;
-      coreOffset = -80;
-      gpuOffset = -20;
-    };
-
-    tlp = {
-      enable = false;
-      settings = {
-        CPU_BOOST_ON_AC = 1;
-        CPU_BOOST_ON_BAT = 0;
-
-        CPU_SCALING_GOVERNOR_ON_AC = "performance";
-        CPU_SCALING_GOVERNOR_ON_BAT = "powersave";
-
-        CPU_ENERGY_PERF_POLICY_ON_AC = "performance";
-        CPU_ENERGY_PERF_POLICY_ON_BAT = "power";
-
-        #CPU_MIN_PERF_ON_AC = 0;
-        CPU_MAX_PERF_ON_AC = 100;
-        #CPU_MIN_PERF_ON_BAT = 0;
-        CPU_MAX_PERF_ON_BAT = 20;
-
-        # The following prevents the battery from charging fully to
-        # preserve lifetime. Run `tlp fullcharge` to temporarily force
-        # full charge.
-        # https://linrunner.de/tlp/faq/battery.html#how-to-choose-good-battery-charge-thresholds
-        START_CHARGE_THRESH_BAT0 = 40;
-        STOP_CHARGE_THRESH_BAT0 = 50;
-      };
-    };
-
-    thermald.enable = true;
     auto-cpufreq.enable = true;
+
     throttled = {
       enable = true;
       extraConfig = ''
@@ -55,7 +22,7 @@
         # Time window #1 duration
         PL1_Duration_s: 28
         # Max package power for time window #2
-        PL2_Tdp_W: 44
+        PL2_Tdp_W: 29
         # Time window #2 duration
         PL2_Duration_S: 0.002
         # Max allowed temperature before throttling
@@ -70,11 +37,11 @@
         # Update the registers every this many seconds
         Update_Rate_s: 5
         # Max package power for time window #1
-        PL1_Tdp_W: 44
+        PL1_Tdp_W: 45
         # Time window #1 duration
         PL1_Duration_s: 28
         # Max package power for time window #2
-        PL2_Tdp_W: 44
+        PL2_Tdp_W: 45
         # Time window #2 duration
         PL2_Duration_S: 0.002
         # Max allowed temperature before throttling
