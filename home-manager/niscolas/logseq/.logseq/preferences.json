@@ -12,14 +12,18 @@
       "selected": true
     }
   },
-  "externals": [],
+  "externals": [
+    "/home/niscolas/bonfire/projects/logseq-plugin-samples/logseq-reddit-hot-news"
+  ],
   "pinnedToolbarItems": [
     "logseq-quick-capture:logseq-quick-capture",
     "logseq-tidy-blocks-plugin:logseq-tidy-blocks",
     "logseq-tocgen:open-toc",
-    "logseq-tags:tags-plugin-open",
     "logseq-raindrop:logseq-raindrop",
-    "logseq-agenda:Agenda3",
-    "logseq-git:git"
+    "logseq-tags:tags-plugin-open",
+    "logseq-awesome-styler:AwesomeStyler",
+    "_rw0rys037:logseq-reddit",
+    "logseq-git:git",
+    "logseq-agenda:Agenda3"
   ]
 }

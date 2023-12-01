@@ -1,6 +1,6 @@
 {
   "contentHeading": null,
-  "contentTasks": true,
+  "contentTasks": false,
   "todayQueriesColumns": "1",
   "contentColumns": true,
   "contentQuotes": true,
