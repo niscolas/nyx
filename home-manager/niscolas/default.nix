@@ -2,6 +2,7 @@
   config,
   lib,
   pkgs,
+  inputs,
   ...
 }: {
   imports = [
@@ -18,7 +19,10 @@
   nixpkgs = {
     config.allowUnfreePredicate = pkg: true;
     config.allowUnfree = true;
-    overlays = [(import ./overlays.nix)];
+    overlays = [
+      (import ./overlays.nix)
+      inputs.neovim-nightly-overlay.overlay
+    ];
   };
 
   home.username = "niscolas";
@@ -193,7 +197,6 @@
     neofetch
     networkmanagerapplet
     nix-output-monitor # it provides the command `nom` works just like `nix` with more details log output
-    nodejs
     opensnitch-ui
     opentabletdriver
     p7zip
