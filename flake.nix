@@ -9,9 +9,9 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    mach-nix = {
-      url = "mach-nix/3.5.0";
-    };
+    mach-nix.url = "mach-nix/3.5.0";
+
+    neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
   };
 
   outputs = inputs @ {
@@ -19,6 +19,7 @@
     nixpkgs,
     home-manager,
     mach-nix,
+    neovim-nightly-overlay,
     ...
   }: {
     nixosConfigurations = {

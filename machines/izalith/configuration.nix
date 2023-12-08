@@ -49,18 +49,18 @@ in {
       MACHINE_THEME = "gruvbox";
     };
 
-    shells = with pkgs; [nushell zsh];
+    shells = with pkgs; [fish nushell zsh];
 
     # List packages installed in system profile. To search, run:
     # $ nix search wget
     systemPackages = [
+      newSunshine
       (builtins.getFlake "github:nbfc-linux/nbfc-linux/0d109723b8c9c407d80272e22d5b2bb12765550b").packages."x86_64-linux".nbfc
       pkgs.awesome
       pkgs.coreutils
       pkgs.gnome.file-roller
       pkgs.lightlocker
       pkgs.nix-index
-      pkgs.nushell
       pkgs.rar
       pkgs.zsh
     ];
@@ -168,15 +168,15 @@ in {
 
   security.rtkit.enable = true;
 
-  security.wrappers.sunshine = {
-    capabilities = "cap_sys_admin+p";
-    group = "root";
-    owner = "root";
-    source = "${newSunshine}/bin/sunshine";
-  };
+  # security.wrappers.sunshine = {
+  #   capabilities = "cap_sys_admin+p";
+  #   group = "root";
+  #   owner = "root";
+  #   source = "${newSunshine}/bin/sunshine";
+  # };
 
   users = {
-    defaultUserShell = pkgs.nushell;
+    defaultUserShell = pkgs.fish;
 
     # Define a user account. Don't forget to set a password with ‘passwd’.
     users.niscolas = {
@@ -184,7 +184,7 @@ in {
       description = "Nícolas Catarina Parreiras";
       extraGroups = ["networkmanager" "wheel" "uinput"];
       packages = with pkgs; [];
-      shell = pkgs.nushell;
+      shell = pkgs.fish;
     };
   };
 
@@ -213,55 +213,7 @@ in {
     };
 
     steam_off.configuration = {
-      services.opensnitch = {
-        enable = true;
-        rules = {
-          "steam_family_share_bypass" = {
-            "created" = "2023-07-09T18:54:31.048633146-03:00";
-            "updated" = "2023-07-09T18:54:31.048703462-03:00";
-            "name" = "steam_family_share_bypass";
-            "enabled" = false;
-            "precedence" = false;
-            "action" = "allow";
-            "duration" = "always";
-            "operator" = {
-              "type" = "list";
-              "operand" = "list";
-              "sensitive" = false;
-              "data" = [
-                {
-                  "type" = "regexp";
-                  "operand" = "process.path";
-                  "data" = ".*steam.*";
-                  "sensitive" = false;
-                }
-                {
-                  "type" = "regexp";
-                  "operand" = "dest.ip";
-                  "data" = "(192.[0-168].[0-2].[1-249])|(254.254.254.254)";
-                  "sensitive" = false;
-                }
-              ];
-              "list" = [
-                {
-                  "type" = "regexp";
-                  "operand" = "process.path";
-                  "sensitive" = false;
-                  "data" = ".*steam.*";
-                  "list" = null;
-                }
-                {
-                  "type" = "regexp";
-                  "operand" = "dest.ip";
-                  "sensitive" = false;
-                  "data" = "(192\\.[0-168]\\.[0-2]\\.[1-249])|(254.254.254.254)";
-                  "list" = null;
-                }
-              ];
-            };
-          };
-        };
-      };
+      services.opensnitch.enable = true;
     };
   };
 
@@ -272,6 +224,11 @@ in {
   };
 
   services = {
+    # avahi = {
+    #   publish.userServices = true;
+    #   enable = true;
+    # };
+
     flatpak.enable = true;
 
     tailscale.enable = true;

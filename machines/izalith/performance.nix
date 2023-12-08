@@ -37,11 +37,11 @@
         # Update the registers every this many seconds
         Update_Rate_s: 5
         # Max package power for time window #1
-        PL1_Tdp_W: 45
+        PL1_Tdp_W: 55
         # Time window #1 duration
         PL1_Duration_s: 28
         # Max package power for time window #2
-        PL2_Tdp_W: 45
+        PL2_Tdp_W: 55
         # Time window #2 duration
         PL2_Duration_S: 0.002
         # Max allowed temperature before throttling
@@ -59,7 +59,7 @@
         # CPU core voltage offset (mV)
         CORE: -80
         # Integrated GPU voltage offset (mV)
-        GPU: -30
+        GPU: 0
         # CPU cache voltage offset (mV)
         CACHE: -80
         # System Agent voltage offset (mV)
