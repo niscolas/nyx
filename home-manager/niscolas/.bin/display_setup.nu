@@ -26,6 +26,7 @@ def main [action: string] {
 
     if not (ps | find stalonetray | is-empty) { pkill stalonetray }
 
+    sleep 1sec
     tray.nu $action
 }
 
@@ -63,13 +64,13 @@ def use_dual [] {
     (xrandr
         --output $internal
             --mode 1920x1080
-            --pos 0x0
+            --pos 0x1080
             --rate 144.0
         --output $hdmi
             --primary
             --mode 1920x1080
             --rate 144.0
-            --pos 1920x0)
+            --pos 0x0)
 }
 
 def use_internal [] {
