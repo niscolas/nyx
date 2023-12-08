@@ -8,9 +8,7 @@ M.setup = function()
     require("aeonia.lazy.util").bootstrap()
 
     require("lazy").setup({
-        {
-            import = "aeonia.neoai.spec",
-        },
+        { import = "aeonia.neoai.spec" },
 
         {
             "ellisonleao/gruvbox.nvim",
@@ -205,11 +203,7 @@ M.setup = function()
             event = "InsertEnter",
         },
 
-        {
-            "gbprod/substitute.nvim",
-            config = require("aeonia.substitute").setup,
-            event = "InsertEnter",
-        },
+        { import = "aeonia.substitute" },
 
         {
             "folke/zen-mode.nvim",
@@ -395,13 +389,13 @@ M.setup = function()
         {
             "levouh/tint.nvim",
             config = true,
-            enabled = false,
+            enabled = true,
         },
 
         {
             "folke/twilight.nvim",
             opts = {
-                context = 100,
+                context = 10,
                 dimming = {
                     alpha = 0.5,
                     inactive = true,
@@ -417,16 +411,15 @@ M.setup = function()
             end,
         },
 
-        -- {
-        --     "m4xshen/smartcolumn.nvim",
-        --     config = true,
-        -- },
+        {
+            "m4xshen/smartcolumn.nvim",
+            config = true,
+        },
 
-        -- {
-        --     "akinsho/git-conflict.nvim",
-        --     config = require("aeonia.git-conflict").setup,
-        --     version = "*",
-        -- },
+        {
+            "akinsho/git-conflict.nvim",
+            config = require("aeonia.git-conflict").setup,
+        },
 
         {
             "IndianBoy42/tree-sitter-just",
@@ -452,7 +445,6 @@ M.setup = function()
         {
             "akinsho/toggleterm.nvim",
             config = require("aeonia.toggleterm").setup,
-            version = "*",
         },
 
         {
@@ -484,7 +476,7 @@ M.setup = function()
                     animation = {
                         enable = false,
                         fps = 60,
-                        duration = 1000,
+                        duration = 200,
                     },
                     ignore = {
                         buftype = { "toggleterm" },
@@ -501,7 +493,7 @@ M.setup = function()
 
         {
             "lvimuser/lsp-inlayhints.nvim",
-            enabled = false,
+            enabled = true,
             config = function()
                 require("lsp-inlayhints").setup()
 
@@ -565,7 +557,6 @@ M.setup = function()
         {
             "nvim-telescope/telescope.nvim",
             config = require("aeonia.telescope").setup,
-            tag = "0.1.2",
             dependencies = {
                 "nvim-lua/plenary.nvim",
                 { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
@@ -588,6 +579,95 @@ M.setup = function()
                 "williamboman/mason-lspconfig.nvim",
             },
         },
+
+        {
+            "nvim-island/hydra.nvim",
+            config = function()
+                require("aeonia.hydra").setup()
+            end,
+        },
+
+        {
+            "mrjones2014/smart-splits.nvim",
+            config = function()
+                require("smart-splits").setup {
+                    resize_mode = {
+                        hooks = {
+                            on_leave = require("bufresize").register,
+                        },
+                    },
+                }
+            end,
+        },
+
+        {
+            "sindrets/winshift.nvim",
+            config = function()
+                require("winshift").setup {
+                    highlight_moving_win = true, -- Highlight the window being moved
+                    focused_hl_group = "Visual",
+                }
+            end,
+        },
+
+        {
+            "kwkarlwang/bufresize.nvim",
+            config = function()
+                require("bufresize").setup()
+            end,
+        },
+
+        {
+            "folke/flash.nvim",
+            enabled = false,
+            event = "VeryLazy",
+            ---@type Flash.Config
+            opts = {},
+            keys = {
+                {
+                    "s",
+                    mode = { "n", "x", "o" },
+                    function()
+                        require("flash").jump()
+                    end,
+                    desc = "Flash",
+                },
+                {
+                    "S",
+                    mode = { "n", "x", "o" },
+                    function()
+                        require("flash").treesitter()
+                    end,
+                    desc = "Flash Treesitter",
+                },
+                {
+                    "r",
+                    mode = "o",
+                    function()
+                        require("flash").remote()
+                    end,
+                    desc = "Remote Flash",
+                },
+                {
+                    "R",
+                    mode = { "o", "x" },
+                    function()
+                        require("flash").treesitter_search()
+                    end,
+                    desc = "Treesitter Search",
+                },
+                {
+                    "<c-s>",
+                    mode = { "c" },
+                    function()
+                        require("flash").toggle()
+                    end,
+                    desc = "Toggle Flash Search",
+                },
+            },
+        },
+
+        { import = "aeonia.ufo" },
     }, {
         defaults = {
             cond = function(plugin)

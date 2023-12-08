@@ -14,7 +14,7 @@
     gnumake
     lua-language-server
     marksman
-    neovim
+    neovim-nightly
     nil
     nodePackages.bash-language-server
     ripgrep

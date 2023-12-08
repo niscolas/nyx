@@ -40,18 +40,26 @@ M.setup = function()
             --         diagnostic.severity = vim.diagnostic.severity.HINT
             --     end,
             -- },
-            null_ls.builtins.diagnostics.eslint,
 
             -- bash
             null_ls.builtins.diagnostics.shellcheck,
             null_ls.builtins.code_actions.shellcheck,
 
+            -- godot
+            null_ls.builtins.formatting.gdformat,
+
+            -- js / ts
+            null_ls.builtins.diagnostics.xo,
+            null_ls.builtins.code_actions.xo,
+            null_ls.builtins.formatting.prettier_standard,
+
+            -- lua
+            null_ls.builtins.formatting.stylua,
+
             -- nix
             null_ls.builtins.diagnostics.deadnix,
             null_ls.builtins.formatting.alejandra,
 
-            null_ls.builtins.formatting.gdformat,
-            null_ls.builtins.formatting.stylua,
             -- null_ls.builtins.formatting.csharpier,
         },
     }
