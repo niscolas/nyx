@@ -49,20 +49,22 @@ in {
       MACHINE_THEME = "gruvbox";
     };
 
-    shells = with pkgs; [fish nushell zsh];
+    shells = with pkgs; [
+      fish
+      nushell
+      zsh
+    ];
 
     # List packages installed in system profile. To search, run:
     # $ nix search wget
     systemPackages = [
       newSunshine
-      (builtins.getFlake "github:nbfc-linux/nbfc-linux/0d109723b8c9c407d80272e22d5b2bb12765550b").packages."x86_64-linux".nbfc
       pkgs.awesome
       pkgs.coreutils
       pkgs.gnome.file-roller
       pkgs.lightlocker
       pkgs.nix-index
       pkgs.rar
-      pkgs.zsh
     ];
   };
 
@@ -95,6 +97,8 @@ in {
 
   programs = {
     dconf.enable = true;
+
+    fish.enable = true;
 
     xss-lock = {
       enable = true;

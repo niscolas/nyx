@@ -6,10 +6,11 @@
   ...
 }: {
   imports = [
-    ./mangohud/default.nix
     ./eww/default.nix
+    ./fish/default.nix
     ./kanata/default.nix
     ./logseq/default.nix
+    ./mangohud/default.nix
     ./nushell/default.nix
     ./nvim/default.nix
     ./ssh/default.nix
@@ -145,16 +146,25 @@
     platformTheme = "gtk";
   };
 
-  programs.firefox = {
-    enable = true;
-    package = pkgs.firefox.override {
-      cfg = {
-        enableTridactylNative = true;
+  programs = {
+    firefox = {
+      enable = true;
+      package = pkgs.firefox.override {
+        cfg = {
+          enableTridactylNative = true;
+        };
       };
+    };
+
+    nix-index = {
+      enable = true;
+      enableFishIntegration = true;
     };
   };
 
   home.packages = with pkgs; [
+    (builtins.getFlake "github:nbfc-linux/nbfc-linux/0d109723b8c9c407d80272e22d5b2bb12765550b").packages."x86_64-linux".nbfc
+    # (builtins.getFlake "github:JamesReynolds/audiorelay-flake/45416d72c8cbcd91068f928d447ac8552f3588e1").packages."x86_64-linux".audio-relay
     s-tui
     stress
     r2modman
