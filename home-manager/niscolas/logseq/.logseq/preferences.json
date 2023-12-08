@@ -9,11 +9,11 @@
       "description": "Dark customizable theme theme with extra stuff",
       "mode": "dark",
       "pid": "logseq-awesome-styler",
-      "selected": true
+      "selected": false
     }
   },
   "externals": [
-    "/home/niscolas/bonfire/projects/logseq-plugin-samples/logseq-reddit-hot-news"
+    "/home/niscolas/bonfire/projects/logseq-game-tracker"
   ],
   "pinnedToolbarItems": [
     "logseq-quick-capture:logseq-quick-capture",
