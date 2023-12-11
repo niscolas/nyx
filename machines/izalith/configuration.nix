@@ -12,8 +12,6 @@
   };
 in {
   imports = [
-    inputs.home-manager.nixosModules.home-manager
-
     ./audio.nix
     ./bluetooth.nix
     ./gaming.nix
@@ -22,13 +20,6 @@ in {
     ./performance.nix
     ./video.nix
   ];
-
-  home-manager = {
-    extraSpecialArgs = {inherit inputs;};
-    users = {
-      niscolas = import ../../home-manager/niscolas;
-    };
-  };
 
   environment = {
     localBinInPath = true;
@@ -58,6 +49,7 @@ in {
     # List packages installed in system profile. To search, run:
     # $ nix search wget
     systemPackages = [
+      inputs.home-manager.packages.${pkgs.system}.default
       newSunshine
       pkgs.awesome
       pkgs.coreutils

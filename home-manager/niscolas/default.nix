@@ -17,15 +17,6 @@
     ./tmux/default.nix
   ];
 
-  nixpkgs = {
-    config.allowUnfreePredicate = pkg: true;
-    config.allowUnfree = true;
-    overlays = [
-      (import ./overlays.nix)
-      inputs.neovim-nightly-overlay.overlay
-    ];
-  };
-
   home.username = "niscolas";
   home.homeDirectory = "/home/niscolas";
   home.file = {
@@ -164,7 +155,7 @@
 
   home.packages = with pkgs; [
     (builtins.getFlake "github:nbfc-linux/nbfc-linux/0d109723b8c9c407d80272e22d5b2bb12765550b").packages."x86_64-linux".nbfc
-    # (builtins.getFlake "github:JamesReynolds/audiorelay-flake/45416d72c8cbcd91068f928d447ac8552f3588e1").packages."x86_64-linux".audio-relay
+    inputs.audio-relay.packages."x86_64-linux".audio-relay
     s-tui
     stress
     r2modman

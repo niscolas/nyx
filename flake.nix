@@ -9,27 +9,45 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    audio-relay.url = "path:/home/niscolas/bonfire/nyx/packages/audio-relay";
     mach-nix.url = "mach-nix/3.5.0";
-
     neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
   };
 
-  outputs = inputs @ {
+  outputs = {
     self,
     nixpkgs,
     home-manager,
-    mach-nix,
     neovim-nightly-overlay,
     ...
-  }: {
-    nixosConfigurations = {
-      izalith = nixpkgs.lib.nixosSystem {
-        modules = [
-          ./machines/izalith/configuration.nix
+  } @ inputs: let
+    system = "x86_64-linux";
+  in {
+    nixosConfigurations.izalith = nixpkgs.lib.nixosSystem {
+      inherit system;
+      modules = [
+        ./machines/izalith/configuration.nix
+      ];
+      specialArgs = {inherit inputs;};
+    };
+
+    homeConfigurations."niscolas@izalith" = home-manager.lib.homeManagerConfiguration {
+      pkgs = import nixpkgs {
+        inherit system;
+        config.allowUnfree = true;
+        config.allowUnfreePredicate = pkg:
+          builtins.elem (self.lib.getName pkg) [
+            "audio-relay"
+          ];
+        overlays = [
+          (import ./home-manager/niscolas/overlays.nix)
+          neovim-nightly-overlay.overlay
         ];
-        specialArgs = {inherit inputs;};
-        system = "x86_64-linux";
       };
+      extraSpecialArgs = {inherit inputs;};
+      modules = [
+        ./home-manager/niscolas/default.nix
+      ];
     };
   };
 }
