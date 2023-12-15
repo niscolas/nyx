@@ -8,6 +8,7 @@
   imports = [
     ./eww/default.nix
     ./fish/default.nix
+    ./starship
     ./kanata/default.nix
     ./logseq/default.nix
     ./mangohud/default.nix
@@ -57,6 +58,15 @@
     ".config/wired".source = ./wired;
     ".config/zsh".source = ./zsh;
   };
+
+  fish = {
+    enable = true;
+    enableStarship = true;
+  };
+
+  starship.enable = true;
+
+  # home.sessionVariables.NIX_PATH = lib.concatStringsSep ":" (lib.mapAttrsToList (name: path: "${name}=${path.to.path}") config.nix.registry);
 
   # link all files in `./scripts` to `~/.config/i3/scripts`
   # home.file.".config/i3/scripts" = {
@@ -149,7 +159,12 @@
 
     nix-index = {
       enable = true;
-      enableFishIntegration = true;
+      enableFishIntegration = config.fish.enable;
+    };
+
+    zoxide = {
+      enable = true;
+      enableFishIntegration = config.fish.enable;
     };
   };
 
@@ -212,7 +227,6 @@
     rustup
     snixembed
     soundux
-    starship
     steamtinkerlaunch
     strace # system call monitoring
     stremio
@@ -230,7 +244,6 @@
     xorg.xwininfo
     xz
     zip
-    zoxide
     scrcpy
   ];
 

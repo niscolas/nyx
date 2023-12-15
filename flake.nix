@@ -9,6 +9,8 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    fup.url = "github:gytis-ivaskevicius/flake-utils-plus";
+
     audio-relay.url = "path:/home/niscolas/bonfire/nyx/packages/audio-relay";
     mach-nix.url = "mach-nix/3.5.0";
     neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
@@ -21,6 +23,7 @@
     neovim-nightly-overlay,
     ...
   } @ inputs: let
+    lib = nixpkgs.lib;
     system = "x86_64-linux";
   in {
     nixosConfigurations.izalith = nixpkgs.lib.nixosSystem {
@@ -35,10 +38,10 @@
       pkgs = import nixpkgs {
         inherit system;
         config.allowUnfree = true;
-        config.allowUnfreePredicate = pkg:
-          builtins.elem (self.lib.getName pkg) [
-            "audio-relay"
-          ];
+
+        # https://github.com/NixOS/nixpkgs/issues/97855#issuecomment-1741818344
+        # config.nix.registry = lib.mapAttrs (_: value: {flake = value;}) inputs;
+
         overlays = [
           (import ./home-manager/niscolas/overlays.nix)
           neovim-nightly-overlay.overlay
