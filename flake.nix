@@ -20,34 +20,48 @@
     self,
     nixpkgs,
     home-manager,
-    neovim-nightly-overlay,
     ...
   } @ inputs: let
-    lib = nixpkgs.lib;
-    system = "x86_64-linux";
+    inherit (self) outputs;
+
+    systems = [
+      "aarch64-linux"
+      "i686-linux"
+      "x86_64-linux"
+      "aarch64-darwin"
+      "x86_64-darwin"
+    ];
+
+    forAllSystems = nixpkgs.lib.genAttrs systems;
   in {
+    # Your custom packages
+    # Accessible through 'nix build', 'nix shell', etc
+    packages = forAllSystems (system: import ./packages nixpkgs.${system});
+    # Formatter for your nix files, available through 'nix fmt'
+    # Other options beside 'alejandra' include 'nixpkgs-fmt'
+    formatter = forAllSystems (system: nixpkgs.${system}.alejandra);
+
+    # Your custom packages and modifications, exported as overlays
+    overlays = import ./overlays {inherit inputs;};
+    # Reusable nixos modules you might want to export
+    # These are usually stuff you would upstream into nixpkgs
+    nixosModules = import ./modules/machines;
+    # Reusable home-manager modules you might want to export
+    # These are usually stuff you would upstream into home-manager
+    homeManagerModules = import ./modules/home-manager;
+
     nixosConfigurations.izalith = nixpkgs.lib.nixosSystem {
-      inherit system;
       modules = [
         ./machines/izalith/configuration.nix
       ];
-      specialArgs = {inherit inputs;};
+      specialArgs = {inherit inputs outputs;};
     };
 
     homeConfigurations."niscolas@izalith" = home-manager.lib.homeManagerConfiguration {
       pkgs = import nixpkgs {
-        inherit system;
-        config.allowUnfree = true;
-
-        # https://github.com/NixOS/nixpkgs/issues/97855#issuecomment-1741818344
-        # config.nix.registry = lib.mapAttrs (_: value: {flake = value;}) inputs;
-
-        overlays = [
-          (import ./home-manager/niscolas/overlays.nix)
-          neovim-nightly-overlay.overlay
-        ];
+        system = "x86_64-linux";
       };
-      extraSpecialArgs = {inherit inputs;};
+      extraSpecialArgs = {inherit inputs outputs;};
       modules = [
         ./home-manager/niscolas/default.nix
       ];
