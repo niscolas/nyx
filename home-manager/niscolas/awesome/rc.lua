@@ -526,7 +526,7 @@ awful.rules.rules = {
     },
 
     {
-        rule = { class = "logseq" },
+        rule_any = { class = { "logseq", "Logseq" } },
         properties = {
             tag = "4",
         },
@@ -547,6 +547,7 @@ awful.rules.rules = {
                 "cpupower-gui",
                 "easyeffects",
                 "pavucontrol",
+                "Pavucontrol",
                 "pritunl",
             },
         },
@@ -604,27 +605,31 @@ client.connect_signal("property::urgent", function(c)
     end
 end)
 
+awesome.connect_signal("startup", function()
+    shell("nm-applet")
+    shell("xfce4-power-manager")
+    shell("syncthing -no-browser")
+
+    -- xss-lock grabs a logind suspend inhibit lock and will use i3lock to lock the
+    -- screen before suspend. Use loginctl lock-session to lock your screen.
+    -- shell("lxsession")
+    -- spawn("light-locker")
+
+    spawn("hidamari --background")
+
+    shell("picom")
+
+    shell("setxkbmap us")
+    shell('setxkbmap -option "compose:menu"')
+
+    require("eww")
+
+    spawn("firefox")
+    spawn("logseq")
+    spawn("easyeffects")
+    spawn("pavucontrol")
+
+    shell("sleep 1sec; display_setup.nu internal")
+end)
+
 naughty.config.defaults["icon_size"] = 100
-
-shell("nm-applet")
-shell("xfce4-power-manager")
-shell("syncthing -no-browser")
-
--- xss-lock grabs a logind suspend inhibit lock and will use i3lock to lock the
--- screen before suspend. Use loginctl lock-session to lock your screen.
--- shell("lxsession")
--- spawn("light-locker")
-
-shell("killall hidamari-server")
-spawn("hidamari --background")
-
-shell("picom")
-
-shell("setxkbmap us")
-shell('setxkbmap -option "compose:menu"')
-
-require("eww")
-
-spawn("easyeffects")
-
-shell("sleep 1sec; display_setup.nu internal")
