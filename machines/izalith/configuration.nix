@@ -1,9 +1,11 @@
 # Edit this configuration file to define what should be installed on
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 {
+  config,
   lib,
   pkgs,
   inputs,
+  outputs,
   ...
 }: let
   newSunshine = pkgs.sunshine.override {
@@ -21,7 +23,40 @@ in {
     ./video.nix
   ];
 
+  nixpkgs = {
+    config = {
+      allowUnfreePredicate = _: true;
+      allowUnfree = true;
+    };
+
+    overlays = [
+      outputs.overlays.additions
+      outputs.overlays.modifications
+      outputs.overlays.unstable-packages
+    ];
+  };
+
+  nix = {
+    gc.automatic = true;
+    gc.options = "--delete-older-than 7d";
+    registry = (lib.mapAttrs (_: flake: {inherit flake;})) ((lib.filterAttrs (_: lib.isType "flake")) inputs);
+    settings = {
+      experimental-features = ["nix-command" "flakes"];
+      # Deduplicate and optimize nix store
+      auto-optimise-store = true;
+    };
+    nixPath = ["/etc/nix/path"];
+  };
+
   environment = {
+    etc =
+      lib.mapAttrs'
+      (name: value: {
+        name = "nix/path/${name}";
+        value.source = value.flake;
+      })
+      config.nix.registry;
+
     localBinInPath = true;
 
     sessionVariables = rec {
@@ -184,12 +219,6 @@ in {
     };
   };
 
-  nixpkgs = {
-    config.allowUnfreePredicate = pkg: true;
-    config.allowUnfree = true;
-    overlays = [(import ./overlays.nix)];
-  };
-
   fonts.packages = with pkgs; [
     (nerdfonts.override {fonts = ["Mononoki" "IntelOneMono" "NerdFontsSymbolsOnly"];})
   ];
@@ -211,12 +240,6 @@ in {
     steam_off.configuration = {
       services.opensnitch.enable = true;
     };
-  };
-
-  nix = {
-    gc.automatic = true;
-    gc.options = "--delete-older-than 7d";
-    settings.experimental-features = ["nix-command" "flakes"];
   };
 
   services = {

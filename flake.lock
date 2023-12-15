@@ -5,13 +5,13 @@
         "nixpkgs": "nixpkgs"
       },
       "locked": {
-        "lastModified": 1702316903,
+        "lastModified": 1,
         "narHash": "sha256-Bwm1XzO2+kkOWNAv/icfmcybST04E204gbghF/LOpdg=",
-        "path": "/home/niscolas/bonfire/nyx/packages/audio-relay",
+        "path": "./flakes/audio-relay",
         "type": "path"
       },
       "original": {
-        "path": "/home/niscolas/bonfire/nyx/packages/audio-relay",
+        "path": "./flakes/audio-relay",
         "type": "path"
       }
     },

@@ -2,17 +2,26 @@
   # This one brings our custom packages from the 'pkgs' directory
   additions = final: _prev: import ../packages {pkgs = final;};
 
-  # This one contains whatever you want to overlay
-  # You can change versions, add patches, set compilation flags, anything really.
-  # https://nixos.wiki/wiki/Overlays
   modifications = final: prev: {
-    # example = prev.example.overrideAttrs (oldAttrs: rec {
-    # ...
-    # });
+    logseq = prev.logseq.overrideAttrs (oldAttrs: let
+      newVersion = "0.10.0";
+    in {
+      version = "${newVersion}";
+
+      src = final.pkgs.fetchurl {
+        url = "https://github.com/logseq/logseq/releases/download/${newVersion}/logseq-linux-x64-${newVersion}.AppImage";
+        hash = "sha256-igZM+kNe1GDPYckXU6fOjyovHe9gwyBWr7Mc3BxAzOA=";
+        name = "${oldAttrs.pname}-${newVersion}.AppImage";
+      };
+    });
+
+    mangohud = final.callPackage ./mangohud {
+      libXNVCtrl = final.pkgs.linuxPackages.nvidia_x11.settings.libXNVCtrl;
+      mangohud32 = final.pkgsi686Linux.mangohud;
+      inherit (final.python3Packages) mako;
+    };
   };
 
-  # When applied, the unstable nixpkgs set (declared in the flake inputs) will
-  # be accessible through 'pkgs.unstable'
   unstable-packages = final: _prev: {
     unstable = import inputs.nixpkgs-unstable {
       system = final.system;

@@ -45,6 +45,9 @@
     };
   };
 
+  # Nicely reload system units when changing configs
+  systemd.user.startServices = "sd-switch";
+
   home.username = "niscolas";
   home.homeDirectory = "/home/niscolas";
   home.file = {

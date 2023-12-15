@@ -11,7 +11,7 @@
 
     fup.url = "github:gytis-ivaskevicius/flake-utils-plus";
 
-    audio-relay.url = "path:/home/niscolas/bonfire/nyx/packages/audio-relay";
+    audio-relay.url = "path:./flakes/audio-relay";
     mach-nix.url = "mach-nix/3.5.0";
     neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
   };
