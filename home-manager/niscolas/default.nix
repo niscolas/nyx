@@ -9,13 +9,14 @@
   imports = [
     ./eww/default.nix
     ./fish/default.nix
-    ./starship
     ./kanata/default.nix
     ./logseq/default.nix
     ./mangohud/default.nix
     ./nushell/default.nix
     ./nvim/default.nix
+    ./picom
     ./ssh/default.nix
+    ./starship
     ./tmux/default.nix
   ];
 
@@ -77,7 +78,6 @@
     ".config/neofetch".source = ./neofetch;
     ".config/omnisharp".source = ./omnisharp;
     ".config/optimus-manager".source = ./optimus-manager;
-    ".config/picom".source = ./picom;
     ".config/polybar".source = ./polybar;
     ".config/ranger".source = ./ranger;
     ".config/rg".source = ./rg;
@@ -248,7 +248,6 @@
     p7zip
     pavucontrol
     pciutils # lspci
-    picom
     pritunl-client
     protonup-qt
     rclone

@@ -20,6 +20,23 @@
       mangohud32 = final.pkgsi686Linux.mangohud;
       inherit (final.python3Packages) mako;
     };
+
+    picom = prev.picom.overrideAttrs (oldAttrs: rec {
+      pname = "compfy";
+      version = "1.7.2";
+      buildInputs =
+        [
+          final.pcre2
+        ]
+        ++ oldAttrs.buildInputs;
+      src = final.fetchFromGitHub {
+        owner = "allusive-dev";
+        repo = "compfy";
+        rev = version;
+        hash = "sha256-7hvzwLEG5OpJzsrYa2AaIW8X0CPyOnTLxz+rgWteNYY=";
+      };
+      postInstall = '''';
+    });
   };
 
   unstable-packages = final: _prev: {
