@@ -8,6 +8,8 @@ shell:
   program: fish
 
 window:
+  option_as_alt: Both
+
   dimensions:
     columns: 84
     lines: 22
@@ -35,4 +37,5 @@ live_config_reload: true
 
 key_bindings:
   - { key: F11, action: ToggleFullscreen }
+  - { key: Space, mods: Control, chars: "\x00" }
 
