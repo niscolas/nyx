@@ -1,8 +1,24 @@
 {
   config,
   pkgs,
+  inputs,
   ...
-}: {
+}: let
+  rev = "564c0661a942f7163cb2cfa6cb1b14b4bcff3a30"; # revision from https://github.com/keylase/nvidia-patch to use
+  hash = "sha256-85h94r3XZq1wME6+AxsTIIsM1TmMMr97RJjDygdnxtA="; # sha256sum for https://github.com/keylase/nvidia-patch at the specified revision
+
+  # create patch functions for the specified revision
+  nvidia-patch = pkgs.nvidia-patch rev hash;
+
+  # nvidia package to patch
+  nvidia-package = config.boot.kernelPackages.nvidiaPackages.stable;
+
+  patchDriver = import ./nvenc-unlock.nix;
+in {
+  nixpkgs = {
+    overlays = [inputs.nv-patch.overlay];
+  };
+
   hardware = {
     # Make sure opengl is enabled
     opengl = {
@@ -27,7 +43,7 @@
       nvidiaSettings = true;
 
       # Optionally, you may need to select the appropriate driver version for your specific GPU.
-      package = config.boot.kernelPackages.nvidiaPackages.stable;
+      package = nvidia-patch.patch-nvenc (nvidia-patch.patch-fbc nvidia-package);
 
       powerManagement.enable = true;
 

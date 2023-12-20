@@ -1,13 +1,16 @@
 {pkgs, ...}: {
-  environment.systemPackages = with pkgs; [heroic mangohud];
+  environment.systemPackages = with pkgs; [
+    heroic
+    mangohud
+  ];
 
   programs = {
     gamemode = {
       enable = true;
       settings = {
         custom = {
-          start = "${pkgs.procps}/bin/pkill picom";
-          end = "''${pkgs.picom}/bin/picom -b";
+          start = "${pkgs.procps}/bin/pkill compfy";
+          end = "''${pkgs.picom}/bin/compfy";
         };
       };
     };

@@ -2,18 +2,24 @@
   description = "niscolas flake";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-23.11";
+    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
 
     home-manager = {
-      url = "github:nix-community/home-manager/master";
+      url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
     fup.url = "github:gytis-ivaskevicius/flake-utils-plus";
+    nur.url = github:nix-community/NUR;
 
     audio-relay.url = "path:./flakes/audio-relay";
     mach-nix.url = "mach-nix/3.5.0";
     neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
+    nv-patch = {
+      url = "github:niscolas/nvidia-patch-nixos-fork";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = {
@@ -45,7 +51,7 @@
     overlays = import ./overlays {inherit inputs;};
     # Reusable nixos modules you might want to export
     # These are usually stuff you would upstream into nixpkgs
-    nixosModules = import ./modules/machines;
+    nixosModules = import ./modules/nixos;
     # Reusable home-manager modules you might want to export
     # These are usually stuff you would upstream into home-manager
     homeManagerModules = import ./modules/home-manager;

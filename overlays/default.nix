@@ -21,6 +21,8 @@
       inherit (final.python3Packages) mako;
     };
 
+    neovim-nightly = inputs.neovim-nightly-overlay.overlay;
+
     picom = prev.picom.overrideAttrs (oldAttrs: rec {
       pname = "compfy";
       version = "1.7.2";

@@ -7,20 +7,19 @@
   inputs,
   outputs,
   ...
-}: let
-  newSunshine = pkgs.sunshine.override {
-    cudaSupport = true;
-    stdenv = pkgs.cudaPackages.backendStdenv;
-  };
-in {
+}: {
   imports = [
+    inputs.nur.nixosModules.nur
+    outputs.nixosModules.sunshine
+
     ./audio.nix
     ./bluetooth.nix
     ./gaming.nix
-    ./hardware-configuration.nix
     ./mach-nix-pkgs.nix
     ./performance.nix
     ./video.nix
+
+    ./hardware-configuration.nix
   ];
 
   nixpkgs = {
@@ -85,7 +84,6 @@ in {
     # $ nix search wget
     systemPackages = [
       inputs.home-manager.packages.${pkgs.system}.default
-      newSunshine
       pkgs.awesome
       pkgs.coreutils
       pkgs.gnome.file-roller
@@ -172,6 +170,8 @@ in {
     plymouth.enable = true;
   };
 
+  sunshine.enable = true;
+
   xdg.portal = {
     enable = true;
     extraPortals = [pkgs.xdg-desktop-portal-gtk];
@@ -198,13 +198,6 @@ in {
   };
 
   security.rtkit.enable = true;
-
-  # security.wrappers.sunshine = {
-  #   capabilities = "cap_sys_admin+p";
-  #   group = "root";
-  #   owner = "root";
-  #   source = "${newSunshine}/bin/sunshine";
-  # };
 
   users = {
     defaultUserShell = pkgs.fish;
@@ -243,11 +236,6 @@ in {
   };
 
   services = {
-    # avahi = {
-    #   publish.userServices = true;
-    #   enable = true;
-    # };
-
     flatpak.enable = true;
 
     tailscale.enable = true;
@@ -280,37 +268,11 @@ in {
 
     # Enable networking
     networkmanager.enable = true;
-
-    # Open ports in the firewall.
-    firewall.allowedTCPPorts = [
-      24800
-
-      # sunshine
-      47984
-      47989
-      48010
-
-      50000
-      59100
-      59200
-      59716
-    ];
-
-    firewall.allowedUDPPorts = [
-      24800
-
-      # sunshine
-      47998
-      47999
-      48000
-      48002
-      48010
-
-      50000
-      59100
-      59200
-      59716
-    ];
+    firewall = {
+      # Open ports in the firewall.
+      allowedTCPPorts = [24800];
+      allowedUDPPorts = [24800];
+    };
   };
 
   virtualisation.docker.enable = true;

@@ -617,7 +617,7 @@ awesome.connect_signal("startup", function()
 
     spawn("hidamari --background")
 
-    shell("compfy")
+    spawn("compfy")
 
     shell("setxkbmap us")
     shell('setxkbmap -option "compose:menu"')
