@@ -6,18 +6,22 @@
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
 
     home-manager = {
-      url = "github:nix-community/home-manager";
+      url = "github:nix-community/home-manager/release-23.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
     fup.url = "github:gytis-ivaskevicius/flake-utils-plus";
-    nur.url = github:nix-community/NUR;
+    nur.url = "github:nix-community/NUR";
 
-    audio-relay.url = "path:./flakes/audio-relay";
+    audio-relay.url = "github:niscolas/audiorelay-flake-fork";
     mach-nix.url = "mach-nix/3.5.0";
     neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
-    nv-patch = {
+    nvidia-patch = {
       url = "github:niscolas/nvidia-patch-nixos-fork";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    snowfall-lib = {
+      url = "github:snowfallorg/lib";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
@@ -57,20 +61,14 @@
     homeManagerModules = import ./modules/home-manager;
 
     nixosConfigurations.izalith = nixpkgs.lib.nixosSystem {
-      modules = [
-        ./machines/izalith/configuration.nix
-      ];
+      modules = [./systems/x86_64-linux/izalith];
       specialArgs = {inherit inputs outputs;};
     };
 
     homeConfigurations."niscolas@izalith" = home-manager.lib.homeManagerConfiguration {
-      pkgs = import nixpkgs {
-        system = "x86_64-linux";
-      };
+      pkgs = nixpkgs.legacyPackages.x86_64-linux;
       extraSpecialArgs = {inherit inputs outputs;};
-      modules = [
-        ./home-manager/niscolas/default.nix
-      ];
+      modules = [./homes/x86_64-linux/izalith/niscolas];
     };
   };
 }

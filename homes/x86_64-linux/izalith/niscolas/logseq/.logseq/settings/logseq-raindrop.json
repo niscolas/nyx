@@ -1,0 +1,21 @@
+{
+  "sync_to_single_page": false,
+  "access_token": "dc90f11f-de18-4f26-b004-d1697d5d6e1d",
+  "default_page_tags": "[[raindrop]]",
+  "broken_experimental_features": false,
+  "add_link_mustache_template": "Saved to Raindrop: \n{{#links}}\n[`{{{addedUrl}}}` (Raindrop preview)]({{{raindropPreviewUrl}}})\n{{/links}}",
+  "category_single-page-imports": "",
+  "import_filter": "Import all Raindrops",
+  "page_name": "Raindrop",
+  "sync_interval": 30,
+  "last_sync_timestamp": "",
+  "bookmark_mustache_template": "[{{{title}}}]({{{url}}})\ntitle:: {{{title}}}\nurl:: {{{url}}}\nTags:: {{{tags}}}\ndate-saved:: [[{{{dateCreated}}}]]",
+  "highlight_mustache_template": "> {{{text}}}\n\n{{{note}}}",
+  "category_multipage-imports": "",
+  "template_highlight": "> {text}",
+  "template_annotation": "{text}",
+  "template_deleted": "🗑 {content}",
+  "namespace_label": "",
+  "enable_empty_page_state": true,
+  "disabled": true
+}

@@ -3,17 +3,23 @@
   additions = final: _prev: import ../packages {pkgs = final;};
 
   modifications = final: prev: {
-    logseq = prev.logseq.overrideAttrs (oldAttrs: let
-      newVersion = "0.10.0";
-    in {
-      version = "${newVersion}";
+    input-leap = prev.input-leap.overrideAttrs (
+      oldAttrs: let
+        version = "unstable-2023-10-24";
+      in {
+        version = "${version}";
 
-      src = final.pkgs.fetchurl {
-        url = "https://github.com/logseq/logseq/releases/download/${newVersion}/logseq-linux-x64-${newVersion}.AppImage";
-        hash = "sha256-igZM+kNe1GDPYckXU6fOjyovHe9gwyBWr7Mc3BxAzOA=";
-        name = "${oldAttrs.pname}-${newVersion}.AppImage";
-      };
-    });
+        src = final.pkgs.fetchFromGitHub {
+          owner = "input-leap";
+          repo = "input-leap";
+          rev = "2376b7a660cb6b1a11dee9f1376199aa93863b8c";
+          hash = "sha256-/itlejAYcM0ICeiGsdZPy8BBWkZkDQo8vBQihbrtwDg=";
+          fetchSubmodules = true;
+        };
+      }
+    );
+
+    logseq = final.pkgs.unstable.logseq;
 
     mangohud = final.callPackage ./mangohud {
       libXNVCtrl = final.pkgs.linuxPackages.nvidia_x11.settings.libXNVCtrl;
@@ -21,7 +27,7 @@
       inherit (final.python3Packages) mako;
     };
 
-    neovim-nightly = inputs.neovim-nightly-overlay.overlay;
+    neovim = inputs.neovim-nightly-overlay.defaultPackage.${final.pkgs.system};
 
     picom = prev.picom.overrideAttrs (oldAttrs: rec {
       pname = "compfy";
@@ -44,7 +50,12 @@
   unstable-packages = final: _prev: {
     unstable = import inputs.nixpkgs-unstable {
       system = final.system;
-      config.allowUnfree = true;
+      config = {
+        allowUnfree = true;
+        permittedInsecurePackages = [
+          "electron-25.9.0"
+        ];
+      };
     };
   };
 }
