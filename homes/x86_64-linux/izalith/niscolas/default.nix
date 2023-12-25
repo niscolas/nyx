@@ -9,6 +9,9 @@
   cfg = config.erdtree;
 in {
   imports = [
+    outputs.homeManagerModules.home
+
+    ./bspwm
     ./eww/default.nix
     ./fish/default.nix
     ./kanata/default.nix
@@ -51,13 +54,12 @@ in {
     ".config/awesome".source = ./awesome;
     ".config/bat".source = ./bat;
     ".config/bottom".source = ./bottom;
-    ".config/bspwm".source = ./bspwm;
     ".config/cpupower_gui".source = ./cpupower_gui;
     ".config/flameshot".source = ./flameshot;
 
     ".config/gh".source =
       config.lib.file.mkOutOfStoreSymlink
-      "${config.home.homeDirectory}/bonfire/nyx/home-manager/niscolas/gh";
+      "${config.home.homeDirectory}/bonfire/nyx/homes/x86_64-linux/izalith/niscolas/gh";
 
     ".config/git".source = ./git;
     ".config/hidamari".source = ./hidamari;
@@ -67,7 +69,7 @@ in {
 
     ".config/ludusavi".source =
       config.lib.file.mkOutOfStoreSymlink
-      "${config.home.homeDirectory}/bonfire/nyx/home-manager/niscolas/ludusavi";
+      "${config.home.homeDirectory}/bonfire/nyx/homes/x86_64-linux/izalith/niscolas/ludusavi";
 
     ".config/neofetch".source = ./neofetch;
     ".config/omnisharp".source = ./omnisharp;
@@ -76,21 +78,32 @@ in {
     ".config/ranger".source = ./ranger;
     ".config/rg".source = ./rg;
     ".config/rofi".source = ./rofi;
-    ".config/sxhkd".source = ./sxhkd;
     ".config/tridactyl".source = ./tridactyl;
     ".config/wezterm".source = ./wezterm;
     ".config/wired".source = ./wired;
     ".config/zsh".source = ./zsh;
   };
 
-  erdtree.fish = {
-    enable = true;
-    enableStarship = true;
+  erdtree = {
+    niscolas = {
+      bspwm = {
+        enable = true;
+      };
+    };
+
+    home.configPath = "${config.home.homeDirectory}/bonfire/nyx/homes/x86_64-linux/izalith/niscolas";
+
+    fish = {
+      enable = true;
+      enableStarship = true;
+    };
+    starship.enable = true;
   };
 
-  starship.enable = true;
-
-  # home.sessionVariables.NIX_PATH = lib.concatStringsSep ":" (lib.mapAttrsToList (name: path: "${name}=${path.to.path}") config.nix.registry);
+  home.sessionVariables = {
+    MACHINE_SETUP = "personal";
+    MACHINE_THEME = "gruvbox";
+  };
 
   # link all files in `./scripts` to `~/.config/i3/scripts`
   # home.file.".config/i3/scripts" = {

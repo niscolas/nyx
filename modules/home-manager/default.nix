@@ -1,3 +1,3 @@
 {
-  # audio-relay = import ./audio-relay;
+  home = import ./home;
 }

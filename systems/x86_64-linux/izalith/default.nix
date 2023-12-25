@@ -1,5 +1,3 @@
-# Edit this configuration file to define what should be installed on
-# and in the NixOS manual (accessible by running ‘nixos-help’).
 {
   config,
   lib,
@@ -11,6 +9,8 @@
   imports = [
     inputs.nur.nixosModules.nur
     outputs.nixosModules.audio-relay
+    outputs.nixosModules.awesome
+    outputs.nixosModules.bspwm
     outputs.nixosModules.nix
     outputs.nixosModules.sunshine
 
@@ -51,22 +51,14 @@
       })
       config.nix.registry;
 
-    sessionVariables = {
-      MACHINE_SETUP = "personal";
-      MACHINE_THEME = "gruvbox";
-    };
-
     shells = with pkgs; [
       fish
       nushell
       zsh
     ];
 
-    # List packages installed in system profile. To search, run:
-    # $ nix search wget
     systemPackages = [
       inputs.home-manager.packages.${pkgs.system}.default
-      pkgs.awesome
       pkgs.coreutils
       pkgs.gnome.file-roller
       pkgs.lightlocker
@@ -153,6 +145,8 @@
 
   erdtree = {
     audio-relay.enable = true;
+    awesome.enable = true;
+    bspwm.enable = true;
     nix.enable = true;
     sunshine.enable = true;
   };
@@ -222,36 +216,24 @@
   services = {
     flatpak.enable = true;
 
+    logind.lidSwitchExternalPower = "ignore";
+
     tailscale.enable = true;
 
-    # Enable CUPS to print documents.
     printing.enable = true;
 
     udev.extraRules = ''
       KERNEL=="uinput", MODE="0660", GROUP="uinput", OPTIONS+="static_node=uinput"
     '';
 
-    # Some programs need SUID wrappers, can be configured further or are
-    # started in user sessions.
-    # programs.mtr.enable = true;
-    # programs.gnupg.agent = {
-    #   enable = true;
-    #   enableSSHSupport = true;
-    # };
-
     openssh.enable = true;
   };
 
   networking = {
     hostName = "izalith";
-    # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
-    # Configure network proxy if necessary
-    # networking.proxy.default = "http://user:password@proxy:port/";
-    # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
-
-    # Enable networking
     networkmanager.enable = true;
+
     firewall = {
       # Open ports in the firewall.
       allowedTCPPorts = [24800];
@@ -261,11 +243,5 @@
 
   virtualisation.docker.enable = true;
 
-  # This value determines the NixOS release from which the default
-  # settings for stateful data, like file locations and database versions
-  # on your system were taken. It‘s perfectly fine and recommended to leave
-  # this value at the release version of the first install of this system.
-  # Before changing this value read the documentation for this option
-  # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "23.05"; # Did you read the comment?
+  system.stateVersion = "23.05";
 }

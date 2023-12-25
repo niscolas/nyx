@@ -4,9 +4,9 @@
   pkgs,
   ...
 }: let
-  cfg = config.starship;
+  cfg = config.erdtree.starship;
 in {
-  options.starship = {
+  options.erdtree.starship = {
     enable = lib.mkEnableOption {};
   };
 

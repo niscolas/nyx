@@ -5,11 +5,10 @@
   ...
 }: let
   cfg = config.erdtree.sunshine;
-  sunshineOverride = pkgs.sunshine;
-  # .override {
-  #   cudaSupport = true;
-  #   stdenv = pkgs.cudaPackages.backendStdenv;
-  # };
+  sunshineOverride = pkgs.sunshine.override {
+    cudaSupport = true;
+    stdenv = pkgs.cudaPackages.backendStdenv;
+  };
 in {
   options.erdtree.sunshine = {
     enable = lib.mkEnableOption {};

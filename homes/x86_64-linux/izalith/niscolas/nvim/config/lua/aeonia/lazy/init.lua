@@ -345,6 +345,7 @@ M.setup = function()
 
         {
             "zbirenbaum/neodim",
+            enabled = false,
             event = "LspAttach",
             opts = {
                 alpha = 0.5,
