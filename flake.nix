@@ -15,7 +15,12 @@
 
     audio-relay.url = "github:niscolas/audiorelay-flake-fork";
     mach-nix.url = "mach-nix/3.5.0";
+    minegrub-theme.url = "github:Lxtharia/minegrub-theme";
     neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
+    # nix-index-database = {
+    #   url = "github:Mic92/nix-index-database";
+    #   inputs.nixpkgs.follows = "nixpkgs";
+    # };
     nvidia-patch = {
       url = "github:niscolas/nvidia-patch-nixos-fork";
       inputs.nixpkgs.follows = "nixpkgs";

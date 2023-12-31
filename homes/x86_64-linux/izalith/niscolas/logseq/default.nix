@@ -1,8 +1,10 @@
 {
   config,
+  lib,
   pkgs,
   ...
 }: let
+  cfg = config.erdtree.niscolas.logseq;
   configDir = "${config.home.homeDirectory}/bonfire/nyx/homes/x86_64-linux/izalith/niscolas/logseq";
   logseqBackup = pkgs.writeShellApplication {
     name = "${unitName}";
@@ -11,28 +13,39 @@
   };
   unitName = "logseq-backup";
 in {
-  systemd.user.services.${unitName} = {
-    Install.WantedBy = ["default.target"];
-    Service = {
-      Type = "oneshot";
-      ExecStart = "${logseqBackup}/bin/${unitName}";
-    };
+  options.erdtree.niscolas.logseq = {
+    enable = lib.mkEnableOption {};
+    enableBackup = lib.mkEnableOption {};
   };
 
-  systemd.user.timers.${unitName} = {
-    Install.WantedBy = ["timers.target"];
-    Timer = {
-      OnBootSec = "1m";
-      OnUnitActiveSec = "1m";
-      Unit = "${unitName}.service";
+  config = lib.mkIf cfg.enable {
+    systemd.user = lib.mkIf cfg.enableBackup {
+      services.${unitName} = {
+        Install.WantedBy = ["default.target"];
+        Service = {
+          Type = "oneshot";
+          ExecStart = "${logseqBackup}/bin/${unitName}";
+        };
+      };
+
+      timers.${unitName} = {
+        Install.WantedBy = ["timers.target"];
+        Timer = {
+          OnBootSec = "1m";
+          OnUnitActiveSec = "1m";
+          Unit = "${unitName}.service";
+        };
+      };
     };
-  };
 
-  home.packages = with pkgs; [logseq];
+    home = {
+      file = {
+        ".logseq/config".source = config.lib.file.mkOutOfStoreSymlink "${configDir}/.logseq/config";
+        ".logseq/preferences.json".source = config.lib.file.mkOutOfStoreSymlink "${configDir}/.logseq/preferences.json";
+        ".logseq/settings".source = config.lib.file.mkOutOfStoreSymlink "${configDir}/.logseq/settings";
+      };
 
-  home.file = {
-    ".logseq/config".source = config.lib.file.mkOutOfStoreSymlink "${configDir}/.logseq/config";
-    ".logseq/settings".source = config.lib.file.mkOutOfStoreSymlink "${configDir}/.logseq/settings";
-    ".logseq/preferences.json".source = config.lib.file.mkOutOfStoreSymlink "${configDir}/.logseq/preferences.json";
+      packages = with pkgs; [logseq];
+    };
   };
 }

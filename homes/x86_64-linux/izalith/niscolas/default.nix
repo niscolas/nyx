@@ -11,18 +11,19 @@ in {
   imports = [
     outputs.homeManagerModules.home
 
+    ./awesome
     ./bspwm
-    ./eww/default.nix
-    ./fish/default.nix
-    ./kanata/default.nix
-    ./logseq/default.nix
-    ./mangohud/default.nix
-    ./nushell/default.nix
-    ./nvim/default.nix
+    ./eww
+    ./fish
+    ./kanata
+    ./logseq
+    ./mangohud
+    ./nushell
+    ./nvim
     ./picom
-    ./ssh/default.nix
+    ./ssh
     ./starship
-    ./tmux/default.nix
+    ./tmux
   ];
 
   nixpkgs = {
@@ -46,48 +47,13 @@ in {
   # Nicely reload system units when changing configs
   systemd.user.startServices = "sd-switch";
 
-  home.username = "niscolas";
-  home.homeDirectory = "/home/niscolas";
-  home.file = {
-    ".bin".source = ./.bin;
-    ".config/alacritty".source = ./alacritty;
-    ".config/awesome".source = ./awesome;
-    ".config/bat".source = ./bat;
-    ".config/bottom".source = ./bottom;
-    ".config/cpupower_gui".source = ./cpupower_gui;
-    ".config/flameshot".source = ./flameshot;
-
-    ".config/gh".source =
-      config.lib.file.mkOutOfStoreSymlink
-      "${config.home.homeDirectory}/bonfire/nyx/homes/x86_64-linux/izalith/niscolas/gh";
-
-    ".config/git".source = ./git;
-    ".config/hidamari".source = ./hidamari;
-    ".config/i3".source = ./i3;
-    ".config/ideavim".source = ./ideavim;
-    ".config/keyd".source = ./keyd;
-
-    ".config/ludusavi".source =
-      config.lib.file.mkOutOfStoreSymlink
-      "${config.home.homeDirectory}/bonfire/nyx/homes/x86_64-linux/izalith/niscolas/ludusavi";
-
-    ".config/neofetch".source = ./neofetch;
-    ".config/omnisharp".source = ./omnisharp;
-    ".config/optimus-manager".source = ./optimus-manager;
-    ".config/polybar".source = ./polybar;
-    ".config/ranger".source = ./ranger;
-    ".config/rg".source = ./rg;
-    ".config/rofi".source = ./rofi;
-    ".config/tridactyl".source = ./tridactyl;
-    ".config/wezterm".source = ./wezterm;
-    ".config/wired".source = ./wired;
-    ".config/zsh".source = ./zsh;
-  };
-
   erdtree = {
     niscolas = {
-      bspwm = {
+      awesome.enable = true;
+      bspwm.enable = true;
+      logseq = {
         enable = true;
+        enableBackup = true;
       };
     };
 
@@ -100,53 +66,169 @@ in {
     starship.enable = true;
   };
 
-  home.sessionVariables = {
-    MACHINE_SETUP = "personal";
-    MACHINE_THEME = "gruvbox";
-  };
-
-  # link all files in `./scripts` to `~/.config/i3/scripts`
-  # home.file.".config/i3/scripts" = {
-  #   source = ./scripts;
-  #   recursive = true;   # link recursively
-  #   executable = true;  # make all files executable
-  # };
-
-  # encode the file content in nix configuration file directly
-  # home.file.".xxx".text = ''
-  #     xxx
-  # '';
-
-  services.blueman-applet.enable = true;
-  services.opensnitch-ui.enable = true;
-  services.network-manager-applet.enable = true;
-  services.syncthing = {
-    enable = true;
-  };
-
-  services.stalonetray = {
-    enable = true;
-    # https://github.com/kolbusa/stalonetray/blob/master/stalonetrayrc.sample.in
-    config = {
-      background = "#32302F";
-      grow_gravity = "E";
-      icon_size = "24";
-      kludges = "fix_window_pos,force_icons_size";
-      slot_size = "32x32";
-      window_layer = "bottom";
+  services = {
+    blueman-applet.enable = true;
+    opensnitch-ui.enable = true;
+    network-manager-applet.enable = true;
+    stalonetray = {
+      enable = true;
+      # https://github.com/kolbusa/stalonetray/blob/master/stalonetrayrc.sample.in
+      config = {
+        background = "#32302F";
+        grow_gravity = "E";
+        icon_size = "24";
+        kludges = "fix_window_pos,force_icons_size";
+        slot_size = "32x32";
+        window_layer = "bottom";
+      };
     };
+    syncthing.enable = true;
   };
 
   xresources.properties = {
     "Xft.dpi" = 120;
   };
 
-  home.pointerCursor = {
-    gtk.enable = true;
-    x11.enable = true;
-    name = "Nordzy-cursors";
-    size = 16;
-    package = pkgs.nordzy-cursor-theme;
+  home = {
+    username = "niscolas";
+    homeDirectory = "/home/niscolas";
+    file = {
+      ".bin".source = ./.bin;
+      ".config/alacritty".source = ./alacritty;
+      ".config/bat".source = ./bat;
+      ".config/bottom".source = ./bottom;
+      ".config/cpupower_gui".source = ./cpupower_gui;
+      ".config/flameshot".source = ./flameshot;
+
+      ".config/gh".source =
+        config.lib.file.mkOutOfStoreSymlink
+        "${config.home.homeDirectory}/bonfire/nyx/homes/x86_64-linux/izalith/niscolas/gh";
+
+      ".config/git".source = ./git;
+      ".config/hidamari".source = ./hidamari;
+      ".config/i3".source = ./i3;
+      ".config/ideavim".source = ./ideavim;
+      ".config/keyd".source = ./keyd;
+
+      ".config/ludusavi".source =
+        config.lib.file.mkOutOfStoreSymlink
+        "${config.home.homeDirectory}/bonfire/nyx/homes/x86_64-linux/izalith/niscolas/ludusavi";
+
+      ".config/neofetch".source = ./neofetch;
+      ".config/omnisharp".source = ./omnisharp;
+      ".config/optimus-manager".source = ./optimus-manager;
+      ".config/polybar".source = ./polybar;
+      ".config/ranger".source = ./ranger;
+      ".config/rg".source = ./rg;
+      ".config/rofi".source = ./rofi;
+      ".config/tridactyl".source = ./tridactyl;
+      ".config/wezterm".source = ./wezterm;
+      ".config/wired".source = ./wired;
+      ".config/zsh".source = ./zsh;
+    };
+
+    sessionVariables = {
+      MACHINE_SETUP = "personal";
+      MACHINE_THEME = "gruvbox";
+    };
+
+    pointerCursor = {
+      gtk.enable = true;
+      x11.enable = true;
+      name = "Nordzy-cursors";
+      size = 16;
+      package = pkgs.nordzy-cursor-theme;
+    };
+
+    packages = with pkgs; [
+      (import ./scripts/my-battery.nix {inherit pkgs;})
+      (import ./scripts/kb-layout-swap.nix {inherit pkgs;})
+      (builtins.getFlake "github:nbfc-linux/nbfc-linux/0d109723b8c9c407d80272e22d5b2bb12765550b").packages."x86_64-linux".nbfc
+      alacritty
+      appimage-run
+      barrier
+      bat
+      bottom
+      brightnessctl
+      cmake
+      dbus
+      delta
+      discord
+      easyeffects
+      epick
+      fd
+      flameshot
+      fluent-reader
+      font-manager
+      fzf
+      gcc
+      gh
+      git
+      git-lfs
+      glxinfo
+      gnome.gnome-disk-utility
+      gnome.zenity
+      google-chrome
+      inkscape-with-extensions
+      input-leap
+      krita
+      libnotify
+      linux-wallpaperengine
+      lm_sensors # for `sensors` command
+      lsof # list open files
+      ltrace # library call monitoring
+      ludusavi
+      lutris
+      lxappearance
+      mprocs
+      neofetch
+      networkmanagerapplet
+      nix-output-monitor # it provides the command `nom` works just like `nix` with more details log output
+      opensnitch-ui
+      opentabletdriver
+      p7zip
+      pavucontrol
+      pciutils # lspci
+      pritunl-client
+      protonup-qt
+      r2modman
+      rclone
+      ripgrep
+      rofi
+      rustup
+      s-tui
+      scrcpy
+      snixembed
+      soundux
+      steamtinkerlaunch
+      strace # system call monitoring
+      stremio
+      stress
+      stylua
+      trayer
+      unixtools.xxd
+      unzip
+      usbutils # lsusb
+      vulkan-tools
+      wezterm
+      wget
+      xclip
+      xdotool
+      xorg.xdpyinfo
+      xorg.xwininfo
+      xz
+      zip
+    ];
+
+    # This value determines the home Manager release that your
+    # configuration is compatible with. This helps avoid breakage
+    # when a new home Manager release introduces backwards
+    # incompatible changes.
+    #
+    # You can update home Manager without changing this value. See
+    # the home Manager release notes for a list of state version
+    # changes in each release.
+    stateVersion = "23.05";
   };
 
   gtk = {
@@ -196,7 +278,9 @@ in {
 
     nix-index = {
       enable = true;
+      enableBashIntegration = false;
       enableFishIntegration = cfg.fish.enable;
+      enableZshIntegration = false;
     };
 
     zoxide = {
@@ -204,93 +288,6 @@ in {
       enableFishIntegration = cfg.fish.enable;
     };
   };
-
-  home.packages = with pkgs; [
-    (builtins.getFlake "github:nbfc-linux/nbfc-linux/0d109723b8c9c407d80272e22d5b2bb12765550b").packages."x86_64-linux".nbfc
-    s-tui
-    stress
-    r2modman
-    alacritty
-    appimage-run
-    barrier
-    bat
-    bottom
-    cmake
-    dbus
-    delta
-    discord
-    easyeffects
-    epick
-    fd
-    flameshot
-    fluent-reader
-    font-manager
-    fzf
-    gcc
-    gh
-    git
-    git-lfs
-    glxinfo
-    gnome.gnome-disk-utility
-    gnome.zenity
-    google-chrome
-    inkscape-with-extensions
-    input-leap
-    krita
-    libnotify
-    linux-wallpaperengine
-    lm_sensors # for `sensors` command
-    lsof # list open files
-    ltrace # library call monitoring
-    ludusavi
-    lutris
-    lxappearance
-    mprocs
-    neofetch
-    networkmanagerapplet
-    nix-output-monitor # it provides the command `nom` works just like `nix` with more details log output
-    opensnitch-ui
-    opentabletdriver
-    p7zip
-    pavucontrol
-    pciutils # lspci
-    pritunl-client
-    protonup-qt
-    rclone
-    ripgrep
-    rofi
-    rustup
-    snixembed
-    soundux
-    steamtinkerlaunch
-    strace # system call monitoring
-    stremio
-    stylua
-    trayer
-    unixtools.xxd
-    unzip
-    usbutils # lsusb
-    vulkan-tools
-    wezterm
-    wget
-    xclip
-    xdotool
-    xorg.xdpyinfo
-    xorg.xwininfo
-    xz
-    zip
-    scrcpy
-  ];
-
-  # This value determines the home Manager release that your
-  # configuration is compatible with. This helps avoid breakage
-  # when a new home Manager release introduces backwards
-  # incompatible changes.
-  #
-  # You can update home Manager without changing this value. See
-  # the home Manager release notes for a list of state version
-  # changes in each release.
-  home.stateVersion = "23.05";
 
   # Let home Manager install and manage itself.
   programs.home-manager.enable = true;

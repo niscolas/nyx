@@ -7,7 +7,9 @@
   ...
 }: {
   imports = [
+    inputs.minegrub-theme.nixosModules.default
     inputs.nur.nixosModules.nur
+    # inputs.nix-index-database.nixosModules.nix-index
     outputs.nixosModules.audio-relay
     outputs.nixosModules.awesome
     outputs.nixosModules.bspwm
@@ -95,16 +97,14 @@
 
   programs = {
     dconf.enable = true;
-
     fish.enable = true;
-
+    nm-applet.enable = true;
     xss-lock = {
       enable = true;
       lockerCommand = ''
         ${pkgs.lightlocker}/bin/light-locker-command -l
       '';
     };
-
     thunar = {
       enable = true;
       plugins = with pkgs.xfce; [thunar-archive-plugin thunar-volman];
@@ -134,6 +134,10 @@
         enable = true;
         efiSupport = true;
         device = "nodev";
+        minegrub-theme = {
+          enable = true;
+          splash = "100% Flakes!";
+        };
         useOSProber = true;
       };
 
@@ -195,19 +199,6 @@
   ];
 
   specialisation = {
-    eco_mode.configuration = {
-      services.tlp = {
-        enable = false;
-        settings = {
-          CPU_SCALING_GOVERNOR_ON_AC = lib.mkForce "powersave";
-
-          CPU_ENERGY_PERF_POLICY_ON_AC = lib.mkForce "power";
-
-          CPU_MAX_PERF_ON_AC = lib.mkForce 50;
-        };
-      };
-    };
-
     steam_off.configuration = {
       services.opensnitch.enable = true;
     };

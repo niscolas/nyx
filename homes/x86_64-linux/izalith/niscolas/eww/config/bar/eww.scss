@@ -1,6 +1,8 @@
 /** Created by saimoom, edited by niscolas **/
 
-$color-aqua: #689D6A;
+$color-aqua: #8EC07C;
+$color-blue: #83A598;
+$color-green: #B8BB26;
 $color-dark-soft: #32302F;
 $color-light-soft: #F2E5BC;
 $color-purple: #D3869B;
@@ -37,10 +39,6 @@ $prefix-suffix-border-radius: 16px;
     margin: 0 12px 0 8;
 }
 
-.mem_module {
-    border-radius: 16px;
-    margin: 0px 10px 0px 3px;
-}
 .bat_module {
     border-radius: 16px;
     margin: 0px 10px 0px 10px;
@@ -108,40 +106,53 @@ $prefix-suffix-border-radius: 16px;
 
 .clock-widget {
     @extend .default-widget;
-    border-color: $color-aqua;
+    border-color: $color-blue;
 }
 
 .clock-prefix {
     @extend .default-widget-prefix;
     color: $color-dark-soft;
-    background-color: $color-aqua;
+    background-color: $color-blue;
 }
 
 .clock-label {
     font-size: 18;
-    color: $color-aqua;
+    color: $color-blue;
     font-weight: bold;
 }
 
 .clock-suffix {
     @extend .default-widget-suffix;
-    background-color: $color-aqua;
+    background-color: $color-blue;
 }
 
 .system-widget {
-    background-color: $color-dark-soft;
-    border-radius: $widget-border-radius;
+    @extend .default-widget;
+    border-color: $color-green;
 }
 
 .system-prefix {
     @extend .default-widget-prefix;
     color: $color-dark-soft;
-    background-color: $color-purple;
+    background-color: $color-green;
 }
 
 .system-suffix {
     @extend .default-widget-suffix;
-    background-color: $color-purple;
+    background-color: $color-green;
+}
+
+.battery-widget {
+}
+
+.battery-label {
+    color: $color-green;
+    font-weight: bold;
+}
+
+.tray-widget {
+    @extend .default-widget;
+    border-color: $color-purple;
 }
 
 .tray-prefix {
@@ -150,13 +161,8 @@ $prefix-suffix-border-radius: 16px;
     background-color: $color-purple;
 }
 
-.tray-widget {
-    @extend .default-widget;
-    border-color: $color-purple;
-}
-
 .tray-content {
-    margin: 0 200px;
+    margin: 0 150px;
 }
 
 .tray-suffix {

@@ -278,6 +278,14 @@ globalkeys = gears.table.join(
         shell("keyboard_swap_layout.nu")
     end, { description = "swap keyboard layout", group = "launcher" }),
 
+    awful.key({ modkey }, "Right", function()
+        shell("brightnessctl set 10%+")
+    end, { description = "increase brightness", group = "launcher" }),
+
+    awful.key({ modkey }, "Left", function()
+        shell("brightnessctl set 10%-")
+    end, { description = "decrease brightness", group = "launcher" }),
+
     awful.key({ modkey }, "z", function()
         local current_tag = awful.screen.focused().selected_tag
 
@@ -606,9 +614,8 @@ client.connect_signal("property::urgent", function(c)
 end)
 
 awesome.connect_signal("startup", function()
-    shell("nm-applet")
-    shell("xfce4-power-manager")
-    shell("syncthing -no-browser")
+    -- shell("xfce4-power-manager")
+    -- shell("syncthing -no-browser")
 
     -- xss-lock grabs a logind suspend inhibit lock and will use i3lock to lock the
     -- screen before suspend. Use loginctl lock-session to lock your screen.
@@ -617,7 +624,7 @@ awesome.connect_signal("startup", function()
 
     spawn("hidamari --background")
 
-    spawn("compfy")
+    -- spawn("compfy")
 
     shell("setxkbmap us")
     shell('setxkbmap -option "compose:menu"')

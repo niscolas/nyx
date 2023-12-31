@@ -44,9 +44,9 @@ syncthing &
 "$SCRIPTS_DIR/notify_script_start.sh" "$name"
 
 "$SCRIPTS_DIR/bspwm/bspwm-auto_monitor_setup.sh"
-"$SCRIPTS_DIR/bspwm/bspwm-common_setup.sh"
 
-dex --autostart --environment bspwm &
+setxkbmap us
+setxkbmap -option "compose:menu"
 
 "$SCRIPTS_DIR/notify_script_success.sh" "$name"
 

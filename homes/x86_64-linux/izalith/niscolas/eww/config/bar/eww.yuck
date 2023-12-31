@@ -1,7 +1,5 @@
-(defpoll battery :interval "15s" "scripts/battery --bat")
-(defpoll battery_status :interval "1m" "scripts/battery --bat-st")
+(defpoll battery :interval "5s" "my-battery")
 (defpoll clock_time :interval "1m" "scripts/clock.nu")
-
 (defpoll memory :interval "15s" "scripts/ram_usage_percent.nu")
 
 (deflisten workspaces_content "tail -F ~/.cache/eww_workspaces")
@@ -12,26 +10,16 @@
     (box
         :class "workspaces-widget"
         :orientation "h"
-        :space-evenly "false" 
+        :space-evenly false 
         (label :text " " :class "workspaces-prefix")
         (literal :content workspaces_content)
         (label :class "workspaces-suffix")
 ))
 
-(defwidget bat []
-    (box :class "bat_module" :vexpand "false" :hexpand "false"
-        (circular-progress
-            :value battery
-            :class "batbar"
-            :thickness 4
-            (button
-                :class "iconbat"
-                :limit-width 2
-                :tooltip "battery on ${battery}%"
-                :show_truncated false
-                :wrap false
-                "")
-)))
+(defwidget battery_widget []
+    (box :class "battery-widget" :vexpand "false" :hexpand "false"
+        (label :class "battery-label" :text battery)
+))
 
 (defwidget ram_widget []
     (box :class "mem_module" :vexpand "false" :hexpand "false"
@@ -70,12 +58,10 @@
 (defwidget system_widget []
 	(box
         :class "system-widget"
-        :halign "start"
         :orientation "h"
         :space-evenly false
         (label :text " " :class "system-prefix")
-        (bat)
-        (ram_widget)
+        (battery_widget)
         (label :class "system-suffix")
 ))
 
@@ -84,7 +70,7 @@
         :class "tray-widget"
         :halign "end"
         :orientation "h"
-        :space-evenly "false"
+        :space-evenly false
         (label :text " " :class "tray-prefix")
         (label :class "tray-content")
         (label :class "tray-suffix")
@@ -92,47 +78,51 @@
 
 (defwidget left []
 	(box
-        :orientation "h"
-		:space-evenly false
-        :halign "start"
 		:class "left_modules"
+        :halign "start"
+		:space-evenly false
+        :orientation "h"
         (workspaces_widget)
 ))
 
 (defwidget center []
 	(box
+        :class "center_modules"
+        :halign "center"
         :orientation "h"
         :space-evenly false
-        :halign "center"
-        :class "center_modules"
-        ;; (system_widget)
-        (separator)
         (clock_widget)
 ))
 
 (defwidget right []
 	(box
-        :orientation "h"
-        :halign "end"
         :class "right_modules"
+        :halign "end"
+        :orientation "h"
+        :space-evenly false
+        (system_widget)
+        (separator)
         (tray_widget)
 ))
 
-(defwidget bar_1 []
+(defwidget bar_widget []
     (box
         :class "bar"
         :orientation "h"
+        :space-evenly true
         (left)
         (center)
         (right)
 ))
 
 (defwindow bar
-    :geometry (geometry
-	:y "1%"
-	:width "98%"
-	:height "40px"
-	:anchor "top center")
+    :geometry
+        (geometry
+            :y "1%"
+            :width "98%"
+            :height "40px"
+            :anchor "top center")
     :stacking "bg"
     :wm-ignore false
-  (bar_1))
+    (bar_widget)
+)
