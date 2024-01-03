@@ -12,8 +12,6 @@
 
   # nvidia package to patch
   nvidia-package = config.boot.kernelPackages.nvidiaPackages.stable;
-
-  patchDriver = import ./nvenc-unlock.nix;
 in {
   hardware = {
     # Make sure opengl is enabled
@@ -41,7 +39,10 @@ in {
       # Optionally, you may need to select the appropriate driver version for your specific GPU.
       package = nvidia-patch.patch-nvenc (nvidia-patch.patch-fbc nvidia-package);
 
-      powerManagement.enable = true;
+      powerManagement = {
+        enable = true;
+        finegrained = true;
+      };
 
       prime = {
         offload = {

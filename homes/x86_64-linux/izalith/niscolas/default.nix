@@ -276,13 +276,6 @@ in {
       };
     };
 
-    nix-index = {
-      enable = true;
-      enableBashIntegration = false;
-      enableFishIntegration = cfg.fish.enable;
-      enableZshIntegration = false;
-    };
-
     zoxide = {
       enable = true;
       enableFishIntegration = cfg.fish.enable;

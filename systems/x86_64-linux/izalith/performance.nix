@@ -1,5 +1,5 @@
 {lib, ...}: {
-  services.system76-scheduler.enable = false;
+  services.system76-scheduler.enable = true;
   services.power-profiles-daemon.enable = false;
   services.thermald.enable = false;
   services.auto-cpufreq = {
@@ -122,7 +122,7 @@
       # CACHE:
     '';
   };
-  powerManagement.powertop.enable = true;
+  powerManagement.powertop.enable = false;
   specialisation = {
     eco_mode.configuration = {
       services.auto-cpufreq.enable = lib.mkForce false;

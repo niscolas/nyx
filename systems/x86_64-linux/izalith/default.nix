@@ -9,7 +9,7 @@
   imports = [
     inputs.minegrub-theme.nixosModules.default
     inputs.nur.nixosModules.nur
-    # inputs.nix-index-database.nixosModules.nix-index
+    inputs.nix-index-database.nixosModules.nix-index
     outputs.nixosModules.audio-relay
     outputs.nixosModules.awesome
     outputs.nixosModules.bspwm
@@ -60,6 +60,7 @@
     ];
 
     systemPackages = [
+      (import ./scripts/my-thermals.nix {inherit config pkgs;})
       inputs.home-manager.packages.${pkgs.system}.default
       pkgs.coreutils
       pkgs.gnome.file-roller
@@ -96,6 +97,7 @@
   };
 
   programs = {
+    command-not-found.enable = false;
     dconf.enable = true;
     fish.enable = true;
     nm-applet.enable = true;
@@ -112,16 +114,20 @@
   };
 
   boot = {
-    kernelPackages = pkgs.linuxKernel.packages.linux_xanmod;
+    extraModprobeConfig = ''
+      blacklist nouveau
+      options nouveau modeset=0
+    '';
 
     blacklistedKernelModules = [
       "i2c_nvidia_gpu"
+      "nouveau"
     ];
 
+    kernelPackages = pkgs.linuxKernel.packages.linux_xanmod;
+
     kernelParams = [
-      # "intel_pstate=passive"
       "acpi_rev_override"
-      "nvidia-drm.modeset=1"
     ];
 
     loader = {
@@ -135,7 +141,7 @@
         efiSupport = true;
         device = "nodev";
         minegrub-theme = {
-          enable = true;
+          enable = false;
           splash = "100% Flakes!";
         };
         useOSProber = true;
@@ -144,7 +150,7 @@
       systemd-boot.enable = false;
     };
 
-    plymouth.enable = true;
+    plymouth.enable = false;
   };
 
   erdtree = {
@@ -207,11 +213,9 @@
   services = {
     flatpak.enable = true;
 
-    logind.lidSwitchExternalPower = "ignore";
-
     tailscale.enable = true;
 
-    printing.enable = true;
+    printing.enable = false;
 
     udev.extraRules = ''
       KERNEL=="uinput", MODE="0660", GROUP="uinput", OPTIONS+="static_node=uinput"

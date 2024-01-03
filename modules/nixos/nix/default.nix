@@ -27,10 +27,6 @@ in {
           "${XDG_BIN_HOME}"
         ];
       };
-
-      systemPackages = with pkgs; [
-        nix-index
-      ];
     };
 
     nix = {

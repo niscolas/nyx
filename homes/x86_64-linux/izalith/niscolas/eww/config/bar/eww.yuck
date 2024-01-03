@@ -1,4 +1,6 @@
 (defpoll battery :interval "5s" "my-battery")
+(defpoll cpu_temp :interval "5s" "my-thermals --cpu")
+(defpoll gpu_temp :interval "5s" "my-thermals --gpu")
 (defpoll clock_time :interval "1m" "scripts/clock.nu")
 (defpoll memory :interval "15s" "scripts/ram_usage_percent.nu")
 
@@ -19,6 +21,13 @@
 (defwidget battery_widget []
     (box :class "battery-widget" :vexpand "false" :hexpand "false"
         (label :class "battery-label" :text battery)
+))
+
+(defwidget temperature_widget []
+    (box :class "temperature-widget" :vexpand "false" :hexpand "false"
+        (label :class "thermometer-label" :text "")
+        (label :class "cpu-temperature-label" :text cpu_temp)
+        (label :class "gpu-temperature-label" :text gpu_temp)
 ))
 
 (defwidget ram_widget []
