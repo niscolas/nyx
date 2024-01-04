@@ -8,6 +8,14 @@
   configPath = "${config.erdtree.home.configPath}/bspwm";
 
   kbLayoutSwap = import ../scripts/kb-layout-swap.nix {inherit pkgs;};
+
+  ewwWorkspacesScript = import ./scripts/eww-workspaces.nix {inherit pkgs;};
+  bspcSubscribe = pkgs.writeShellScriptBin "bspc-subscribe" ''
+    bspc subscribe all | while read -r event; do
+        ${ewwWorkspacesScript}/bin/my-bspwm-eww-workspaces
+    done
+  '';
+
   gruvboxTheme = pkgs.writeShellScriptBin "bspwm-gruvbox" ''
     bspc config focused_border_color "#FABD2F"
     bspc config normal_border_color "#32302F"
@@ -29,47 +37,48 @@ in {
 
     xsession.windowManager.bspwm = {
       enable = !cfg.debugMode;
-      extraConfig = with pkgs; ''
-        pgrep -x ${sxhkd}/bin/sxhkd > /dev/null || ${sxhkd}/bin/sxhkd &
 
-        # colorscheme {{{
-        ${gruvboxTheme}
-        # }}}
-
+      settings = {
         # window behavior {{{
-        bspc config border_width 4
-        bspc config window_gap 16
-        bspc config split_ratio 0.52
+        border_width = 4;
+        window_gap = 16;
+        split_ratio = 0.52;
         # }}}
 
         # pointer behavior {{{
-        bspc config focus_follows_pointer false
-        bspc config pointer_follows_focus true
+        focus_follows_pointer = false;
+        pointer_follows_focus = true;
         # }}}
 
         # monocle {{{
-        bspc config borderless_monocle true
-        bspc config gapless_monocle false
-        bspc config paddingless_monocle true
-        bspc config single_monocle false
+        borderless_monocle = true;
+        gapless_monocle = false;
+        paddingless_monocle = true;
+        single_monocle = false;
         # }}}
+      };
 
-        # (once) autostart {{{
-        ${xorg.xsetroot}/bin/xsetroot -cursor_name left_ptr &
-        # $compfy}/bin/compfy &
+      monitors = {
+        eDP-1-1 = ["1" "2" "3" "4" "5" "6" "7" "8" "9" "10"];
+        HDMI-0 = ["1" "2" "3" "4" "5" "6" "7" "8" "9" "10"];
+      };
 
-        ${xorg.setxkbmap}/bin/setxkbmap us
-        ${xorg.setxkbmap}/bin/setxkbmap -option "compose:menu"
-        ${syncthing}/bin/syncthing -no-browser
-        # }}}
+      startupPrograms = with pkgs; [
+        "${xorg.xsetroot}/bin/xsetroot -cursor_name left_ptr"
+        "${xorg.setxkbmap}/bin/setxkbmap us"
+        "${xorg.setxkbmap}/bin/setxkbmap -option 'compose:menu'"
+        "${picom}/bin/compfy"
+        "${bspcSubscribe}/bin/bspc-subscribe"
+      ];
+
+      extraConfig = with pkgs; ''
+        pgrep -x ${sxhkd}/bin/sxhkd > /dev/null || ${sxhkd}/bin/sxhkd &
+
+        ${gruvboxTheme}/bin/bspwm-gruvbox
       '';
     };
 
     xdg.configFile = {
-      "bspwm/bspwmrc".source =
-        lib.mkIf cfg.debugMode
-        (lib.file.mkOutOfStoreSymlink "${configPath}/bspwmrc");
-
       "sxhkd/sxhkdrc".text = ''
         #
         # wm independent hotkeys
@@ -92,11 +101,8 @@ in {
         super + ctrl + v
           $HOME/.config/rofi/applets/bin/volume.sh
 
-        super + ctrl + s
-          $HOME/.config/rofi/applets/bin/appasroot.sh
-
         # make sxhkd reload its configuration files:
-        super + Escape
+        super + ctrl + s
           notify-send "reload config files" && pkill -USR1 -x sxhkd
 
         super + shift + x
@@ -177,7 +183,7 @@ in {
 
         # focus or send to the given desktop
         super + {_,shift + }{1-9,0}
-        	bspc {desktop -f,node -d} '^{1-9,10}'
+        	bspc {desktop -f,node -d} 'focused:^{1-9,10}'
 
         #
         # preselect

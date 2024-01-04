@@ -31,6 +31,8 @@
       };
     });
 
+    ludusavi = final.pkgs.unstable.ludusavi;
+
     mangohud = final.callPackage ./mangohud {
       libXNVCtrl = final.pkgs.linuxPackages.nvidia_x11.settings.libXNVCtrl;
       mangohud32 = final.pkgsi686Linux.mangohud;

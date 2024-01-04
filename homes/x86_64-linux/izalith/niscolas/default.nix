@@ -15,13 +15,16 @@ in {
     ./bspwm
     ./eww
     ./fish
+    ./heroic
     ./kanata
     ./logseq
+    ./ludusavi
     ./mangohud
     ./nushell
     ./nvim
     ./picom
     ./ssh
+    ./stalonetray
     ./starship
     ./tmux
   ];
@@ -51,37 +54,37 @@ in {
     niscolas = {
       awesome.enable = true;
       bspwm.enable = true;
+
+      eww = {
+        enable = true;
+        debugModeEnabled = true;
+      };
+
+      fish = {
+        enable = true;
+        enableStarship = true;
+      };
+
+      heroic = {
+        enable = true;
+        enableLudusaviWrapper = true;
+      };
+
       logseq = {
         enable = true;
         enableBackup = true;
       };
+
+      ludusavi.enable = true;
     };
 
     home.configPath = "${config.home.homeDirectory}/bonfire/nyx/homes/x86_64-linux/izalith/niscolas";
-
-    fish = {
-      enable = true;
-      enableStarship = true;
-    };
-    starship.enable = true;
   };
 
   services = {
     blueman-applet.enable = true;
     opensnitch-ui.enable = true;
     network-manager-applet.enable = true;
-    stalonetray = {
-      enable = true;
-      # https://github.com/kolbusa/stalonetray/blob/master/stalonetrayrc.sample.in
-      config = {
-        background = "#32302F";
-        grow_gravity = "E";
-        icon_size = "24";
-        kludges = "fix_window_pos,force_icons_size";
-        slot_size = "32x32";
-        window_layer = "bottom";
-      };
-    };
     syncthing.enable = true;
   };
 
@@ -109,10 +112,6 @@ in {
       ".config/i3".source = ./i3;
       ".config/ideavim".source = ./ideavim;
       ".config/keyd".source = ./keyd;
-
-      ".config/ludusavi".source =
-        config.lib.file.mkOutOfStoreSymlink
-        "${config.home.homeDirectory}/bonfire/nyx/homes/x86_64-linux/izalith/niscolas/ludusavi";
 
       ".config/neofetch".source = ./neofetch;
       ".config/omnisharp".source = ./omnisharp;
@@ -177,7 +176,6 @@ in {
       lm_sensors # for `sensors` command
       lsof # list open files
       ltrace # library call monitoring
-      ludusavi
       lutris
       lxappearance
       mprocs
@@ -274,11 +272,6 @@ in {
           enableTridactylNative = true;
         };
       };
-    };
-
-    zoxide = {
-      enable = true;
-      enableFishIntegration = cfg.fish.enable;
     };
   };
 

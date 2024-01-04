@@ -14,10 +14,11 @@ $prefix-suffix-border-radius: 16px;
 
 * {
     all: unset;
-    font-family: Mononoki Nerd Font;
+    font-family: IntelOne Mono;
+    font-size: 16px;
 }
 
-.bar {
+.bar-widget {
 }
 
 .membar {
@@ -37,6 +38,10 @@ $prefix-suffix-border-radius: 16px;
 .separator {
     font-size: 22px;
     margin: 0 12px 0 8;
+}
+
+.separator-minimum {
+    margin: 0 0 0 8;
 }
 
 .bat_module {
@@ -66,7 +71,6 @@ $prefix-suffix-border-radius: 16px;
 .workspaces-widget {
     @extend .default-widget;
     border-color: $color-yellow;
-    font-weight: normal;
 }
 
 .workspaces-prefix {
@@ -86,6 +90,7 @@ $prefix-suffix-border-radius: 16px;
 }
 
 .workspace {
+    font-size: 50px;
 }
 
 .workspace-unoccupied {
@@ -118,7 +123,6 @@ $prefix-suffix-border-radius: 16px;
 .clock-label {
     font-size: 18;
     color: $color-blue;
-    font-weight: bold;
 }
 
 .clock-suffix {
@@ -129,6 +133,7 @@ $prefix-suffix-border-radius: 16px;
 .system-widget {
     @extend .default-widget;
     border-color: $color-green;
+    color: $color-green;
 }
 
 .system-prefix {
@@ -137,36 +142,21 @@ $prefix-suffix-border-radius: 16px;
     background-color: $color-green;
 }
 
+.system-content {
+    margin: 0 200px 0 0;
+}
+
 .system-suffix {
     @extend .default-widget-suffix;
     background-color: $color-green;
 }
 
-.battery-widget {
-}
+.battery-widget { }
 
-.battery-label {
-    color: $color-green;
-    font-weight: bold;
-}
+.battery-label { }
 
-.tray-widget {
-    @extend .default-widget;
-    border-color: $color-purple;
-}
+.temperature-widget { }
 
-.tray-prefix {
-    @extend .default-widget-prefix;
-    color: $color-dark-soft;
-    background-color: $color-purple;
-}
+.thermometer-label { }
 
-.tray-content {
-    margin: 0 150px;
-}
-
-.tray-suffix {
-    @extend .default-widget-suffix;
-    background-color: $color-purple;
-}
-
+.cpu-temperature-label { }

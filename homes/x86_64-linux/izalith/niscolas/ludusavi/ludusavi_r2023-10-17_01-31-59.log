@@ -1,1 +1,0 @@
-[2023-10-17T01:31:59.068Z] WARN [ludusavi::scan::launchers::heroic] detect_gog_games aborting since it could not read /home/niscolas/.config/heroic/store_cache/gog_library.json: missing field `games` at line 1 column 2

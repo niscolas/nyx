@@ -1,18 +1,19 @@
 {
   lib,
   config,
-  pkgs,
   ...
 }: let
-  cfg = config.erdtree.starship;
+  cfg = config.erdtree.niscolas.starship;
 in {
-  options.erdtree.starship = {
+  options.erdtree.niscolas.starship = {
     enable = lib.mkEnableOption {};
+    enableFishIntegration = lib.mkEnableOption {};
   };
 
   config = lib.mkIf cfg.enable {
     programs.starship = {
-      enable = config.programs.starship.enableFishIntegration;
+      enable = true;
+      enableFishIntegration = cfg.enableFishIntegration;
     };
 
     xdg.configFile."starship.toml".source = ./starship.toml;

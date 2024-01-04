@@ -48,6 +48,10 @@ syncthing &
 setxkbmap us
 setxkbmap -option "compose:menu"
 
+"$SCRIPTS_DIR/bspwm/bspwm-common_setup.sh"
+
+dex --autostart --environment bspwm &
+
 "$SCRIPTS_DIR/notify_script_success.sh" "$name"
 
 # vim:foldmethod=marker

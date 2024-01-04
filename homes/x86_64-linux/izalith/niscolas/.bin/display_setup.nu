@@ -22,7 +22,7 @@ def main [action: string] {
 
     if not (ps | find eww | is-empty) { pkill eww }
 
-    eww_bar.nu
+    my-eww-bar
 
     if not (ps | find stalonetray | is-empty) { pkill stalonetray }
 

@@ -125,14 +125,19 @@
   powerManagement.powertop.enable = false;
   specialisation = {
     eco_mode.configuration = {
-      services.auto-cpufreq.enable = lib.mkForce false;
-      services.tlp = {
-        enable = lib.mkForce true;
-        settings = {
-          CPU_BOOST_ON_AC = lib.mkForce 0;
-          CPU_SCALING_GOVERNOR_ON_AC = lib.mkForce "powersave";
-          CPU_ENERGY_PERF_POLICY_ON_AC = lib.mkForce "power";
-          CPU_MAX_PERF_ON_AC = lib.mkForce 50;
+      environment.etc.current-specialisation.text = lib.mkForce ''
+        eco
+      '';
+
+      services = {
+        tlp = {
+          enable = lib.mkForce true;
+          settings = {
+            CPU_BOOST_ON_AC = lib.mkForce 0;
+            CPU_SCALING_GOVERNOR_ON_AC = lib.mkForce "powersave";
+            CPU_ENERGY_PERF_POLICY_ON_AC = lib.mkForce "power";
+            CPU_MAX_PERF_ON_AC = lib.mkForce 50;
+          };
         };
       };
     };

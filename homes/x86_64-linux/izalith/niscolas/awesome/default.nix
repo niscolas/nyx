@@ -11,5 +11,6 @@ in {
 
   config = lib.mkIf cfg.enable {
     xdg.configFile."awesome".source = ./config;
+    erdtree.niscolas.stalonetray.enable = true;
   };
 }

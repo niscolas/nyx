@@ -17,6 +17,7 @@
     outputs.nixosModules.sunshine
 
     ./audio.nix
+    ./autorandr
     ./bluetooth.nix
     ./gaming.nix
     ./mach-nix-pkgs.nix
@@ -46,12 +47,17 @@
 
   environment = {
     etc =
-      lib.mapAttrs'
-      (name: value: {
-        name = "nix/path/${name}";
-        value.source = value.flake;
-      })
-      config.nix.registry;
+      (lib.mapAttrs'
+        (name: value: {
+          name = "nix/path/${name}";
+          value.source = value.flake;
+        })
+        config.nix.registry)
+      // {
+        current-specialisation.text = ''
+          default
+        '';
+      };
 
     shells = with pkgs; [
       fish
@@ -154,6 +160,10 @@
   };
 
   erdtree = {
+    izalith = {
+      autorandr.enable = true;
+    };
+
     audio-relay.enable = true;
     awesome.enable = true;
     bspwm.enable = true;
