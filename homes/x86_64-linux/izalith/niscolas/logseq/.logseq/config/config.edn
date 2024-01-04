@@ -9,4 +9,7 @@
 ;;   {:shortcuts {:ui/toggle-theme "t z"
 ;;                :ui/toggle-brackets "t b"}}
 
-{:shortcuts {}}
+{:shortcuts {:go/backward ["ctrl+o"]
+ :go/forward ["ctrl+i"]
+ :editor/follow-link ["ctrl+o"]
+ :auto-complete/open-link ["ctrl+o"]}}

@@ -430,6 +430,7 @@ M.setup = function()
         {
             "zbirenbaum/copilot.lua",
             cmd = "Copilot",
+            cond = require("aeonia.core.util").check_is_personal_setup,
             dependencies = {
                 {
                     "zbirenbaum/copilot-cmp",

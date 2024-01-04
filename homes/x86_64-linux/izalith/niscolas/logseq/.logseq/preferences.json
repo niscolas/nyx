@@ -12,9 +12,7 @@
       "selected": false
     }
   },
-  "externals": [
-    "/home/niscolas/bonfire/projects/logseq-game-tracker"
-  ],
+  "externals": [],
   "pinnedToolbarItems": [
     "logseq-quick-capture:logseq-quick-capture",
     "logseq-tidy-blocks-plugin:logseq-tidy-blocks",

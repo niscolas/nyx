@@ -92,13 +92,23 @@ local on_attach = function(client, bufnr)
 end
 
 local omnisharp_path = lsp_servers_mod.install_path
-    .. "/omnisharp/Omnisharp.dll"
+    .. "/omnisharp/libexec/Omnisharp.dll"
 
+print("OMNISHARP")
+local pid = vim.fn.getpid()
 return {
-    cmd = { "dotnet", omnisharp_path },
+    cmd = {
+        "dotnet",
+        omnisharp_path,
+        -- "--languageserver",
+        -- "--hostPID",
+        -- tostring(pid),
+    },
     handlers = {
         ["textDocument/definition"] = require("omnisharp_extended").handler,
     },
     on_attach = on_attach,
-    root_dir = util.root_pattern("*.sln"),
+    root_dir = function(path)
+        return util.root_pattern("*.sln")(path)
+    end,
 }
