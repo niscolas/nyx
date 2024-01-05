@@ -66,6 +66,7 @@
 
     systemPackages = [
       (import ./scripts/my-thermals.nix {inherit config pkgs;})
+      (import ./scripts/my-extract.nix {inherit config pkgs;})
       inputs.home-manager.packages.${pkgs.system}.default
       pkgs.coreutils
       pkgs.gnome.file-roller

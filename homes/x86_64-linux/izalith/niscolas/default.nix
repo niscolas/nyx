@@ -98,7 +98,6 @@ in {
     username = "niscolas";
     homeDirectory = "/home/niscolas";
     file = {
-      ".bin".source = ./.bin;
       ".config/alacritty".source = ./alacritty;
       ".config/bat".source = ./bat;
       ".config/bottom".source = ./bottom;
