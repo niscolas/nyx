@@ -18,7 +18,7 @@
   "contentHeading": null,
   "alwaysShowNewBlockBullet": false,
   "otherHeading": null,
-  "killAnimations": false,
+  "killAnimations": true,
   "disabled": false,
   "tabsOnTop": true,
   "headerFlashcardsButton": false,
