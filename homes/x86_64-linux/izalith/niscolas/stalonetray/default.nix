@@ -5,11 +5,7 @@
   ...
 }: let
   cfg = config.erdtree.niscolas.stalonetray;
-  restartBin = pkgs.writeShellScriptBin "my-stalonetray" ''
-    pkill stalonetray
-    sleep 1
-    stalonetray
-  '';
+  restartBin = import ./restart-bin.nix {inherit pkgs;};
 in {
   options.erdtree.niscolas.stalonetray = {
     enable = lib.mkEnableOption {};

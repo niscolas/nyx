@@ -1,6 +1,8 @@
 {
-  pkgs,
+  config,
   inputs,
+  lib,
+  pkgs,
   ...
 }: let
   l = inputs.nixpkgs.lib // builtins;
@@ -17,8 +19,16 @@
         ue4cli
       '';
     });
+
+  cfg = config.erdtree.izalith.mach-nix-pkgs;
 in {
-  environment.systemPackages = [
-    mach-nix-pkgs.${pkgs.system}
-  ];
+  options.erdtree.izalith.mach-nix-pkgs = {
+    enable = lib.mkEnableOption {};
+  };
+
+  config = lib.mkIf cfg.enable {
+    environment.systemPackages = [
+      mach-nix-pkgs.${pkgs.system}
+    ];
+  };
 }

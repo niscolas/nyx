@@ -17,10 +17,9 @@
     outputs.nixosModules.sunshine
 
     ./audio.nix
-    ./autorandr
     ./bluetooth.nix
     ./gaming.nix
-    ./mach-nix-pkgs.nix
+    ./mach-nix-pkgs
     ./performance.nix
     ./video.nix
 
@@ -161,7 +160,7 @@
 
   erdtree = {
     izalith = {
-      autorandr.enable = true;
+      mach-nix-pkgs.enable = false;
     };
 
     audio-relay.enable = true;

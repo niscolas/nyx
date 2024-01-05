@@ -11,6 +11,7 @@ in {
   imports = [
     outputs.homeManagerModules.home
 
+    ./autorandr
     ./awesome
     ./bspwm
     ./eww
@@ -52,6 +53,7 @@ in {
 
   erdtree = {
     niscolas = {
+      autorandr.enable = true;
       awesome.enable = true;
       bspwm.enable = true;
 
