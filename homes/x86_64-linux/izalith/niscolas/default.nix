@@ -59,7 +59,7 @@ in {
 
       eww = {
         enable = true;
-        debugModeEnabled = true;
+        enableDebugMode = true;
       };
 
       fish = {
@@ -78,6 +78,11 @@ in {
       };
 
       ludusavi.enable = true;
+
+      picom = {
+        enable = true;
+        enableDebugMode = true;
+      };
     };
 
     home.configPath = "${config.home.homeDirectory}/bonfire/nyx/homes/x86_64-linux/izalith/niscolas";

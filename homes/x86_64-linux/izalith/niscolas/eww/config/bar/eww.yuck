@@ -1,9 +1,10 @@
 (defpoll battery_status :interval "5s" "my-battery")
+(defpoll clock_time :interval "1m" "my-eww-bar-clock")
 (defpoll cpu_temp :interval "5s" "my-thermals --cpu")
+(defpoll cpu_usage :interval "5s" "my-cpu")
 (defpoll current_specialisation :interval "10s" "cat /etc/current-specialisation")
+(defpoll used_ram_percent :interval "15s" "my-ram --percent")
 ;; (defpoll gpu_temp :interval "5s" "my-thermals --gpu")
-(defpoll clock_time :interval "1m" "scripts/clock.nu")
-(defpoll memory :interval "15s" "scripts/ram_usage_percent.nu")
 
 (deflisten workspaces_content "tail -F ~/.cache/eww_workspaces")
 
@@ -28,13 +29,24 @@
         (label :class "battery-label" :text battery_status)
 ))
 
+(defwidget cpu_usage_widget []
+    (box
+        :class "cpu-usage-widget"
+        :hexpand false
+        :space-evenly false 
+        :vexpand false
+        (label :class "cpu-usage-prefix" :text " ")
+        (label :class "cpu-usage-label" :text cpu_usage)
+        (label :class "cpu-usage-label" :text "%")
+))
+
 (defwidget temperature_widget []
     (box
         :class "temperature-widget"
         :hexpand false
         :space-evenly false 
         :vexpand false
-        (label :class "thermometer-label" :text " ")
+        (label :class "thermometer-label" :text " ")
         (label :class "cpu-temperature-label" :text cpu_temp)
         ;; (label :class "gpu-temperature-label" :text gpu_temp)
 ))
@@ -50,33 +62,21 @@
 ))
 
 (defwidget ram_widget []
-    (box :class "mem_module" :vexpand false :hexpand false
-        (circular-progress
-            :value memory
-            :class "membar"
-            :thickness 4
-            (button
-                :class "iconmem"
-                :limit-width 2
-                :tooltip "using ${memory}% ram"
-                :onclick "scripts/pop system"
-                :show_truncated false
-                :wrap false
-                "")
-)))
+    (box
+        :class "ram-widget"
+        :hexpand false
+        :space-evenly false 
+        :vexpand false
+        (label :class "ram-prefix" :text "󰘚  ")
+        (label :class "ram-label" :text used_ram_percent)
+        (label :class "ram-label" :text "% ")
+))
 
 (defwidget separator_widget []
     (box
         :hexpand false
         :vexpand false
         (label :class "separator")
-))
-
-(defwidget separator_minimum_widget []
-    (box
-        :hexpand false
-        :vexpand false
-        (label :class "separator-minimum")
 ))
 
 (defwidget clock_widget []
@@ -101,13 +101,24 @@
             :class "system-content"
             :space-evenly false
             (battery_widget)
-            (separator_minimum_widget)
-            (separator_minimum_widget)
+            (separator_widget)
+            (cpu_usage_widget)
+            (separator_widget)
             (temperature_widget)
-            (separator_minimum_widget)
-            (separator_minimum_widget)
-            (specialisation_widget))
+            (separator_widget)
+            (specialisation_widget)
+            (separator_widget)
+            (ram_widget))
         (label :class "system-suffix")
+))
+
+(defwidget tray_widget []
+	(box
+        :class "tray-widget"
+        :space-evenly false
+        (label :text " " :class "tray-prefix")
+        (box :class "tray-content" :space-evenly false)
+        (label :class "tray-suffix")
 ))
 
 (defwidget left []
@@ -115,6 +126,7 @@
         :class "left_modules"
         :space-evenly false
         :halign "start"
+        :hexpand true
         :orientation "h"
         (workspaces_widget)
 ))
@@ -123,6 +135,7 @@
 	(box
         :class "center_modules"
         :halign "center"
+        :hexpand true
         :orientation "h"
         :space-evenly false
         (clock_widget)
@@ -132,17 +145,19 @@
 	(box
         :class "right_modules"
         :halign "end"
+        :hexpand true
         :orientation "h"
         :space-evenly false
         (system_widget)
+        (separator_widget)
+        (tray_widget)
 ))
 
 (defwidget bar_widget []
     (box
         :class "bar-widget"
         :orientation "h"
-        :space-evenly true
-        :hexpand true
+        :space-evenly false
         (left)
         (center)
         (right)
@@ -155,6 +170,7 @@
             :width "98%"
             :height "40px"
             :anchor "top center")
+    :reserve (struts :distance "48px" :side "top")
     :stacking "bg"
     :wm-ignore false
     (bar_widget)

@@ -129,7 +129,7 @@ in {
         ${pkgs.xorg.xrandr}/bin/xrandr --auto
       '';
 
-      defaultSession = "none+awesome";
+      defaultSession = "none+bspwm";
     };
 
     windowManager = {

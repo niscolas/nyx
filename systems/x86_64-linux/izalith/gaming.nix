@@ -1,4 +1,12 @@
-{pkgs, ...}: {
+{pkgs, ...}: let
+  gamemodeStartBin = pkgs.writeShellScriptBin "my-gamemode-start-script" ''
+    ${pkgs.procps}/bin/pkill picom
+  '';
+
+  gamemodeEndBin = pkgs.writeShellScriptBin "my-gamemode-end-script" ''
+    ${pkgs.picom}/bin/picom
+  '';
+in {
   environment.systemPackages = with pkgs; [
     mangohud
   ];
@@ -8,8 +16,8 @@
       enable = true;
       settings = {
         custom = {
-          start = "${pkgs.procps}/bin/pkill compfy";
-          end = "''${pkgs.picom}/bin/compfy";
+          start = "${gamemodeStartBin}/bin/my-gamemode-start-script";
+          end = "${gamemodeEndBin}/bin/my-gamemode-end-script";
         };
       };
     };

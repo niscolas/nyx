@@ -14,39 +14,29 @@ $prefix-suffix-border-radius: 16px;
 
 * {
     all: unset;
+    background-color: transparent;
     font-family: IntelOne Mono;
-    font-size: 16px;
 }
 
 .bar-widget {
 }
 
-.membar {
-    color: #e0b089;
-    border-radius: 10px;
-}
 .batbar {
     color: #afbea2;
     border-radius: 10px;
 }
 
-.iconbat, .iconmem {
-    font-size: 15;
-    margin: 10px;
-}
-
 .separator {
-    font-size: 22px;
-    margin: 0 12px 0 8;
-}
-
-.separator-minimum {
-    margin: 0 0 0 8;
+    margin: 0 8px;
 }
 
 .bat_module {
     border-radius: 16px;
     margin: 0px 10px 0px 10px;
+}
+
+.default-label {
+    margin-bottom: 3px;
 }
 
 .default-widget-prefix {
@@ -85,12 +75,11 @@ $prefix-suffix-border-radius: 16px;
 }
 
 .workspaces-content {
-    font-size: 27px;
-    margin: 2px 6px 0 0;
+    font-size: 20px;
+    margin: 3px 6px 0 0;
 }
 
 .workspace {
-    font-size: 50px;
 }
 
 .workspace-unoccupied {
@@ -121,7 +110,7 @@ $prefix-suffix-border-radius: 16px;
 }
 
 .clock-label {
-    font-size: 18;
+    @extend .default-label;
     color: $color-blue;
 }
 
@@ -143,12 +132,33 @@ $prefix-suffix-border-radius: 16px;
 }
 
 .system-content {
-    margin: 0 200px 0 0;
+    @extend .default-label;
 }
 
 .system-suffix {
     @extend .default-widget-suffix;
     background-color: $color-green;
+}
+
+.tray-widget {
+    @extend .default-widget;
+    border-color: $color-purple;
+    color: $color-purple;
+}
+
+.tray-prefix {
+    @extend .default-widget-prefix;
+    color: $color-dark-soft;
+    background-color: $color-purple;
+}
+
+.tray-content {
+    padding-right: 250px;
+}
+
+.tray-suffix {
+    @extend .default-widget-suffix;
+    background-color: $color-purple;
 }
 
 .battery-widget { }
@@ -160,3 +170,15 @@ $prefix-suffix-border-radius: 16px;
 .thermometer-label { }
 
 .cpu-temperature-label { }
+
+.ram-widget {
+}
+
+.ram-progress {
+    border-radius: 10px;
+}
+
+.battery-icon, ram-icon {
+    margin: 10px;
+}
+

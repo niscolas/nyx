@@ -7,12 +7,14 @@
   cfg = config.erdtree.niscolas.bspwm;
   configPath = "${config.erdtree.home.configPath}/bspwm";
 
-  kbLayoutSwap = import ../scripts/kb-layout-swap.nix {inherit pkgs;};
+  ewwWorkspacesBin = import ./scripts/eww-workspaces.nix {inherit pkgs;};
+  kbLayoutSwapBin = import ../scripts/kb-layout-swap.nix {inherit pkgs;};
+  launchEwwBarBin = import ../eww/launch-bar.nix {inherit pkgs;};
+  restartStaloneTrayBin = import ../stalonetray/restart-bin.nix {inherit pkgs;};
 
-  ewwWorkspacesScript = import ./scripts/eww-workspaces.nix {inherit pkgs;};
-  bspcSubscribe = pkgs.writeShellScriptBin "bspc-subscribe" ''
+  ewwBspcSubscribeBin = pkgs.writeShellScriptBin "eww-bspc-subscribe" ''
     bspc subscribe all | while read -r event; do
-        ${ewwWorkspacesScript}/bin/my-bspwm-eww-workspaces
+        ${ewwWorkspacesBin}/bin/my-bspwm-eww-workspaces
     done
   '';
 
@@ -20,6 +22,11 @@
     bspc config focused_border_color "#FABD2F"
     bspc config normal_border_color "#32302F"
   '';
+
+  defaultBg = pkgs.fetchurl {
+    url = "https://media.githubusercontent.com/media/niscolas/wallpapers/main/static/gruvbox_skull-1920x1080.png";
+    hash = "sha256-rhpd0jjBYE/sfHgSKaeHQDf/gmeyhD41unDZhnnxSsE=";
+  };
 in {
   options.erdtree.niscolas.bspwm = {
     enable = lib.mkEnableOption {};
@@ -41,7 +48,7 @@ in {
       settings = {
         # window behavior {{{
         border_width = 4;
-        window_gap = 16;
+        window_gap = 20;
         split_ratio = 0.52;
         # }}}
 
@@ -67,8 +74,11 @@ in {
         "${xorg.xsetroot}/bin/xsetroot -cursor_name left_ptr"
         "${xorg.setxkbmap}/bin/setxkbmap us"
         "${xorg.setxkbmap}/bin/setxkbmap -option 'compose:menu'"
-        "${picom}/bin/compfy"
-        "${bspcSubscribe}/bin/bspc-subscribe"
+        "${picom}/bin/picom"
+        "${ewwBspcSubscribeBin}/bin/eww-bspc-subscribe"
+        "${launchEwwBarBin}/bin/launch-eww-bar"
+        "${restartStaloneTrayBin}/bin/my-stalonetray"
+        "${feh}/bin/feh --bg-fill ${defaultBg}"
       ];
 
       extraConfig = with pkgs; ''
@@ -85,7 +95,7 @@ in {
         #
 
         super + shift + comma
-          ${kbLayoutSwap}
+          ${kbLayoutSwapBin}
 
         # terminal emulator
         super + Return

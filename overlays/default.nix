@@ -19,10 +19,24 @@
       }
     );
 
+    linux-wallpaperengine = prev.linux-wallpaperengine.overrideAttrs (oldAttrs: let
+      newVersion = "unstable-2023-12-24";
+    in {
+      version = newVersion;
+
+      src = final.pkgs.fetchFromGitHub {
+        owner = "Almamu";
+        repo = "linux-wallpaperengine";
+        # upstream lacks versioned releases
+        rev = "e28780562bdf8bcb2867cca7f79b2ed398130eb9";
+        hash = "sha256-VvrYOh/cvWxDx9dghZV5dcOrfMxjVCzIGhVPm9d7P2g=";
+      };
+    });
+
     logseq = prev.logseq.overrideAttrs (oldAttrs: let
       newVersion = "0.10.0";
     in {
-      version = "${newVersion}";
+      version = newVersion;
 
       src = final.pkgs.fetchurl {
         url = "https://github.com/logseq/logseq/releases/download/${newVersion}/logseq-linux-x64-${newVersion}.AppImage";
@@ -41,22 +55,7 @@
 
     neovim = inputs.neovim-nightly-overlay.defaultPackage.${final.pkgs.system};
 
-    picom = prev.picom.overrideAttrs (oldAttrs: rec {
-      pname = "compfy";
-      version = "1.7.2";
-      buildInputs =
-        [
-          final.pcre2
-        ]
-        ++ oldAttrs.buildInputs;
-      src = final.fetchFromGitHub {
-        owner = "allusive-dev";
-        repo = "compfy";
-        rev = version;
-        hash = "sha256-7hvzwLEG5OpJzsrYa2AaIW8X0CPyOnTLxz+rgWteNYY=";
-      };
-      postInstall = '''';
-    });
+    picom = inputs.ft-labs-picom.defaultPackage.${final.pkgs.system};
   };
 
   unstable-packages = final: _prev: {

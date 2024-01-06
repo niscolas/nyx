@@ -14,6 +14,7 @@
     nur.url = "github:nix-community/NUR";
 
     audio-relay.url = "github:niscolas/audiorelay-flake-fork";
+    ft-labs-picom.url = "github:FT-Labs/picom";
     mach-nix.url = "mach-nix/3.5.0";
     minegrub-theme.url = "github:Lxtharia/minegrub-theme";
     neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
@@ -51,7 +52,7 @@
   in {
     # Your custom packages
     # Accessible through 'nix build', 'nix shell', etc
-    packages = forAllSystems (system: import ./packages nixpkgs.${system});
+    packages = forAllSystems (system: import ./packages nixpkgs.legacyPackages.${system});
     # Formatter for your nix files, available through 'nix fmt'
     # Other options beside 'alejandra' include 'nixpkgs-fmt'
     formatter = forAllSystems (system: nixpkgs.${system}.alejandra);
