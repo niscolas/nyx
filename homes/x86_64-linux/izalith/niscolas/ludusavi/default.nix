@@ -5,7 +5,7 @@
   ...
 }: let
   cfg = config.erdtree.niscolas.ludusavi;
-  dotConfigDir = "${config.erdtree.home.configPath}/ludusavi/config";
+  dotConfigDir = "${(import ../module-data.nix {inherit config;}).sourceConfigPath}/ludusavi/config";
 in {
   options.erdtree.niscolas.ludusavi = {
     enable = lib.mkEnableOption {};

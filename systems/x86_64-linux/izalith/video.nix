@@ -40,7 +40,7 @@ in {
       package = nvidia-patch.patch-nvenc (nvidia-patch.patch-fbc nvidia-package);
 
       powerManagement = {
-        enable = true;
+        enable = false;
         finegrained = false;
       };
 
@@ -110,11 +110,11 @@ in {
     # Tell Xorg to use the nvidia driver
     videoDrivers = ["nvidia"];
 
-    desktopManager.xfce = {
-      enable = true;
-      noDesktop = true;
-      enableXfwm = false;
-    };
+    # desktopManager.xfce = {
+    #   enable = true;
+    #   noDesktop = true;
+    #   enableXfwm = false;
+    # };
 
     displayManager = {
       lightdm = {

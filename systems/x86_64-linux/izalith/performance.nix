@@ -18,17 +18,17 @@
   services.tlp = {
     enable = true;
     settings = {
-      CPU_BOOST_ON_AC = 1;
+      CPU_BOOST_ON_AC = 0;
       CPU_BOOST_ON_BAT = 0;
 
-      CPU_SCALING_GOVERNOR_ON_AC = "performance";
+      CPU_SCALING_GOVERNOR_ON_AC = "powersave";
       CPU_SCALING_GOVERNOR_ON_BAT = "powersave";
 
-      CPU_ENERGY_PERF_POLICY_ON_AC = "performance";
+      CPU_ENERGY_PERF_POLICY_ON_AC = "power";
       CPU_ENERGY_PERF_POLICY_ON_BAT = "power";
 
       #CPU_MIN_PERF_ON_AC = 0;
-      CPU_MAX_PERF_ON_AC = 100;
+      CPU_MAX_PERF_ON_AC = 75;
       #CPU_MIN_PERF_ON_BAT = 0;
       CPU_MAX_PERF_ON_BAT = 40;
 
@@ -75,11 +75,11 @@
       # Update the registers every this many seconds
       Update_Rate_s: 5
       # Max package power for time window #1
-      PL1_Tdp_W: 55
+      PL1_Tdp_W: 44
       # Time window #1 duration
       PL1_Duration_s: 28
       # Max package power for time window #2
-      PL2_Tdp_W: 55
+      PL2_Tdp_W: 44
       # Time window #2 duration
       PL2_Duration_S: 0.002
       # Max allowed temperature before throttling
@@ -124,9 +124,26 @@
   };
   powerManagement.powertop.enable = false;
   specialisation = {
-    eco_mode.configuration = {
+    turbo.configuration = {
       environment.etc.current-specialisation.text = lib.mkForce ''
-        eco
+        (󰑣)
+      '';
+
+      services = {
+        tlp = {
+          enable = lib.mkForce true;
+          settings = {
+            CPU_BOOST_ON_AC = lib.mkForce 1;
+            CPU_SCALING_GOVERNOR_ON_AC = lib.mkForce "performance";
+            CPU_ENERGY_PERF_POLICY_ON_AC = lib.mkForce "performance";
+            CPU_MAX_PERF_ON_AC = lib.mkForce 100;
+          };
+        };
+      };
+    };
+    eco.configuration = {
+      environment.etc.current-specialisation.text = lib.mkForce ''
+        ()
       '';
 
       services = {

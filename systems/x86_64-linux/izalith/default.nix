@@ -54,7 +54,7 @@
         config.nix.registry)
       // {
         current-specialisation.text = ''
-          default
+          (󰏗)
         '';
       };
 
@@ -70,6 +70,7 @@
       (import ./scripts/my-ram.nix {inherit config pkgs;})
       (import ./scripts/my-thermals.nix {inherit config pkgs;})
       inputs.home-manager.packages.${pkgs.system}.default
+      inputs.nbfc.packages."${pkgs.system}".nbfc
       pkgs.coreutils
       pkgs.gnome.file-roller
       pkgs.lightlocker

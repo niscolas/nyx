@@ -4,6 +4,7 @@
 (defpoll cpu_usage :interval "5s" "my-cpu")
 (defpoll current_specialisation :interval "10s" "cat /etc/current-specialisation")
 (defpoll used_ram_percent :interval "15s" "my-ram --percent")
+(defpoll kb_layout :interval "1s" "kb-layout-swap --get")
 ;; (defpoll gpu_temp :interval "5s" "my-thermals --gpu")
 
 (deflisten workspaces_content "tail -F ~/.cache/eww_workspaces")
@@ -46,7 +47,7 @@
         :hexpand false
         :space-evenly false 
         :vexpand false
-        (label :class "thermometer-label" :text " ")
+        (label :class "thermometer-label" :text " ")
         (label :class "cpu-temperature-label" :text cpu_temp)
         ;; (label :class "gpu-temperature-label" :text gpu_temp)
 ))
@@ -69,7 +70,17 @@
         :vexpand false
         (label :class "ram-prefix" :text "󰘚  ")
         (label :class "ram-label" :text used_ram_percent)
-        (label :class "ram-label" :text "% ")
+        (label :class "ram-label" :text "%")
+))
+
+(defwidget kb_layout_widget []
+    (box
+        :class "kb-layout-widget"
+        :hexpand false
+        :space-evenly false 
+        :vexpand false
+        (label :class "kb-layout-prefix" :text "󰗊 ")
+        (label :class "kb-layout-label" :text kb_layout)
 ))
 
 (defwidget separator_widget []
@@ -77,6 +88,13 @@
         :hexpand false
         :vexpand false
         (label :class "separator")
+))
+
+(defwidget separator_char_widget []
+    (box
+        :hexpand false
+        :vexpand false
+        (label :class "separator-char" :text " | ")
 ))
 
 (defwidget clock_widget []
@@ -101,14 +119,16 @@
             :class "system-content"
             :space-evenly false
             (battery_widget)
-            (separator_widget)
+            (separator_char_widget)
             (cpu_usage_widget)
-            (separator_widget)
+            (separator_char_widget)
             (temperature_widget)
-            (separator_widget)
+            (separator_char_widget)
             (specialisation_widget)
-            (separator_widget)
-            (ram_widget))
+            (separator_char_widget)
+            (ram_widget)
+            (separator_char_widget)
+            (kb_layout_widget))
         (label :class "system-suffix")
 ))
 

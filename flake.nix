@@ -17,11 +17,11 @@
     ft-labs-picom.url = "github:FT-Labs/picom";
     mach-nix.url = "mach-nix/3.5.0";
     minegrub-theme.url = "github:Lxtharia/minegrub-theme";
-    neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
     nix-index-database = {
       url = "github:Mic92/nix-index-database";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nbfc.url = "github:nbfc-linux/nbfc-linux";
     nvidia-patch = {
       url = "github:niscolas/nvidia-patch-nixos-fork";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -30,6 +30,7 @@
       url = "github:snowfallorg/lib";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    wired.url = "github:Toqozz/wired-notify";
   };
 
   outputs = {

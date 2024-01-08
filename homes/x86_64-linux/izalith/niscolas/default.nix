@@ -9,8 +9,6 @@
   cfg = config.erdtree;
 in {
   imports = [
-    outputs.homeManagerModules.home
-
     ./autorandr
     ./awesome
     ./bspwm
@@ -84,8 +82,6 @@ in {
         enableDebugMode = true;
       };
     };
-
-    home.configPath = "${config.home.homeDirectory}/bonfire/nyx/homes/x86_64-linux/izalith/niscolas";
   };
 
   services = {
@@ -128,7 +124,6 @@ in {
       ".config/rofi".source = ./rofi;
       ".config/tridactyl".source = ./tridactyl;
       ".config/wezterm".source = ./wezterm;
-      ".config/wired".source = ./wired;
       ".config/zsh".source = ./zsh;
     };
 
@@ -146,9 +141,8 @@ in {
     };
 
     packages = with pkgs; [
-      (import ./scripts/my-battery.nix {inherit pkgs;})
       (import ./scripts/kb-layout-swap.nix {inherit pkgs;})
-      (builtins.getFlake "github:nbfc-linux/nbfc-linux/0d109723b8c9c407d80272e22d5b2bb12765550b").packages."x86_64-linux".nbfc
+      (import ./scripts/my-battery.nix {inherit pkgs;})
       alacritty
       appimage-run
       barrier
@@ -215,6 +209,7 @@ in {
       usbutils # lsusb
       vulkan-tools
       wezterm
+      wired
       wget
       xclip
       xdotool

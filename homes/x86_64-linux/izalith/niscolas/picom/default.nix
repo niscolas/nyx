@@ -5,7 +5,7 @@
   ...
 }: let
   cfg = config.erdtree.niscolas.picom;
-  configDir = "${config.erdtree.home.configPath}/picom";
+  configDir = "${(import ../module-data.nix {inherit config;}).sourceConfigPath}/picom";
   configFile = "picom.conf";
 in {
   options.erdtree.niscolas.picom = {

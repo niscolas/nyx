@@ -1,11 +1,11 @@
 {
   config,
   lib,
+  outputs,
   pkgs,
   ...
 }: let
   cfg = config.erdtree.niscolas.bspwm;
-  configPath = "${config.erdtree.home.configPath}/bspwm";
 
   ewwWorkspacesBin = import ./scripts/eww-workspaces.nix {inherit pkgs;};
   kbLayoutSwapBin = import ../scripts/kb-layout-swap.nix {inherit pkgs;};
@@ -28,6 +28,8 @@
     hash = "sha256-rhpd0jjBYE/sfHgSKaeHQDf/gmeyhD41unDZhnnxSsE=";
   };
 in {
+  imports = [outputs.homeManagerModules.wired];
+
   options.erdtree.niscolas.bspwm = {
     enable = lib.mkEnableOption {};
     debugMode = lib.mkEnableOption {};
@@ -71,6 +73,7 @@ in {
       };
 
       startupPrograms = with pkgs; [
+        "${wired}/bin/wired"
         "${xorg.xsetroot}/bin/xsetroot -cursor_name left_ptr"
         "${xorg.setxkbmap}/bin/setxkbmap us"
         "${xorg.setxkbmap}/bin/setxkbmap -option 'compose:menu'"
@@ -95,7 +98,7 @@ in {
         #
 
         super + shift + comma
-          ${kbLayoutSwapBin}
+          ${kbLayoutSwapBin}/bin/kb-layout-swap --swap
 
         # terminal emulator
         super + Return
@@ -231,6 +234,11 @@ in {
         super + {Left,Down,Up,Right}
         	bspc node -v {-20 0,0 20,0 -20,20 0}
       '';
+    };
+
+    erdtree.wired = {
+      enable = true;
+      enableDebugMode = true;
     };
   };
 }

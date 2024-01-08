@@ -1,3 +1,3 @@
 {
-  home = import ./home;
+  wired = import ./wired;
 }
