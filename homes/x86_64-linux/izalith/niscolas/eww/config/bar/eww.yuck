@@ -137,7 +137,8 @@
         :class "tray-widget"
         :space-evenly false
         (label :text " " :class "tray-prefix")
-        (box :class "tray-content" :space-evenly false)
+        (box :class "tray-content"
+            (systray :pack-direction "rtl"))
         (label :class "tray-suffix")
 ))
 
@@ -190,7 +191,7 @@
             :width "98%"
             :height "40px"
             :anchor "top center")
-    :reserve (struts :distance "48px" :side "top")
+    ;; :reserve (struts :distance "48px" :side "top")
     :stacking "bg"
     :wm-ignore false
     (bar_widget)

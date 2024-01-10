@@ -1,13 +1,12 @@
-home-manager/niscolas/gh/hosts.yml
-home-manager/niscolas/git/credentials
-home-manager/niscolas/ludusavi/*.log
-home-manager/niscolas/ludusavi/cache.yaml
-home-manager/niscolas/r2modman/config/RiskOfRain2/cache
-home-manager/niscolas/wakatime
-home-manager/niscolas/zsh/.cache
-home-manager/niscolas/zsh/.zcompdump
-home-manager/niscolas/zsh/.zdirs
-home-manager/niscolas/zsh/.zsh_history
-home-manager/niscolas/zsh/env.secrets
-home-manager/niscolas/logseq/.logseq/settings/logseq-raindrop.json
+homes/x86_64-linux/izalith/niscolas/gh/hosts.yml
+homes/x86_64-linux/izalith/niscolas/git/credentials
+homes/x86_64-linux/izalith/niscolas/ludusavi/config/*.log
+homes/x86_64-linux/izalith/niscolas/ludusavi/config/cache.yaml
+homes/x86_64-linux/izalith/niscolas/wakatime
+homes/x86_64-linux/izalith/niscolas/zsh/.cache
+homes/x86_64-linux/izalith/niscolas/zsh/.zcompdump
+homes/x86_64-linux/izalith/niscolas/zsh/.zdirs
+homes/x86_64-linux/izalith/niscolas/zsh/.zsh_history
+homes/x86_64-linux/izalith/niscolas/zsh/env.secrets
+homes/x86_64-linux/izalith/niscolas/logseq/.logseq/settings/logseq-raindrop.json
 

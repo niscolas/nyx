@@ -4,7 +4,7 @@
   pkgs,
   ...
 }: let
-  cfg = config.erdtree.niscolas.autorandr;
+  cfg = config.erdtree.autorandr;
 
   internalMonitorName = "eDP-1-1";
   internalMonitorEdid = "00ffffffffffff000dae211500000000091e0104a52213780328659759548e271e5054000000010101010101010101010101010101019e8580a070383e403020a50058c1100000189e8580a070387c463020a50058c110000018000000fe00434d4e0a202020202020202020000000fe004e3135364852412d4541310a2000e3";
@@ -14,22 +14,18 @@
   defaultMode = "1920x1080";
   defaultHdmiRate = "143.60";
   defaultInternalRate = "144.0";
-
-  restartStalonetrayBin = import ../stalonetray/restart-bin.nix {inherit pkgs;};
 in {
-  options.erdtree.niscolas.autorandr = {
+  options.erdtree.autorandr = {
     enable = lib.mkEnableOption {};
+    defaultProfile = lib.mkOption {
+      type = lib.types.str;
+      default = "work";
+    };
   };
 
   config = lib.mkIf cfg.enable {
     programs.autorandr = {
       enable = true;
-
-      hooks = {
-        postswitch = {
-          stalonetray = "${restartStalonetrayBin}/bin/my-stalonetray";
-        };
-      };
 
       profiles = {
         work = {
@@ -110,6 +106,19 @@ in {
       };
     };
 
-    services.autorandr.enable = true;
+    systemd.user.services.autorandr = {
+      Unit = {
+        Description = "autorandr";
+        After = ["graphical-session-pre.target"];
+        PartOf = ["graphical-session.target"];
+      };
+
+      Service = {
+        Type = "oneshot";
+        ExecStart = "${pkgs.autorandr}/bin/autorandr --force ${cfg.defaultProfile}";
+      };
+
+      Install.WantedBy = ["graphical-session.target"];
+    };
   };
 }

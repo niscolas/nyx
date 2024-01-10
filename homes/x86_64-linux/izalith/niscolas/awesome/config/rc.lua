@@ -1,15 +1,13 @@
 pcall(require, "luarocks.loader")
+package.loaded["naughty.dbus"] = {}
 
 local gears = require("gears")
 local awful = require("awful")
 require("awful.autofocus")
 
 local beautiful = require("beautiful")
-local naughty = require("naughty")
 local hotkeys_popup = require("awful.hotkeys_popup")
 require("awful.hotkeys_popup.keys")
-
-local command_executed = false
 
 _G.spawn = awful.spawn
 _G.shell = spawn.with_shell
@@ -18,11 +16,7 @@ _G.shell = spawn.with_shell
 -- Check if awesome encountered an error during startup and fell back to
 -- another config (This code will only ever execute for the fallback config)
 if awesome.startup_errors then
-    naughty.notify {
-        preset = naughty.config.presets.critical,
-        title = "Oops, there were errors during startup!",
-        text = awesome.startup_errors,
-    }
+    shell("notify-send -u critical 'Oops, there were errors during startup!'")
 end
 
 -- Handle runtime errors after startup
@@ -35,11 +29,7 @@ do
         end
         in_error = true
 
-        naughty.notify {
-            preset = naughty.config.presets.critical,
-            title = "Oops, an error happened!",
-            text = tostring(err),
-        }
+        shell("notify-send -u critical 'Oops, an error happened!'")
         in_error = false
     end)
 end
@@ -242,7 +232,12 @@ globalkeys = gears.table.join(
 
     awful.key({ modkey, "Control" }, "n", function()
         awful.layout.inc(1)
-        naughty.notify { title = tostring(awful.layout.getname()) }
+        shell(
+            string.format(
+                "notify-send 'New layout: %s'",
+                tostring(awful.layout.getname())
+            )
+        )
     end, { description = "select next", group = "layout" }),
 
     -- awful.key({ modkey, "Shift" }, "space", function()
@@ -294,13 +289,8 @@ globalkeys = gears.table.join(
 
         -- Print the clients
         for _, c in ipairs(clients_with_tag) do
-            naughty.notify {
-                title = "Client",
-                text = c.class,
-                timeout = 5,
-            }
+            shell(string.format("notify-send 'Client' '%s'", c.class))
         end
-        -- Put the code snippet here
     end, { description = "Print clients with specific tag", group = "tag" })
 )
 
@@ -614,17 +604,12 @@ client.connect_signal("property::urgent", function(c)
 end)
 
 awesome.connect_signal("startup", function()
-    -- shell("xfce4-power-manager")
-    -- shell("syncthing -no-browser")
-
     -- xss-lock grabs a logind suspend inhibit lock and will use i3lock to lock the
     -- screen before suspend. Use loginctl lock-session to lock your screen.
     -- shell("lxsession")
     -- spawn("light-locker")
 
-    spawn("hidamari --background")
-
-    -- spawn("compfy")
+    spawn("picom")
 
     shell("setxkbmap us")
     shell('setxkbmap -option "compose:menu"')
@@ -636,7 +621,5 @@ awesome.connect_signal("startup", function()
     spawn("easyeffects")
     spawn("pavucontrol")
 
-    shell("sleep 1sec; display_setup.nu internal")
+    shell("autorandr --load work")
 end)
-
-naughty.config.defaults["icon_size"] = 100

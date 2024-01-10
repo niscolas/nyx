@@ -14,6 +14,7 @@
     nur.url = "github:nix-community/NUR";
 
     audio-relay.url = "github:niscolas/audiorelay-flake-fork";
+    eww-tray3.url = "github:ralismark/eww/tray-3";
     ft-labs-picom.url = "github:FT-Labs/picom";
     mach-nix.url = "mach-nix/3.5.0";
     minegrub-theme.url = "github:Lxtharia/minegrub-theme";

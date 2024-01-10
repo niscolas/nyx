@@ -3,6 +3,8 @@
   additions = final: _prev: import ../packages {pkgs = final;};
 
   modifications = final: prev: {
+    eww = inputs.eww-tray3.packages."${final.pkgs.system}".default;
+
     input-leap = prev.input-leap.overrideAttrs (
       oldAttrs: let
         version = "unstable-2023-10-24";

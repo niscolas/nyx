@@ -1,5 +1,4 @@
 local awful = require("awful")
-local naughty = require("naughty")
 local pl = require("pl.import_into")()
 
 local function update_eww_workspaces_widget()
@@ -72,6 +71,8 @@ for _, tag_signal in ipairs(tag_signals_to_listen_to) do
         update_eww_workspaces_widget()
     end)
 end
+
+spawn("launch-eww-bar")
 
 local client_signals_to_listen_to = {
     "focus",

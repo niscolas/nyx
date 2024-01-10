@@ -5,11 +5,8 @@
   inputs,
   outputs,
   ...
-}: let
-  cfg = config.erdtree;
-in {
+}: {
   imports = [
-    ./autorandr
     ./awesome
     ./bspwm
     ./eww
@@ -23,8 +20,6 @@ in {
     ./nvim
     ./picom
     ./ssh
-    ./stalonetray
-    ./starship
     ./tmux
   ];
 
@@ -51,7 +46,6 @@ in {
 
   erdtree = {
     niscolas = {
-      autorandr.enable = true;
       awesome.enable = true;
       bspwm.enable = true;
 
@@ -86,7 +80,6 @@ in {
 
   services = {
     blueman-applet.enable = true;
-    opensnitch-ui.enable = true;
     network-manager-applet.enable = true;
     syncthing.enable = true;
   };
@@ -182,7 +175,6 @@ in {
       neofetch
       networkmanagerapplet
       nix-output-monitor # it provides the command `nom` works just like `nix` with more details log output
-      opensnitch-ui
       opentabletdriver
       p7zip
       pavucontrol

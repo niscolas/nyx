@@ -10,7 +10,6 @@
   ewwWorkspacesBin = import ./scripts/eww-workspaces.nix {inherit pkgs;};
   kbLayoutSwapBin = import ../scripts/kb-layout-swap.nix {inherit pkgs;};
   launchEwwBarBin = import ../eww/launch-bar.nix {inherit pkgs;};
-  restartStaloneTrayBin = import ../stalonetray/restart-bin.nix {inherit pkgs;};
 
   ewwBspcSubscribeBin = pkgs.writeShellScriptBin "eww-bspc-subscribe" ''
     bspc subscribe all | while read -r event; do
@@ -27,9 +26,14 @@
     url = "https://media.githubusercontent.com/media/niscolas/wallpapers/main/static/gruvbox_skull-1920x1080.png";
     hash = "sha256-rhpd0jjBYE/sfHgSKaeHQDf/gmeyhD41unDZhnnxSsE=";
   };
-in {
-  imports = [outputs.homeManagerModules.wired];
 
+  autorandrPostswitchBin = with pkgs;
+    pkgs.writeShellScriptBin "autorandr-bspwm-postswitch" ''
+      first_monitor=$(${xrandr}/bin/xrandr --listmonitors | sed -n '2p' | awk '{print $2}' | sed 's/+\*//g')
+      first_desktop=
+      ${bspwm}/bin/bspc query -N -n .window | xargs -I {} ${bspwm}/bin/bspc node {} -d 0x00E00006
+    '';
+in {
   options.erdtree.niscolas.bspwm = {
     enable = lib.mkEnableOption {};
     debugMode = lib.mkEnableOption {};
@@ -55,7 +59,7 @@ in {
         # }}}
 
         # pointer behavior {{{
-        focus_follows_pointer = false;
+        focus_follows_pointer = true;
         pointer_follows_focus = true;
         # }}}
 
@@ -68,11 +72,12 @@ in {
       };
 
       monitors = {
-        eDP-1-1 = ["1" "2" "3" "4" "5" "6" "7" "8" "9" "10"];
         HDMI-0 = ["1" "2" "3" "4" "5" "6" "7" "8" "9" "10"];
+        eDP-1-1 = ["1" "2" "3" "4" "5" "6" "7" "8" "9" "10"];
       };
 
       startupPrograms = with pkgs; [
+        "${autorandr}/bin/autorandr --load work"
         "${wired}/bin/wired"
         "${xorg.xsetroot}/bin/xsetroot -cursor_name left_ptr"
         "${xorg.setxkbmap}/bin/setxkbmap us"
@@ -80,7 +85,6 @@ in {
         "${picom}/bin/picom"
         "${ewwBspcSubscribeBin}/bin/eww-bspc-subscribe"
         "${launchEwwBarBin}/bin/launch-eww-bar"
-        "${restartStaloneTrayBin}/bin/my-stalonetray"
         "${feh}/bin/feh --bg-fill ${defaultBg}"
       ];
 

@@ -5,6 +5,8 @@
 }: let
   cfg = config.erdtree.niscolas.fish;
 in {
+  imports = [../starship];
+
   options.erdtree.niscolas.fish = {
     enable = lib.mkEnableOption {};
     enableStarship = lib.mkEnableOption {};

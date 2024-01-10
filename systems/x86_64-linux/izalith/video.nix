@@ -129,11 +129,7 @@ in {
         ${pkgs.xorg.xrandr}/bin/xrandr --auto
       '';
 
-      defaultSession = "none+bspwm";
-    };
-
-    windowManager = {
-      leftwm.enable = true;
+      defaultSession = "none+awesome";
     };
   };
 }
