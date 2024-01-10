@@ -5,7 +5,7 @@
   ...
 }: let
   cfg = config.erdtree.niscolas.ludusavi;
-  dotConfigDir = "${(import ../module-data.nix {inherit config;}).sourceConfigPath}/ludusavi/config";
+  realConfigPath = "${config.erdtree.niscolas.realPath}/ludusavi/config";
 in {
   options.erdtree.niscolas.ludusavi = {
     enable = lib.mkEnableOption {};
@@ -19,12 +19,12 @@ in {
     home.packages = [pkgs.ludusavi];
 
     home.file."${cfg.targetConfigDir}/cache.yaml".source =
-      config.lib.file.mkOutOfStoreSymlink "${dotConfigDir}/cache.yaml";
+      config.lib.file.mkOutOfStoreSymlink "${realConfigPath}/cache.yaml";
 
     home.file."${cfg.targetConfigDir}/config.yaml".source =
-      config.lib.file.mkOutOfStoreSymlink "${dotConfigDir}/config.yaml";
+      config.lib.file.mkOutOfStoreSymlink "${realConfigPath}/config.yaml";
 
     home.file."${cfg.targetConfigDir}/manifest.yaml".source =
-      config.lib.file.mkOutOfStoreSymlink "${dotConfigDir}/manifest.yaml";
+      config.lib.file.mkOutOfStoreSymlink "${realConfigPath}/manifest.yaml";
   };
 }

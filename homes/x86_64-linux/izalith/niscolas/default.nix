@@ -17,10 +17,12 @@
     ./ludusavi
     ./mangohud
     ./nushell
-    ./nvim
+    ./options.nix
     ./picom
     ./ssh
     ./tmux
+    outputs.homeManagerModules.modulesData
+    outputs.homeManagerModules.nvim
   ];
 
   nixpkgs = {
@@ -45,6 +47,9 @@
   systemd.user.startServices = "sd-switch";
 
   erdtree = {
+    modulesData.realPath = "${config.home.homeDirectory}/bonfire/nyx/modules/home-manager";
+    nvim.enable = true;
+
     niscolas = {
       awesome.enable = true;
       bspwm.enable = true;
@@ -112,7 +117,6 @@
       ".config/omnisharp".source = ./omnisharp;
       ".config/optimus-manager".source = ./optimus-manager;
       ".config/polybar".source = ./polybar;
-      ".config/ranger".source = ./ranger;
       ".config/rg".source = ./rg;
       ".config/rofi".source = ./rofi;
       ".config/tridactyl".source = ./tridactyl;

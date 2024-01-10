@@ -5,8 +5,6 @@
   ...
 }: let
   cfg = config.erdtree.niscolas.picom;
-  configDir = "${(import ../module-data.nix {inherit config;}).sourceConfigPath}/picom";
-  configFile = "picom.conf";
 in {
   options.erdtree.niscolas.picom = {
     enable = lib.mkEnableOption {};
@@ -18,9 +16,9 @@ in {
       picom
     ];
 
-    xdg.configFile."picom/${configFile}".source =
+    xdg.configFile."picom/picom.conf".source =
       if !cfg.enableDebugMode
-      then "./${configFile}"
-      else config.lib.file.mkOutOfStoreSymlink "${configDir}/${configFile}";
+      then ./picom.conf
+      else config.lib.file.mkOutOfStoreSymlink "${config.erdtree.niscolas.realPath}/picom/picom.conf";
   };
 }

@@ -5,7 +5,7 @@
   ...
 }: let
   cfg = config.erdtree.niscolas.eww;
-  configDir = "${(import ../module-data.nix {inherit config;}).sourceConfigPath}/eww";
+  configDir = "${config.erdtree.niscolas.realPath}/eww";
   launchBarBin = import ./launch-bar.nix {inherit pkgs;};
   clockBin = pkgs.writeShellScriptBin "my-eww-bar-clock" ''
     date +'%a,%e de %b. (%m), 󰥔 %H:%M'
