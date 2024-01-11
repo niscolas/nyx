@@ -609,8 +609,6 @@ awesome.connect_signal("startup", function()
     -- shell("lxsession")
     -- spawn("light-locker")
 
-    spawn("picom")
-
     shell("setxkbmap us")
     shell('setxkbmap -option "compose:menu"')
 
@@ -620,6 +618,4 @@ awesome.connect_signal("startup", function()
     spawn("logseq")
     spawn("easyeffects")
     spawn("pavucontrol")
-
-    shell("autorandr --load work")
 end)

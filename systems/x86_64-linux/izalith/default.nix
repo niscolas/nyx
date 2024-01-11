@@ -169,7 +169,7 @@
 
     audio-relay.enable = true;
     awesome.enable = true;
-    bspwm.enable = true;
+    bspwm.enable = false;
     nix.enable = true;
     sunshine.enable = true;
   };

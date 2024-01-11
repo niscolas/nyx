@@ -18,9 +18,9 @@
     ./mangohud
     ./nushell
     ./options.nix
-    ./picom
     ./ssh
     ./tmux
+    outputs.homeManagerModules.firefox
     outputs.homeManagerModules.modulesData
     outputs.homeManagerModules.nvim
   ];
@@ -47,12 +47,13 @@
   systemd.user.startServices = "sd-switch";
 
   erdtree = {
+    firefox.enable = true;
     modulesData.realPath = "${config.home.homeDirectory}/bonfire/nyx/modules/home-manager";
     nvim.enable = true;
 
     niscolas = {
       awesome.enable = true;
-      bspwm.enable = true;
+      bspwm.enable = false;
 
       eww = {
         enable = true;
@@ -75,11 +76,6 @@
       };
 
       ludusavi.enable = true;
-
-      picom = {
-        enable = true;
-        enableDebugMode = true;
-      };
     };
   };
 
@@ -205,7 +201,6 @@
       usbutils # lsusb
       vulkan-tools
       wezterm
-      wired
       wget
       xclip
       xdotool
@@ -259,17 +254,6 @@
       package = pkgs.libsForQt5.qtstyleplugins;
     };
     platformTheme = "gtk";
-  };
-
-  programs = {
-    firefox = {
-      enable = true;
-      package = pkgs.firefox.override {
-        cfg = {
-          enableTridactylNative = true;
-        };
-      };
-    };
   };
 
   # Let home Manager install and manage itself.

@@ -57,7 +57,6 @@
 
     neovim = final.pkgs.unstable.neovim;
     picom = inputs.ft-labs-picom.defaultPackage.${final.pkgs.system};
-    wired = inputs.wired.packages."${final.pkgs.system}".default;
   };
 
   unstable-packages = final: _prev: {
