@@ -27,6 +27,23 @@ in {
           };
         };
 
+        extensions = with pkgs.nur.repos.rycee.firefox-addons; [
+          # missing ones:
+          ## logseq-copilot
+          ## meliuz
+
+          auto-tab-discard
+          bitwarden
+          buster-captcha-solver
+          darkreader
+          ecosia
+          multi-account-containers
+          simplelogin
+          tridactyl
+          ublock-origin
+          videospeed
+        ];
+
         search = {
           default = "Ecosia";
           force = true;

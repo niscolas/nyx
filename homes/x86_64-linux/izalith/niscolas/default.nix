@@ -20,6 +20,7 @@
     ./options.nix
     ./ssh
     ./tmux
+    inputs.nur.hmModules.nur
     outputs.homeManagerModules.firefox
     outputs.homeManagerModules.modulesData
     outputs.homeManagerModules.nvim
@@ -36,6 +37,7 @@
     };
 
     overlays = [
+      inputs.nur.overlay
       inputs.nvidia-patch.overlay
       outputs.overlays.additions
       outputs.overlays.modifications
