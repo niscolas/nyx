@@ -29,8 +29,6 @@ in {
 
       Service = {
         ExecStart = "${lib.getExe pkgs.picom} --config ${config.xdg.configFile."${configPathSuffix}".source}";
-        Restart = "always";
-        RestartSec = 3;
       };
     };
   };

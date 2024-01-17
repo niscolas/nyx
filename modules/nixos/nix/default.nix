@@ -36,10 +36,12 @@ in {
       };
       nixPath = ["/etc/nix/path"];
       registry = (lib.mapAttrs (_: flake: {inherit flake;})) ((lib.filterAttrs (_: lib.isType "flake")) inputs);
+
       settings = {
-        experimental-features = ["nix-command" "flakes"];
         # Deduplicate and optimize nix store
         auto-optimise-store = true;
+        experimental-features = ["nix-command" "flakes"];
+        trusted-users = ["root" "@wheel"];
       };
     };
   };

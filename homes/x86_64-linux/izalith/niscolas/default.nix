@@ -24,7 +24,12 @@
     outputs.homeManagerModules.firefox
     outputs.homeManagerModules.modulesData
     outputs.homeManagerModules.nvim
+    outputs.nixosModules.binary-cache
   ];
+
+  nix = {
+    package = pkgs.nix;
+  };
 
   nixpkgs = {
     config = {
@@ -49,6 +54,7 @@
   systemd.user.startServices = "sd-switch";
 
   erdtree = {
+    binary-cache.enable = true;
     firefox.enable = true;
     modulesData.realPath = "${config.home.homeDirectory}/bonfire/nyx/modules/home-manager";
     nvim.enable = true;
@@ -177,8 +183,10 @@
       neofetch
       networkmanagerapplet
       nix-output-monitor # it provides the command `nom` works just like `nix` with more details log output
+      obsidian
       opentabletdriver
       p7zip
+      parsec-bin
       pavucontrol
       pciutils # lspci
       pritunl-client

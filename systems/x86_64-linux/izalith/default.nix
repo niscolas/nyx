@@ -7,23 +7,22 @@
   ...
 }: {
   imports = [
-    inputs.minegrub-theme.nixosModules.default
-    inputs.nur.nixosModules.nur
-    inputs.nix-index-database.nixosModules.nix-index
-    outputs.nixosModules.audio-relay
-    outputs.nixosModules.awesome
-    outputs.nixosModules.bspwm
-    outputs.nixosModules.nix
-    outputs.nixosModules.sunshine
-
     ./audio.nix
     ./bluetooth.nix
     ./gaming.nix
+    ./hardware-configuration.nix
     ./mach-nix-pkgs
     ./performance.nix
     ./video.nix
-
-    ./hardware-configuration.nix
+    inputs.minegrub-theme.nixosModules.default
+    inputs.nix-index-database.nixosModules.nix-index
+    inputs.nur.nixosModules.nur
+    outputs.nixosModules.audio-relay
+    outputs.nixosModules.awesome
+    outputs.nixosModules.binary-cache
+    outputs.nixosModules.bspwm
+    outputs.nixosModules.nix
+    outputs.nixosModules.sunshine
   ];
 
   nixpkgs = {
@@ -169,6 +168,7 @@
 
     audio-relay.enable = true;
     awesome.enable = true;
+    binary-cache.enable = true;
     bspwm.enable = false;
     nix.enable = true;
     sunshine.enable = true;

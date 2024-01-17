@@ -3,7 +3,9 @@
   additions = final: _prev: import ../packages {pkgs = final;};
 
   modifications = final: prev: {
+    chromium = final.pkgs.unstable.chromium;
     eww = inputs.eww-tray3.packages."${final.pkgs.system}".default;
+    heroic = final.pkgs.unstable.heroic;
 
     input-leap = prev.input-leap.overrideAttrs (
       oldAttrs: let
@@ -35,17 +37,7 @@
       };
     });
 
-    logseq = prev.logseq.overrideAttrs (oldAttrs: let
-      newVersion = "0.10.0";
-    in {
-      version = newVersion;
-
-      src = final.pkgs.fetchurl {
-        url = "https://github.com/logseq/logseq/releases/download/${newVersion}/logseq-linux-x64-${newVersion}.AppImage";
-        hash = "sha256-igZM+kNe1GDPYckXU6fOjyovHe9gwyBWr7Mc3BxAzOA=";
-        name = "${oldAttrs.pname}-${newVersion}.AppImage";
-      };
-    });
+    logseq = final.pkgs.unstable.logseq;
 
     ludusavi = final.pkgs.unstable.ludusavi;
 

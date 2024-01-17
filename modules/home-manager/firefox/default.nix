@@ -111,9 +111,9 @@ in {
           "network.cookie.cookieBehavior" = 1;
           "network.cookie.lifetimePolicy" = 0; # Used to delete cookies when Firefox is closed… set to `0` to enable default cookie persistence
           "network.proxy.socks_remote_dns" = true;
-          "network.trr.custom_uri" = "https://all.dns.mullvad.net/dns-query";
+          "network.trr.custom_uri" = "https://dns.mullvad.net/dns-query";
           "network.trr.mode" = 3; # Used to enable Mullvad DNS over HTTPS… set to `5` to disable Mullvad DNS over HTTPS
-          "network.trr.uri" = "https://all.dns.mullvad.net/dns-query";
+          "network.trr.uri" = "https://dns.mullvad.net/dns-query";
           "places.history.enabled" = false;
           "privacy.donottrackheader.enabled" = true;
           "privacy.sanitize.sanitizeOnShutdown" = false; # Used to delete cookies and site data when Firefox is closed… set to `false` to enable cookie and site data persistence
