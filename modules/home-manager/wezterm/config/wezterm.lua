@@ -16,6 +16,8 @@ config.tab_and_split_indices_are_zero_based = false
 config.tab_max_width = 48
 config.use_fancy_tab_bar = false
 config.adjust_window_size_when_changing_font_size = false
+config.front_end = "WebGpu"
+config.animation_fps = 120
 
 local color_scheme_name = "GruvboxDark"
 local color_scheme = wezterm.color.get_builtin_schemes()[color_scheme_name]
@@ -75,7 +77,7 @@ config.keys = {
 -- selection_fg = '#534a42'
 --
 
-require("tab_bar").setup(color_scheme)
+-- require("tab_bar").setup(color_scheme)
 
 local accent_color = color_scheme.brights[6]
 local secondary_color = color_scheme.background
@@ -91,25 +93,25 @@ function basename(s)
     return string.gsub(s, "(.*[/\\])(.*)", "%2")
 end
 
-wezterm.on("update-right-status", function(window, pane)
-    window:set_right_status(wezterm.format {
-        { Background = { Color = secondary_color } },
-        { Foreground = { Color = accent_color } },
-        { Text = wezterm.nerdfonts.ple_left_half_circle_thick },
-
-        { Background = { Color = accent_color } },
-        { Foreground = { Color = secondary_color } },
-        { Attribute = { Intensity = "Bold" } },
-        { Text = wezterm.nerdfonts.dev_terminal },
-
-        { Background = { Color = secondary_color } },
-        { Foreground = { Color = accent_color } },
-        { Text = wezterm.nerdfonts.ple_right_half_circle_thick },
-
-        { Background = { Color = secondary_color } },
-        { Foreground = { Color = accent_color } },
-        { Text = " " .. basename(pane:get_foreground_process_name()) .. " " },
-    })
-end)
+-- wezterm.on("update-right-status", function(window, pane)
+--     window:set_right_status(wezterm.format {
+--         { Background = { Color = secondary_color } },
+--         { Foreground = { Color = accent_color } },
+--         { Text = wezterm.nerdfonts.ple_left_half_circle_thick },
+--
+--         { Background = { Color = accent_color } },
+--         { Foreground = { Color = secondary_color } },
+--         { Attribute = { Intensity = "Bold" } },
+--         { Text = wezterm.nerdfonts.dev_terminal },
+--
+--         { Background = { Color = secondary_color } },
+--         { Foreground = { Color = accent_color } },
+--         { Text = wezterm.nerdfonts.ple_right_half_circle_thick },
+--
+--         { Background = { Color = secondary_color } },
+--         { Foreground = { Color = accent_color } },
+--         { Text = " " .. basename(pane:get_foreground_process_name()) .. " " },
+--     })
+-- end)
 
 return config

@@ -25,6 +25,7 @@
     outputs.homeManagerModules.firefox
     outputs.homeManagerModules.modulesData
     outputs.homeManagerModules.nvim
+    outputs.homeManagerModules.wezterm
     outputs.nixosModules.binary-cache
   ];
 
@@ -60,6 +61,10 @@
     firefox.enable = true;
     modulesData.realPath = "${config.home.homeDirectory}/bonfire/nyx/modules/home-manager";
     nvim.enable = true;
+    wezterm = {
+      enable = true;
+      enableDebugMode = true;
+    };
 
     niscolas = {
       awesome.enable = true;
@@ -131,7 +136,6 @@
       ".config/rg".source = ./rg;
       ".config/rofi".source = ./rofi;
       ".config/tridactyl".source = ./tridactyl;
-      ".config/wezterm".source = ./wezterm;
       ".config/zsh".source = ./zsh;
     };
 
@@ -217,7 +221,6 @@
       unzip
       usbutils # lsusb
       vulkan-tools
-      wezterm
       wget
       xclip
       xdotool

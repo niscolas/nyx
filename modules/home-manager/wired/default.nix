@@ -27,20 +27,5 @@ in {
         "${config.nyx.modulesData.realPath}/wired/wired.ron";
 
     services.wired.enable = true;
-
-    # systemd.user.services.wired = {
-    #   Unit = {
-    #     Description = "wired";
-    #     After = ["graphical-session-pre.target"];
-    #     PartOf = ["graphical-session.target"];
-    #   };
-    #
-    #   Service = {
-    #     Type = "oneshot";
-    #     ExecStart = "${pkgs.wired}/bin/wired";
-    #   };
-    #
-    #   Install.WantedBy = ["graphical-session.target"];
-    # };
   };
 }
