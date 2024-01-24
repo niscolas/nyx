@@ -4,9 +4,9 @@
   pkgs,
   ...
 }: let
-  cfg = config.erdtree.firefox;
+  cfg = config.nyx.firefox;
 in {
-  options.erdtree.firefox = {
+  options.nyx.firefox = {
     enable = lib.mkEnableOption {};
   };
 

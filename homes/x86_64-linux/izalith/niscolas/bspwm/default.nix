@@ -5,7 +5,7 @@
   pkgs,
   ...
 }: let
-  cfg = config.erdtree.niscolas.bspwm;
+  cfg = config.nyx.niscolas.bspwm;
 
   ewwWorkspacesBin = import ./scripts/eww-workspaces.nix {inherit pkgs;};
   kbLayoutSwapBin = import ../scripts/kb-layout-swap.nix {inherit pkgs;};
@@ -34,7 +34,7 @@
       ${bspwm}/bin/bspc query -N -n .window | xargs -I {} ${bspwm}/bin/bspc node {} -d 0x00E00006
     '';
 in {
-  options.erdtree.niscolas.bspwm = {
+  options.nyx.niscolas.bspwm = {
     enable = lib.mkEnableOption {};
     debugMode = lib.mkEnableOption {};
   };
@@ -240,7 +240,7 @@ in {
       '';
     };
 
-    erdtree.wired = {
+    nyx.wired = {
       enable = true;
       enableDebugMode = true;
     };

@@ -4,7 +4,7 @@
   pkgs,
   ...
 }: let
-  cfg = config.erdtree.niscolas.logseq;
+  cfg = config.nyx.niscolas.logseq;
   configDir = "${config.home.homeDirectory}/bonfire/nyx/homes/x86_64-linux/izalith/niscolas/logseq";
   logseqBackup = pkgs.writeShellApplication {
     name = "${unitName}";
@@ -13,7 +13,7 @@
   };
   unitName = "logseq-backup";
 in {
-  options.erdtree.niscolas.logseq = {
+  options.nyx.niscolas.logseq = {
     enable = lib.mkEnableOption {};
     enableBackup = lib.mkEnableOption {};
   };

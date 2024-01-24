@@ -5,9 +5,9 @@
   pkgs,
   ...
 }: let
-  cfg = config.erdtree.nix;
+  cfg = config.nyx.nix;
 in {
-  options.erdtree.nix = {
+  options.nyx.nix = {
     enable = lib.mkEnableOption {};
   };
 

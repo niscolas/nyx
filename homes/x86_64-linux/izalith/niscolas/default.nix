@@ -54,7 +54,7 @@
   # Nicely reload system units when changing configs
   systemd.user.startServices = "sd-switch";
 
-  erdtree = {
+  nyx = {
     binary-cache.enable = true;
     espanso.enable = true;
     firefox.enable = true;

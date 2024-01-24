@@ -3,17 +3,17 @@
   config,
   ...
 }: let
-  cfg = config.erdtree.niscolas.fish;
+  cfg = config.nyx.niscolas.fish;
 in {
   imports = [../starship];
 
-  options.erdtree.niscolas.fish = {
+  options.nyx.niscolas.fish = {
     enable = lib.mkEnableOption {};
     enableStarship = lib.mkEnableOption {};
   };
 
   config = lib.mkIf cfg.enable {
-    erdtree.niscolas.starship = {
+    nyx.niscolas.starship = {
       enable = true;
       enableFishIntegration = true;
     };

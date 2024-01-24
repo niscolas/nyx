@@ -4,10 +4,10 @@
   pkgs,
   ...
 }: let
-  cfg = config.erdtree.niscolas.ludusavi;
-  realConfigPath = "${config.erdtree.niscolas.realPath}/ludusavi/config";
+  cfg = config.nyx.niscolas.ludusavi;
+  realConfigPath = "${config.nyx.niscolas.realPath}/ludusavi/config";
 in {
-  options.erdtree.niscolas.ludusavi = {
+  options.nyx.niscolas.ludusavi = {
     enable = lib.mkEnableOption {};
     targetConfigDir = lib.mkOption {
       type = lib.types.str;

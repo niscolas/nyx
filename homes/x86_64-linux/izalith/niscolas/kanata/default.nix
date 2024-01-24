@@ -4,13 +4,13 @@
   lib,
   ...
 }: let
-  cfg = config.erdtree.niscolas.kanata;
-  configDir = "${config.erdtree.niscolas.realPath}/kanata";
+  cfg = config.nyx.niscolas.kanata;
+  configDir = "${config.nyx.niscolas.realPath}/kanata";
   serviceExecStart = pkgs.writeShellScript "kanata-service" ''
     ${pkgs.kanata}/bin/kanata --cfg ${config.home.homeDirectory}/.config/kanata/kanata.kbd | ${pkgs.coreutils}/bin/tee /tmp/kanata-layer.log
   '';
 in {
-  options.erdtree.niscolas.kanata = {
+  options.nyx.niscolas.kanata = {
     enable = lib.mkEnableOption {};
     enableDebugMode = lib.mkEnableOption {};
   };

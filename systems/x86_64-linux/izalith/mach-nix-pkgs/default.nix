@@ -20,9 +20,9 @@
       '';
     });
 
-  cfg = config.erdtree.izalith.mach-nix-pkgs;
+  cfg = config.nyx.izalith.mach-nix-pkgs;
 in {
-  options.erdtree.izalith.mach-nix-pkgs = {
+  options.nyx.izalith.mach-nix-pkgs = {
     enable = lib.mkEnableOption {};
   };
 

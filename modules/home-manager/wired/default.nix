@@ -5,11 +5,11 @@
   pkgs,
   ...
 }: let
-  cfg = config.erdtree.wired;
+  cfg = config.nyx.wired;
 in {
   imports = [inputs.wired.homeManagerModules.default];
 
-  options.erdtree.wired = {
+  options.nyx.wired = {
     enable = lib.mkEnableOption {};
     enableDebugMode = lib.mkEnableOption {};
   };
@@ -24,7 +24,7 @@ in {
       then (import ./config.nix)
       else
         config.lib.file.mkOutOfStoreSymlink
-        "${config.erdtree.modulesData.realPath}/wired/wired.ron";
+        "${config.nyx.modulesData.realPath}/wired/wired.ron";
 
     services.wired.enable = true;
 

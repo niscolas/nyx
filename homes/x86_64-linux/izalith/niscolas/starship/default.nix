@@ -3,9 +3,9 @@
   config,
   ...
 }: let
-  cfg = config.erdtree.niscolas.starship;
+  cfg = config.nyx.niscolas.starship;
 in {
-  options.erdtree.niscolas.starship = {
+  options.nyx.niscolas.starship = {
     enable = lib.mkEnableOption {};
     enableFishIntegration = lib.mkEnableOption {};
   };

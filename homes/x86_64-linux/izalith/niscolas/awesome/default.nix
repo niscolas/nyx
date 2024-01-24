@@ -4,7 +4,7 @@
   outputs,
   ...
 }: let
-  cfg = config.erdtree.niscolas.awesome;
+  cfg = config.nyx.niscolas.awesome;
 in {
   imports = [
     ../picom
@@ -12,14 +12,14 @@ in {
     outputs.homeManagerModules.wired
   ];
 
-  options.erdtree.niscolas.awesome = {
+  options.nyx.niscolas.awesome = {
     enable = lib.mkEnableOption {};
   };
 
   config = lib.mkIf cfg.enable {
     xdg.configFile."awesome".source = ./config;
 
-    erdtree = {
+    nyx = {
       niscolas = {
         picom = {
           enable = true;

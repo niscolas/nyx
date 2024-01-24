@@ -4,10 +4,10 @@
   pkgs,
   ...
 }: let
-  cfg = config.erdtree.niscolas.picom;
+  cfg = config.nyx.niscolas.picom;
   configPathSuffix = "picom/picom.conf";
 in {
-  options.erdtree.niscolas.picom = {
+  options.nyx.niscolas.picom = {
     enable = lib.mkEnableOption {};
     enableDebugMode = lib.mkEnableOption {};
   };
@@ -16,7 +16,7 @@ in {
     xdg.configFile."${configPathSuffix}".source =
       if !cfg.enableDebugMode
       then ./picom.conf
-      else config.lib.file.mkOutOfStoreSymlink "${config.erdtree.niscolas.realPath}/${configPathSuffix}";
+      else config.lib.file.mkOutOfStoreSymlink "${config.nyx.niscolas.realPath}/${configPathSuffix}";
 
     systemd.user.services.picom = {
       Unit = {

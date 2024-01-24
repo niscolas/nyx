@@ -4,14 +4,14 @@
   lib,
   ...
 }: let
-  cfg = config.erdtree.niscolas.eww;
-  configDir = "${config.erdtree.niscolas.realPath}/eww";
+  cfg = config.nyx.niscolas.eww;
+  configDir = "${config.nyx.niscolas.realPath}/eww";
   launchBarBin = import ./launch-bar.nix {inherit pkgs;};
   clockBin = pkgs.writeShellScriptBin "my-eww-bar-clock" ''
     date +'%a,%e de %b. (%m), 󰥔 %H:%M'
   '';
 in {
-  options.erdtree.niscolas.eww = {
+  options.nyx.niscolas.eww = {
     enable = lib.mkEnableOption {};
     enableDebugMode = lib.mkEnableOption {};
   };

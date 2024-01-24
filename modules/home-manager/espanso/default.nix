@@ -5,9 +5,9 @@
   pkgs,
   ...
 }: let
-  cfg = config.erdtree.espanso;
+  cfg = config.nyx.espanso;
 in {
-  options.erdtree.espanso = {
+  options.nyx.espanso = {
     enable = lib.mkEnableOption {};
   };
 

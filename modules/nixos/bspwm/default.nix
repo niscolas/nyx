@@ -4,9 +4,9 @@
   pkgs,
   ...
 }: let
-  cfg = config.erdtree.bspwm;
+  cfg = config.nyx.bspwm;
 in {
-  options.erdtree.bspwm = {
+  options.nyx.bspwm = {
     enable = lib.mkEnableOption {};
   };
 

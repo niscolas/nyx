@@ -3,9 +3,9 @@
   lib,
   ...
 }: let
-  cfg = config.erdtree.binary-cache;
+  cfg = config.nyx.binary-cache;
 in {
-  options.erdtree.binary-cache = {
+  options.nyx.binary-cache = {
     enable = lib.mkEnableOption {};
   };
 

@@ -5,9 +5,9 @@
   pkgs,
   ...
 }: let
-  cfg = config.erdtree.audio-relay;
+  cfg = config.nyx.audio-relay;
 in {
-  options.erdtree.audio-relay = {
+  options.nyx.audio-relay = {
     enable = lib.mkEnableOption {};
   };
 

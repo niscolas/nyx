@@ -4,7 +4,7 @@
   pkgs,
   ...
 }: let
-  cfg = config.erdtree.niscolas.heroic;
+  cfg = config.nyx.niscolas.heroic;
   gameLaunchWrapper = pkgs.writeShellScriptBin "my-heroic-wrapper" ''
     DXVK_ASYNC=1 \
     ENABLE_VKBASALT=1 \
@@ -17,13 +17,13 @@
     ${pkgs.mangohud}/bin/mangohud \
     ${
       if cfg.enableLudusaviWrapper
-      then "${pkgs.ludusavi}/bin/ludusavi --try-manifest-update --config $HOME/${config.erdtree.niscolas.ludusavi.targetConfigDir} wrap --gui --infer heroic --"
+      then "${pkgs.ludusavi}/bin/ludusavi --try-manifest-update --config $HOME/${config.nyx.niscolas.ludusavi.targetConfigDir} wrap --gui --infer heroic --"
       else ""
     } \
     "$@"
   '';
 in {
-  options.erdtree.niscolas.heroic = {
+  options.nyx.niscolas.heroic = {
     enable = lib.mkEnableOption {};
     enableLudusaviWrapper = lib.mkOption {
       type = lib.types.bool;

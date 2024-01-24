@@ -147,7 +147,7 @@
     plymouth.enable = false;
   };
 
-  erdtree = {
+  nyx = {
     izalith = {
       mach-nix-pkgs.enable = false;
     };

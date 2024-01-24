@@ -4,9 +4,9 @@
   pkgs,
   ...
 }: let
-  cfg = config.erdtree.awesome;
+  cfg = config.nyx.awesome;
 in {
-  options.erdtree.awesome = {
+  options.nyx.awesome = {
     enable = lib.mkEnableOption {};
   };
 

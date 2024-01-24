@@ -4,10 +4,10 @@
   pkgs,
   ...
 }: let
-  cfg = config.erdtree.niscolas.stalonetray;
+  cfg = config.nyx.niscolas.stalonetray;
   restartBin = import ./restart-bin.nix {inherit pkgs;};
 in {
-  options.erdtree.niscolas.stalonetray = {
+  options.nyx.niscolas.stalonetray = {
     enable = lib.mkEnableOption {};
   };
 

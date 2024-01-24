@@ -4,9 +4,9 @@
   pkgs,
   ...
 }: let
-  cfg = config.erdtree.nvim;
+  cfg = config.nyx.nvim;
 in {
-  options.erdtree.nvim = {
+  options.nyx.nvim = {
     enable = lib.mkEnableOption {};
   };
 
@@ -34,6 +34,6 @@ in {
 
     xdg.configFile."nvim".source =
       config.lib.file.mkOutOfStoreSymlink
-      "${config.erdtree.modulesData.realPath}/nvim/config";
+      "${config.nyx.modulesData.realPath}/nvim/config";
   };
 }

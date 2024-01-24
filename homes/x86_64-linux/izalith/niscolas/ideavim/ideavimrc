@@ -15,7 +15,7 @@ set smartcase
 
 " plugins: {{{
 
-set NERDTree
+set Nnyx
 set argtextobj
 set commentary
 set easymotion
@@ -27,9 +27,9 @@ set ReplaceWithRegister
 
 " }}}
 
-" plugins settings (NERDTree)
-map <leader>ee :NERDTreeToggle<cr>
-map <leader>ef :NERDTreeFind<cr>
+" plugins settings (Nnyx)
+map <leader>ee :NnyxToggle<cr>
+map <leader>ef :NnyxFind<cr>
 
 " source .ideavimrc
 nnoremap \v :source ~/.ideavimrc<cr>

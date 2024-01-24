@@ -1,5 +1,5 @@
 {lib, ...}: {
-  options.erdtree.modulesData = {
+  options.nyx.modulesData = {
     realPath = lib.mkOption {
       type = lib.types.str;
     };

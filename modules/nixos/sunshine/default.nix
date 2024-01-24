@@ -4,13 +4,13 @@
   config,
   ...
 }: let
-  cfg = config.erdtree.sunshine;
+  cfg = config.nyx.sunshine;
   sunshineOverride = pkgs.sunshine.override {
     cudaSupport = true;
     stdenv = pkgs.cudaPackages.backendStdenv;
   };
 in {
-  options.erdtree.sunshine = {
+  options.nyx.sunshine = {
     enable = lib.mkEnableOption {};
   };
 
