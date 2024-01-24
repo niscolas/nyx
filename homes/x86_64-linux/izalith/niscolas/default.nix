@@ -10,7 +10,6 @@
     ./awesome
     ./bspwm
     ./eww
-    ./fish
     ./heroic
     ./kanata
     ./logseq
@@ -23,6 +22,7 @@
     inputs.nur.hmModules.nur
     outputs.homeManagerModules.espanso
     outputs.homeManagerModules.firefox
+    outputs.homeManagerModules.fish
     outputs.homeManagerModules.modulesData
     outputs.homeManagerModules.nvim
     outputs.homeManagerModules.wezterm
@@ -59,8 +59,10 @@
     binary-cache.enable = true;
     espanso.enable = true;
     firefox.enable = true;
+    fish.enable = true;
     modulesData.realPath = "${config.home.homeDirectory}/bonfire/nyx/modules/home-manager";
     nvim.enable = true;
+
     wezterm = {
       enable = true;
       enableDebugMode = true;
@@ -73,11 +75,6 @@
       eww = {
         enable = true;
         enableDebugMode = true;
-      };
-
-      fish = {
-        enable = true;
-        enableStarship = true;
       };
 
       heroic = {

@@ -3,9 +3,9 @@
   config,
   ...
 }: let
-  cfg = config.nyx.niscolas.starship;
+  cfg = config.nyx.starship;
 in {
-  options.nyx.niscolas.starship = {
+  options.nyx.starship = {
     enable = lib.mkEnableOption {};
     enableFishIntegration = lib.mkEnableOption {};
   };

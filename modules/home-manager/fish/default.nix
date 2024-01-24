@@ -1,22 +1,23 @@
 {
   lib,
   config,
+  outputs,
   ...
 }: let
-  cfg = config.nyx.niscolas.fish;
+  cfg = config.nyx.fish;
 in {
-  imports = [../starship];
+  imports = [outputs.homeManagerModules.starship];
 
-  options.nyx.niscolas.fish = {
+  options.nyx.fish = {
     enable = lib.mkEnableOption {};
-    enableStarship = lib.mkEnableOption {};
   };
 
   config = lib.mkIf cfg.enable {
-    nyx.niscolas.starship = {
+    nyx.starship = {
       enable = true;
       enableFishIntegration = true;
     };
+
     programs = {
       eza = {
         enable = true;
