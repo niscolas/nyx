@@ -33,30 +33,53 @@ M.kind_icons = {
 
 M.setup = function()
     local cmp = require("cmp")
+    local luasnip = require("luasnip")
 
     cmp.setup {
         snippet = {
             expand = function(args)
-                require("luasnip").lsp_expand(args.body)
+                luasnip.lsp_expand(args.body)
             end,
         },
         mapping = cmp.mapping.preset.insert {
-            -- ["<C-n>"] = cmp.mapping(cmp.mapping.scroll_docs(-1), { "i", "c" }),
-            -- ["<C-m>"] = cmp.mapping(cmp.mapping.scroll_docs(1), { "i", "c" }),
-            ["<Tab>"] = cmp.mapping(function(fallback)
-                if require("luasnip").expand_or_jumpable() then
-                    require("luasnip").expand_or_jump()
+            ["<C-n>"] = cmp.mapping(cmp.mapping.scroll_docs(-1), { "i", "c" }),
+            ["<C-m>"] = cmp.mapping(cmp.mapping.scroll_docs(1), { "i", "c" }),
+            ["<C-j>"] = cmp.mapping(function(fallback)
+                if cmp.visible() then
+                    cmp.select_next_item()
+                -- You could replace the expand_or_jumpable() calls with expand_or_locally_jumpable()
+                -- that way you will only jump inside the snippet region
+                elseif luasnip.expand_or_jumpable() then
+                    luasnip.expand_or_jump()
+                elseif has_words_before() then
+                    cmp.complete()
                 else
                     fallback()
                 end
             end, { "i", "s" }),
-            ["<S-Tab>"] = cmp.mapping(function(fallback)
-                if require("luasnip").jumpable(-1) then
-                    require("luasnip").jump(-1)
+            ["<C-k>"] = cmp.mapping(function(fallback)
+                if cmp.visible() then
+                    cmp.select_prev_item()
+                elseif luasnip.jumpable(-1) then
+                    luasnip.jump(-1)
                 else
                     fallback()
                 end
             end, { "i", "s" }),
+            -- ["<Tab>"] = cmp.mapping(function(fallback)
+            --     if luasnip.expand_or_jumpable() then
+            --         luasnip.expand_or_jump()
+            --     else
+            --         fallback()
+            --     end
+            -- end, { "i", "s" }),
+            -- ["<S-Tab>"] = cmp.mapping(function(fallback)
+            --     if luasnip.jumpable(-1) then
+            --         luasnip.jump(-1)
+            --     else
+            --         fallback()
+            --     end
+            -- end, { "i", "s" }),
             ["<C-Space>"] = cmp.mapping(cmp.mapping.complete(), { "i", "c" }),
             ["<C-e>"] = cmp.mapping {
                 i = cmp.mapping.abort(),

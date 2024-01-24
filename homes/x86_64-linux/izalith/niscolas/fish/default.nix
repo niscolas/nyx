@@ -13,35 +13,36 @@ in {
   };
 
   config = lib.mkIf cfg.enable {
-    programs.fish = {
-      enable = true;
-      interactiveShellInit = ''
-        fish_vi_key_bindings
-      '';
-
-      plugins = [];
-
-      shellAliases = {
-        g = "git";
-        n = "nvim";
-      };
-    };
-
     erdtree.niscolas.starship = {
       enable = true;
       enableFishIntegration = true;
     };
+    programs = {
+      eza = {
+        enable = true;
+        enableAliases = true;
+        git = true;
+        icons = true;
+      };
 
-    programs.eza = {
-      enable = true;
-      enableAliases = true;
-      git = true;
-      icons = true;
-    };
+      fish = {
+        enable = true;
+        interactiveShellInit = ''
+          fish_vi_key_bindings
+        '';
 
-    programs.zoxide = {
-      enable = true;
-      enableFishIntegration = true;
+        plugins = [];
+
+        shellAliases = {
+          g = "git";
+          n = "nvim";
+        };
+      };
+
+      zoxide = {
+        enable = true;
+        enableFishIntegration = true;
+      };
     };
   };
 }

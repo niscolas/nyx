@@ -14,6 +14,9 @@ new_keymap("n", "<down>", function()
     print("use h")
 end)
 
+new_keymap("n", "H", "^", opts)
+new_keymap("n", "L", "$", opts)
+
 -- sourcing files
 new_keymap("n", "<leader>vv", ":source $MYVIMRC<cr>")
 new_keymap("n", "<leader>vc", ":source %<cr>")

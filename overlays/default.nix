@@ -23,6 +23,8 @@
       }
     );
 
+    kanata = final.pkgs.unstable.kanata;
+
     linux-wallpaperengine = prev.linux-wallpaperengine.overrideAttrs (oldAttrs: let
       newVersion = "unstable-2023-12-24";
     in {

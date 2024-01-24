@@ -40,7 +40,7 @@ in {
       package = nvidia-patch.patch-nvenc (nvidia-patch.patch-fbc nvidia-package);
 
       powerManagement = {
-        enable = false;
+        enable = true;
         finegrained = false;
       };
 

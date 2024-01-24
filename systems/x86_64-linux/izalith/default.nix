@@ -79,20 +79,6 @@
 
   systemd = {
     services = {
-      kanata = {
-        serviceConfig = {
-          Environment = "DISPLAY=:0";
-          Type = "simple";
-          User = "root";
-        };
-        script = "${pkgs.kanata}/bin/kanata --cfg /home/niscolas/.config/kanata/kanata.kbd";
-        unitConfig = {
-          Description = "Kanata keyboard remapper";
-          Documentation = "https://github.com/jtroo/kanata";
-        };
-        wantedBy = ["default.target"];
-      };
-
       pritunl = {
         serviceConfig = {
           Type = "simple";
@@ -207,7 +193,7 @@
     users.niscolas = {
       isNormalUser = true;
       description = "Nícolas";
-      extraGroups = ["networkmanager" "wheel" "uinput"];
+      extraGroups = ["networkmanager" "wheel" "uinput" "input"];
       packages = [];
       shell = pkgs.fish;
     };
@@ -225,9 +211,7 @@
 
   services = {
     flatpak.enable = true;
-
     tailscale.enable = true;
-
     printing.enable = false;
 
     udev.extraRules = ''
@@ -239,7 +223,6 @@
 
   networking = {
     hostName = "izalith";
-
     networkmanager.enable = true;
 
     firewall = {

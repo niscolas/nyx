@@ -97,6 +97,13 @@ M.setup = function()
         winopts = {
             hl = hl,
         },
+        keymap = {
+            fzf = {
+                -- https://github.com/ibhagwan/fzf-lua/issues/598
+                ["ctrl-j"] = "down",
+                ["ctrl-k"] = "up",
+            },
+        },
     }
 
     require("fzf-lua").register_ui_select()

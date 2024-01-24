@@ -21,6 +21,7 @@
     ./ssh
     ./tmux
     inputs.nur.hmModules.nur
+    outputs.homeManagerModules.espanso
     outputs.homeManagerModules.firefox
     outputs.homeManagerModules.modulesData
     outputs.homeManagerModules.nvim
@@ -55,6 +56,7 @@
 
   erdtree = {
     binary-cache.enable = true;
+    espanso.enable = true;
     firefox.enable = true;
     modulesData.realPath = "${config.home.homeDirectory}/bonfire/nyx/modules/home-manager";
     nvim.enable = true;
@@ -76,6 +78,11 @@
       heroic = {
         enable = true;
         enableLudusaviWrapper = true;
+      };
+
+      kanata = {
+        enable = true;
+        enableDebugMode = true;
       };
 
       logseq = {
@@ -229,6 +236,11 @@
     # the home Manager release notes for a list of state version
     # changes in each release.
     stateVersion = "23.05";
+  };
+
+  programs.direnv = {
+    enable = true;
+    nix-direnv.enable = true;
   };
 
   gtk = {

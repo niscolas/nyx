@@ -270,7 +270,7 @@ globalkeys = gears.table.join(
     end, { description = "show flameshot", group = "launcher" }),
 
     awful.key({ modkey, "Shift" }, ",", function()
-        shell("keyboard_swap_layout.nu")
+        shell("kb-layout-swap --swap")
     end, { description = "swap keyboard layout", group = "launcher" }),
 
     awful.key({ modkey }, "Right", function()

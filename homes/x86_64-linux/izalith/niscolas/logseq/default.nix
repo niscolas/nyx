@@ -8,7 +8,7 @@
   configDir = "${config.home.homeDirectory}/bonfire/nyx/homes/x86_64-linux/izalith/niscolas/logseq";
   logseqBackup = pkgs.writeShellApplication {
     name = "${unitName}";
-    runtimeInputs = [pkgs.git pkgs.openssh];
+    runtimeInputs = [pkgs.coreutils pkgs.git pkgs.openssh];
     text = builtins.readFile ./${unitName}.sh;
   };
   unitName = "logseq-backup";
@@ -19,24 +19,26 @@ in {
   };
 
   config = lib.mkIf cfg.enable {
-    systemd.user = lib.mkIf cfg.enableBackup {
-      services.${unitName} = {
-        Install.WantedBy = ["default.target"];
-        Service = {
-          Type = "oneshot";
-          ExecStart = "${logseqBackup}/bin/${unitName}";
+    systemd.user =
+      lib.mkIf cfg.enableBackup
+      {
+        services.${unitName} = {
+          Install.WantedBy = ["default.target"];
+          Service = {
+            Type = "oneshot";
+            ExecStart = "${logseqBackup}/bin/${unitName}";
+          };
         };
-      };
 
-      timers.${unitName} = {
-        Install.WantedBy = ["timers.target"];
-        Timer = {
-          OnBootSec = "1m";
-          OnUnitActiveSec = "1m";
-          Unit = "${unitName}.service";
+        timers.${unitName} = {
+          Install.WantedBy = ["timers.target"];
+          Timer = {
+            OnBootSec = "1m";
+            OnUnitActiveSec = "1m";
+            Unit = "${unitName}.service";
+          };
         };
       };
-    };
 
     home = {
       file = {

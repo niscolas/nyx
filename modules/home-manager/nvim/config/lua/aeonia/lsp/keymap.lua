@@ -16,7 +16,7 @@ M.setup = function(client, bufnr)
     new_keymap("n", "<C-k>", vim.lsp.buf.signature_help, silent_opts)
 
     --- diagnostic
-    new_keymap("n", "L", vim.diagnostic.open_float, silent_opts)
+    new_keymap("n", "<Leader>dd", vim.diagnostic.open_float, silent_opts)
     new_keymap("n", "<Leader>dl", vim.diagnostic.setloclist, silent_opts)
 
     new_keymap("n", "]e", function()

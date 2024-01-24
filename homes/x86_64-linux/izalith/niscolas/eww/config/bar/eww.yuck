@@ -8,6 +8,7 @@
 ;; (defpoll gpu_temp :interval "5s" "my-thermals --gpu")
 
 (deflisten workspaces_content "tail -F ~/.cache/eww_workspaces")
+(deflisten current_kanata_layer "tail -F /tmp/kanata-layer.log | grep --line-buffered 'deflayer' | awk '{print $2; fflush()}'")
 
 (defvar eww "eww -c ~/.config/eww/bar")
 
@@ -83,6 +84,16 @@
         (label :class "kb-layout-label" :text kb_layout)
 ))
 
+(defwidget kanata_layer_widget []
+    (box
+        :class "kb-layout-widget"
+        :hexpand false
+        :space-evenly false 
+        :vexpand false
+        (label :class "kb-layout-prefix" :text "󰌌 ")
+        (label :class "kb-layout-label" :text current_kanata_layer)
+))
+
 (defwidget separator_widget []
     (box
         :hexpand false
@@ -128,7 +139,9 @@
             (separator_char_widget)
             (ram_widget)
             (separator_char_widget)
-            (kb_layout_widget))
+            (kb_layout_widget)
+            (separator_char_widget)
+            (kanata_layer_widget))
         (label :class "system-suffix")
 ))
 
