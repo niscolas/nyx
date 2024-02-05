@@ -615,7 +615,6 @@ awesome.connect_signal("startup", function()
     require("eww")
 
     spawn("firefox")
-    spawn("logseq")
     spawn("easyeffects")
     spawn("pavucontrol")
 end)

@@ -20,11 +20,13 @@
     ./ssh
     ./tmux
     inputs.nur.hmModules.nur
+    outputs.homeManagerModules.alacritty
     outputs.homeManagerModules.espanso
     outputs.homeManagerModules.firefox
     outputs.homeManagerModules.fish
     outputs.homeManagerModules.modulesData
     outputs.homeManagerModules.nvim
+    outputs.homeManagerModules.spicetify
     outputs.homeManagerModules.wezterm
     outputs.nixosModules.binary-cache
   ];
@@ -56,12 +58,18 @@
   systemd.user.startServices = "sd-switch";
 
   nyx = {
+    alacritty = {
+      enable = true;
+      enableDebugMode = true;
+    };
+
     binary-cache.enable = true;
     espanso.enable = true;
     firefox.enable = true;
     fish.enable = true;
     modulesData.realPath = "${config.home.homeDirectory}/bonfire/nyx/modules/home-manager";
     nvim.enable = true;
+    spicetify.enable = true;
 
     wezterm = {
       enable = true;
@@ -69,7 +77,11 @@
     };
 
     niscolas = {
-      awesome.enable = true;
+      awesome = {
+        enable = true;
+        enableDebugMode = true;
+      };
+
       bspwm.enable = false;
 
       eww = {
@@ -110,7 +122,6 @@
     username = "niscolas";
     homeDirectory = "/home/niscolas";
     file = {
-      ".config/alacritty".source = ./alacritty;
       ".config/bat".source = ./bat;
       ".config/bottom".source = ./bottom;
       ".config/cpupower_gui".source = ./cpupower_gui;
@@ -152,7 +163,6 @@
     packages = with pkgs; [
       (import ./scripts/kb-layout-swap.nix {inherit pkgs;})
       (import ./scripts/my-battery.nix {inherit pkgs;})
-      alacritty
       appimage-run
       barrier
       bat
@@ -163,6 +173,7 @@
       delta
       discord
       easyeffects
+      emote
       epick
       fd
       flameshot
@@ -199,6 +210,7 @@
       pciutils # lspci
       pritunl-client
       protonup-qt
+      qalculate-gtk
       r2modman
       rclone
       ripgrep

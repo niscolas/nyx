@@ -14,9 +14,17 @@
     ./mach-nix-pkgs
     ./performance.nix
     ./video.nix
+    inputs.hosts.nixosModule
+    {
+      networking.stevenBlackHosts = {
+        blockFakenews = true;
+        blockGambling = true;
+        blockPorn = true;
+        blockSocial = true;
+      };
+    }
     inputs.minegrub-theme.nixosModules.default
     inputs.nix-index-database.nixosModules.nix-index
-    inputs.nur.nixosModules.nur
     outputs.nixosModules.audio-relay
     outputs.nixosModules.awesome
     outputs.nixosModules.binary-cache

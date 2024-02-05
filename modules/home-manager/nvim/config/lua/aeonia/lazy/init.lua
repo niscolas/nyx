@@ -278,9 +278,15 @@ M.setup = function()
         {
             "folke/which-key.nvim",
             config = function()
-                vim.o.timeout = true
-                vim.o.timeoutlen = 500
-                require("which-key").setup {}
+                require("which-key").setup {
+                    layout = {
+                        height = { min = 1, max = 25 },
+                        width = { min = 20, max = 60 },
+                    },
+                    window = {
+                        border = "rounded",
+                    },
+                }
             end,
             event = "VeryLazy",
         },
