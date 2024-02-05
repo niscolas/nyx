@@ -12,10 +12,11 @@ set number
 set relativenumber
 set showmode
 set smartcase
+set clipboard=unnamed
 
 " plugins: {{{
 
-set Nnyx
+set NERDTree
 set argtextobj
 set commentary
 set easymotion
@@ -27,15 +28,18 @@ set ReplaceWithRegister
 
 " }}}
 
-" plugins settings (Nnyx)
-map <leader>ee :NnyxToggle<cr>
-map <leader>ef :NnyxFind<cr>
+" plugins settings (NERDTree)
+map <leader>ee :NERDTreeToggle<cr>
+map <leader>ef :NERDTreeFind<cr>
 
 " source .ideavimrc
 nnoremap \v :source ~/.ideavimrc<cr>
 
 " project navigation
 map <leader>hf <Action>(SelectInProjectView)
+
+map Y y$
+map U <C-r>
 
 " window management
 map <leader>qq <Action>(CloseEditor)

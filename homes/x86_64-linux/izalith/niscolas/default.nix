@@ -18,15 +18,20 @@
     ./nushell
     ./options.nix
     ./ssh
-    ./tmux
     inputs.nur.hmModules.nur
     outputs.homeManagerModules.alacritty
+    outputs.homeManagerModules.batcat
+    outputs.homeManagerModules.bottom
     outputs.homeManagerModules.espanso
     outputs.homeManagerModules.firefox
     outputs.homeManagerModules.fish
+    outputs.homeManagerModules.ideavim
     outputs.homeManagerModules.modulesData
+    outputs.homeManagerModules.neofetch
     outputs.homeManagerModules.nvim
+    outputs.homeManagerModules.omnisharp
     outputs.homeManagerModules.spicetify
+    outputs.homeManagerModules.tmux
     outputs.homeManagerModules.wezterm
     outputs.nixosModules.binary-cache
   ];
@@ -63,13 +68,42 @@
       enableDebugMode = true;
     };
 
+    batcat = {
+      enable = true;
+      enableDebugMode = true;
+    };
+
+    bottom = {
+      enable = true;
+      enableDebugMode = true;
+    };
+
     binary-cache.enable = true;
     espanso.enable = true;
     firefox.enable = true;
     fish.enable = true;
+
+    ideavim = {
+      enable = true;
+      enableDebugMode = true;
+    };
+
     modulesData.realPath = "${config.home.homeDirectory}/bonfire/nyx/modules/home-manager";
+
+    neofetch = {
+      enable = true;
+      enableDebugMode = true;
+    };
+
     nvim.enable = true;
+
+    omnisharp = {
+      enable = true;
+      enableDebugMode = true;
+    };
+
     spicetify.enable = true;
+    tmux.enable = true;
 
     wezterm = {
       enable = true;
@@ -122,10 +156,7 @@
     username = "niscolas";
     homeDirectory = "/home/niscolas";
     file = {
-      ".config/bat".source = ./bat;
-      ".config/bottom".source = ./bottom;
       ".config/cpupower_gui".source = ./cpupower_gui;
-      ".config/flameshot".source = ./flameshot;
 
       ".config/gh".source =
         config.lib.file.mkOutOfStoreSymlink
@@ -134,11 +165,8 @@
       ".config/git".source = ./git;
       ".config/hidamari".source = ./hidamari;
       ".config/i3".source = ./i3;
-      ".config/ideavim".source = ./ideavim;
       ".config/keyd".source = ./keyd;
 
-      ".config/neofetch".source = ./neofetch;
-      ".config/omnisharp".source = ./omnisharp;
       ".config/optimus-manager".source = ./optimus-manager;
       ".config/polybar".source = ./polybar;
       ".config/rg".source = ./rg;
@@ -165,8 +193,6 @@
       (import ./scripts/my-battery.nix {inherit pkgs;})
       appimage-run
       barrier
-      bat
-      bottom
       brightnessctl
       cmake
       dbus
@@ -199,7 +225,6 @@
       lutris
       lxappearance
       mprocs
-      neofetch
       networkmanagerapplet
       nix-output-monitor # it provides the command `nom` works just like `nix` with more details log output
       obsidian
