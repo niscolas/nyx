@@ -1,6 +1,5 @@
 {
   config,
-  lib,
   pkgs,
   inputs,
   outputs,
@@ -15,7 +14,6 @@
     ./logseq
     ./ludusavi
     ./mangohud
-    ./nushell
     ./options.nix
     ./ssh
     inputs.nur.hmModules.nur
@@ -29,7 +27,7 @@
     outputs.homeManagerModules.modulesData
     outputs.homeManagerModules.neofetch
     outputs.homeManagerModules.nvim
-    outputs.homeManagerModules.omnisharp
+    outputs.homeManagerModules.ripgrep
     outputs.homeManagerModules.spicetify
     outputs.homeManagerModules.tmux
     outputs.homeManagerModules.wezterm
@@ -80,7 +78,16 @@
 
     binary-cache.enable = true;
     espanso.enable = true;
-    firefox.enable = true;
+
+    firefox = {
+      enable = true;
+
+      tridactyl = {
+        enable = true;
+        enableDebugMode = true;
+      };
+    };
+
     fish.enable = true;
 
     ideavim = {
@@ -97,7 +104,7 @@
 
     nvim.enable = true;
 
-    omnisharp = {
+    ripgrep = {
       enable = true;
       enableDebugMode = true;
     };
@@ -169,10 +176,7 @@
 
       ".config/optimus-manager".source = ./optimus-manager;
       ".config/polybar".source = ./polybar;
-      ".config/rg".source = ./rg;
       ".config/rofi".source = ./rofi;
-      ".config/tridactyl".source = ./tridactyl;
-      ".config/zsh".source = ./zsh;
     };
 
     sessionVariables = {
@@ -238,7 +242,6 @@
       qalculate-gtk
       r2modman
       rclone
-      ripgrep
       rofi
       rustup
       s-tui
@@ -250,7 +253,6 @@
       stremio
       stress
       stylua
-      trayer
       unixtools.xxd
       unzip
       usbutils # lsusb

@@ -67,8 +67,6 @@
 
     shells = with pkgs; [
       fish
-      nushell
-      zsh
     ];
 
     systemPackages = [

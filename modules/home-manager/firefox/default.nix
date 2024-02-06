@@ -8,6 +8,11 @@
 in {
   options.nyx.firefox = {
     enable = lib.mkEnableOption {};
+
+    tridactyl = {
+      enable = lib.mkEnableOption {};
+      enableDebugMode = lib.mkEnableOption {};
+    };
   };
 
   config = lib.mkIf cfg.enable {
@@ -15,7 +20,7 @@ in {
       enable = true;
       package = pkgs.firefox.override {
         cfg = {
-          enableTridactylNative = true;
+          enableTridactylNative = cfg.tridactyl.enable;
         };
       };
       profiles.default = {
@@ -28,22 +33,27 @@ in {
         };
 
         # https://github.com/nix-community/nur-combined/blob/master/repos/rycee/pkgs/firefox-addons/generated-firefox-addons.nix
-        extensions = with pkgs.nur.repos.rycee.firefox-addons; [
-          # missing ones:
-          ## logseq-copilot
-          ## meliuz
+        extensions = with pkgs.nur.repos.rycee.firefox-addons;
+          [
+            # missing ones:
+            ## logseq-copilot
+            ## meliuz
 
-          auto-tab-discard
-          bitwarden
-          buster-captcha-solver
-          darkreader
-          ecosia
-          multi-account-containers
-          simplelogin
-          tridactyl
-          ublock-origin
-          videospeed
-        ];
+            auto-tab-discard
+            bitwarden
+            buster-captcha-solver
+            darkreader
+            ecosia
+            multi-account-containers
+            simplelogin
+            ublock-origin
+            videospeed
+          ]
+          ++ (
+            if cfg.tridactyl.enable
+            then [tridactyl]
+            else []
+          );
 
         search = {
           default = "Ecosia";
@@ -440,5 +450,7 @@ in {
         };
       };
     };
+
+    home.file.".config/tridactyl".source = lib.mkIf cfg.tridactyl.enable ./tridactyl;
   };
 }

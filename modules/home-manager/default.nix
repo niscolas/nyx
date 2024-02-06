@@ -11,9 +11,11 @@
   neofetch = import ./neofetch;
   nvim = import ./nvim;
   omnisharp = import ./omnisharp;
+  ripgrep = import ./ripgrep;
   spicetify = import ./spicetify;
   starship = import ./starship;
   tmux = import ./tmux;
   wezterm = import ./wezterm;
   wired = import ./wired;
+  zsh = import ./zsh;
 }
