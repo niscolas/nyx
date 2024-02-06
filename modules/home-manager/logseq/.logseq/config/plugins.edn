@@ -15,4 +15,5 @@
  :logseq-sticky-headers {:version "v1.4.4", :repo "yoyurec/logseq-sticky-headers", :effect true, :theme false}
  :logseq-tabs {:version "v1.19.3", :repo "pengx17/logseq-plugin-tabs", :effect true, :theme false}
  :logseq-raindrop {:version "v0.5.1", :repo "phildenhoff/logseq-raindrop", :effect false, :theme false}
- :logseq-automatic-linker {:version "1.5.5", :repo "sawhney17/logseq-automatic-linker", :effect false, :theme false}}
+ :logseq-automatic-linker {:version "1.5.5", :repo "sawhney17/logseq-automatic-linker", :effect false, :theme false}
+ :logseq-banners-plugin {:version "v3.4.11", :repo "yoyurec/logseq-banners-plugin", :effect true, :theme false}}

@@ -11,7 +11,6 @@
     ./eww
     ./heroic
     ./kanata
-    ./logseq
     ./ludusavi
     ./mangohud
     ./options.nix
@@ -24,6 +23,7 @@
     outputs.homeManagerModules.firefox
     outputs.homeManagerModules.fish
     outputs.homeManagerModules.ideavim
+    outputs.homeManagerModules.logseq
     outputs.homeManagerModules.modulesData
     outputs.homeManagerModules.neofetch
     outputs.homeManagerModules.nvim
@@ -95,6 +95,11 @@
       enableDebugMode = true;
     };
 
+    logseq = {
+      enable = true;
+      enableBackup = true;
+    };
+
     modulesData.realPath = "${config.home.homeDirectory}/bonfire/nyx/modules/home-manager";
 
     neofetch = {
@@ -138,11 +143,6 @@
       kanata = {
         enable = true;
         enableDebugMode = true;
-      };
-
-      logseq = {
-        enable = true;
-        enableBackup = true;
       };
 
       ludusavi.enable = true;

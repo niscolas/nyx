@@ -12,4 +12,5 @@
 {:shortcuts {:go/backward ["ctrl+o"]
  :go/forward ["ctrl+i"]
  :editor/follow-link ["ctrl+o"]
- :auto-complete/open-link ["ctrl+o"]}}
+ :auto-complete/open-link ["ctrl+o"]
+ :date-picker/next-week ["down"]}}

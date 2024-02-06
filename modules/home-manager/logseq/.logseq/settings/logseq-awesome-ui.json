@@ -6,7 +6,7 @@
   "headerVariant": "Wide",
   "navigationPosition": "Left",
   "searchStyle": "Wide",
-  "hideHomeButton": true,
+  "hideHomeButton": false,
   "leftSidebarHeading": null,
   "vaultButtonToBottom": false,
   "compactSidebarMenu": true,

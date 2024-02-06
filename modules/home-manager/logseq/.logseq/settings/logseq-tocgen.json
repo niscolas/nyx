@@ -9,5 +9,5 @@
   "noPageJump": false,
   "pageScrollBehavior": "top",
   "maxScrollTryCount": 20,
-  "disabled": false
+  "disabled": true
 }

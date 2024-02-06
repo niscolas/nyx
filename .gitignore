@@ -3,10 +3,10 @@ homes/x86_64-linux/izalith/niscolas/git/credentials
 homes/x86_64-linux/izalith/niscolas/ludusavi/config/*.log
 homes/x86_64-linux/izalith/niscolas/ludusavi/config/cache.yaml
 homes/x86_64-linux/izalith/niscolas/wakatime
-homes/x86_64-linux/izalith/niscolas/zsh/.cache
-homes/x86_64-linux/izalith/niscolas/zsh/.zcompdump
-homes/x86_64-linux/izalith/niscolas/zsh/.zdirs
-homes/x86_64-linux/izalith/niscolas/zsh/.zsh_history
-homes/x86_64-linux/izalith/niscolas/zsh/env.secrets
-homes/x86_64-linux/izalith/niscolas/logseq/.logseq/settings/logseq-raindrop.json
+modules/home-manager/zsh/.cache
+modules/home-manager/zsh/.zcompdump
+modules/home-manager/zsh/.zdirs
+modules/home-manager/zsh/.zsh_history
+modules/home-manager/zsh/env.secrets
+modules/home-manager/logseq/.logseq/settings/logseq-raindrop.json
 

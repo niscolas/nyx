@@ -7,6 +7,7 @@
   firefox = import ./firefox;
   fish = import ./fish;
   ideavim = import ./ideavim;
+  logseq = import ./logseq;
   modulesData = import ./modules-data;
   neofetch = import ./neofetch;
   nvim = import ./nvim;

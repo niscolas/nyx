@@ -4,8 +4,8 @@
   pkgs,
   ...
 }: let
-  cfg = config.nyx.niscolas.logseq;
-  configDir = "${config.home.homeDirectory}/bonfire/nyx/homes/x86_64-linux/izalith/niscolas/logseq";
+  cfg = config.nyx.logseq;
+  configDir = "${config.nyx.modulesData.realPath}/logseq";
   logseqBackup = pkgs.writeShellApplication {
     name = "${unitName}";
     runtimeInputs = [pkgs.coreutils pkgs.git pkgs.openssh];
@@ -13,7 +13,7 @@
   };
   unitName = "logseq-backup";
 in {
-  options.nyx.niscolas.logseq = {
+  options.nyx.logseq = {
     enable = lib.mkEnableOption {};
     enableBackup = lib.mkEnableOption {};
   };
