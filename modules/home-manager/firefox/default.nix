@@ -8,6 +8,7 @@
 in {
   options.nyx.firefox = {
     enable = lib.mkEnableOption {};
+    enableExtensions = lib.mkEnableOption {};
 
     tridactyl = {
       enable = lib.mkEnableOption {};
@@ -33,7 +34,7 @@ in {
         };
 
         # https://github.com/nix-community/nur-combined/blob/master/repos/rycee/pkgs/firefox-addons/generated-firefox-addons.nix
-        extensions = with pkgs.nur.repos.rycee.firefox-addons;
+        extensions = lib.mkIf cfg.enableExtensions (with pkgs.nur.repos.rycee.firefox-addons;
           [
             # missing ones:
             ## logseq-copilot
@@ -53,7 +54,7 @@ in {
             if cfg.tridactyl.enable
             then [tridactyl]
             else []
-          );
+          ));
 
         search = {
           default = "Ecosia";
@@ -454,3 +455,4 @@ in {
     home.file.".config/tridactyl".source = lib.mkIf cfg.tridactyl.enable ./tridactyl;
   };
 }
+

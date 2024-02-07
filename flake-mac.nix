@@ -31,8 +31,6 @@
       url = "github:snowfallorg/lib";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    spicetify-nix.url = "github:the-argus/spicetify-nix";
-    hosts.url = "github:StevenBlack/hosts";
     wired.url = "github:Toqozz/wired-notify";
   };
 
@@ -76,17 +74,17 @@
     };
 
     homeConfigurations = {
-      "niscolas@izalith" = home-manager.lib.homeManagerConfiguration {
-        pkgs = nixpkgs.legacyPackages.x86_64-linux;
-        extraSpecialArgs = {inherit inputs outputs;};
-        modules = [./homes/x86_64-linux/izalith/niscolas];
-      };
+        "niscolas@izalith" = home-manager.lib.homeManagerConfiguration {
+            pkgs = nixpkgs.legacyPackages.x86_64-linux;
+            extraSpecialArgs = {inherit inputs outputs;};
+            modules = [./homes/x86_64-linux/izalith/niscolas];
+        };
 
-      "work" = home-manager.lib.homeManagerConfiguration {
-          pkgs = nixpkgs.legacyPackages.aarch64-darwin;
-          extraSpecialArgs = {inherit inputs outputs;};
-          modules = [./homes/aarch64-darwin/haligtree/main];
-      };
+        "work" = home-manager.lib.homeManagerConfiguration {
+            pkgs = nixpkgs.legacyPackages.x86_64-linux;
+            extraSpecialArgs = {inherit inputs outputs;};
+            modules = [./homes/x86_64-linux/izalith/niscolas];
+        };
     };
   };
 }

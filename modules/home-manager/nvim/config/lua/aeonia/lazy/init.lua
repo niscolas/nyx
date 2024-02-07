@@ -593,7 +593,7 @@ M.setup = function()
         },
 
         {
-            "nvim-island/hydra.nvim",
+            "nvimtools/hydra.nvim",
             config = function()
                 require("aeonia.hydra").setup()
             end,

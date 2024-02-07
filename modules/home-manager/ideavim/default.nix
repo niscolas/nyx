@@ -12,7 +12,7 @@ in {
   };
 
   config = lib.mkIf cfg.enable {
-    home.file.".config/ideavim/ideavimrc".source =
+    home.file.".ideavimrc".source =
       if !cfg.enableDebugMode
       then ./ideavimrc
       else config.lib.file.mkOutOfStoreSymlink "${configDir}/ideavimrc";
