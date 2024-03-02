@@ -20,14 +20,14 @@
       '';
     });
 
-  cfg = config.nyx.izalith.mach-nix-pkgs;
+  cfg = config.nyx.mach-nix-pkgs;
 in {
-  options.nyx.izalith.mach-nix-pkgs = {
+  options.nyx.mach-nix-pkgs = {
     enable = lib.mkEnableOption {};
   };
 
   config = lib.mkIf cfg.enable {
-    environment.systemPackages = [
+    home.packages = [
       mach-nix-pkgs.${pkgs.system}
     ];
   };

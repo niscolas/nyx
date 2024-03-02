@@ -9,6 +9,7 @@
     ./awesome
     ./bspwm
     ./eww
+    ./git
     ./heroic
     ./kanata
     ./ludusavi
@@ -21,9 +22,12 @@
     outputs.homeManagerModules.bottom
     outputs.homeManagerModules.espanso
     outputs.homeManagerModules.firefox
+    outputs.homeManagerModules.flameshot
     outputs.homeManagerModules.fish
     outputs.homeManagerModules.ideavim
     outputs.homeManagerModules.logseq
+    outputs.homeManagerModules.mach-nix-pkgs
+    outputs.homeManagerModules.media-dirs
     outputs.homeManagerModules.modulesData
     outputs.homeManagerModules.neofetch
     outputs.homeManagerModules.nvim
@@ -78,9 +82,11 @@
 
     binary-cache.enable = true;
     espanso.enable = true;
+    flameshot.enable = true;
 
     firefox = {
       enable = true;
+      enableExtensions = true;
 
       tridactyl = {
         enable = true;
@@ -98,6 +104,12 @@
     logseq = {
       enable = true;
       enableBackup = true;
+    };
+
+    mach-nix-pkgs.enable = true;
+
+    media-dirs = {
+      downloads.enableSymlink = true;
     };
 
     modulesData.realPath = "${config.home.homeDirectory}/bonfire/nyx/modules/home-manager";
@@ -140,6 +152,8 @@
         enableLudusaviWrapper = true;
       };
 
+      git.enable = true;
+
       kanata = {
         enable = true;
         enableDebugMode = true;
@@ -169,7 +183,6 @@
         config.lib.file.mkOutOfStoreSymlink
         "${config.home.homeDirectory}/bonfire/nyx/homes/x86_64-linux/izalith/niscolas/gh";
 
-      ".config/git".source = ./git;
       ".config/hidamari".source = ./hidamari;
       ".config/i3".source = ./i3;
       ".config/keyd".source = ./keyd;
@@ -195,6 +208,7 @@
     packages = with pkgs; [
       (import ./scripts/kb-layout-swap.nix {inherit pkgs;})
       (import ./scripts/my-battery.nix {inherit pkgs;})
+      qbittorrent
       appimage-run
       barrier
       brightnessctl
@@ -202,24 +216,22 @@
       dbus
       delta
       discord
+      dotnet-sdk
       easyeffects
-      emote
       epick
       fd
-      flameshot
       fluent-reader
       font-manager
       fzf
-      gcc
+      # gcc
       gh
-      git
-      git-lfs
       glxinfo
       gnome.gnome-disk-utility
       gnome.zenity
       google-chrome
       inkscape-with-extensions
       input-leap
+      jetbrains-toolbox
       krita
       libnotify
       linux-wallpaperengine
@@ -258,6 +270,7 @@
       usbutils # lsusb
       vulkan-tools
       wget
+      wine-staging
       xclip
       xdotool
       xorg.xdpyinfo

@@ -26,10 +26,7 @@ in {
       };
 
       Install = {WantedBy = ["graphical-session.target"];};
-
-      Service = {
-        ExecStart = "${lib.getExe pkgs.picom} --config ${config.xdg.configFile."${configPathSuffix}".source}";
-      };
+      Service.ExecStart = "${pkgs.picom}/bin/picom --config ${config.xdg.configFile."${configPathSuffix}".source}";
     };
   };
 }

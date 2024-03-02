@@ -13,10 +13,10 @@ in {
   config = lib.mkIf cfg.enable {
     home.packages = with pkgs; [
       alejandra
-      clang-tools
+      # clang-tools
       csharp-ls
       deadnix
-      dotnet-sdk_8
+      # dotnet-sdk_8
       fd
       fzf
       gnumake

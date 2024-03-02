@@ -7,6 +7,12 @@
             "mason-lspconfig.nvim"
         ]
     },
+    "ai": {
+        "enabled": true,
+        "neoai": {
+            "enabled": false,
+        },
+    },
     "lsp": {
         "servers": {
             "bashls": {
@@ -16,6 +22,11 @@
             },
             "clangd":  {
                 "enabled": true,
+                "ensure_installed": false,
+                "has_custom_config": false
+            },
+            "ccls":  {
+                "enabled": false,
                 "ensure_installed": false,
                 "has_custom_config": false
             },

@@ -8,7 +8,16 @@ M.setup = function()
     require("aeonia.lazy.util").bootstrap()
 
     require("lazy").setup({
-        { import = "aeonia.neoai.spec" },
+        {
+            import = "aeonia.ai.spec",
+            event = "VeryLazy",
+            cond = function()
+                print("ai cond")
+                return true
+                -- require("neoconf").setup()
+                -- return require("neoconf").get("ai.enabled", false)
+            end,
+        },
 
         {
             "ellisonleao/gruvbox.nvim",
@@ -97,29 +106,7 @@ M.setup = function()
                 "hrsh7th/cmp-nvim-lsp",
                 "hrsh7th/cmp-path",
                 "hrsh7th/cmp-emoji",
-
-                {
-                    "tzachar/cmp-tabnine",
-                    build = "./install.sh",
-                    cond = require("aeonia.core.util").check_is_personal_setup,
-                    config = function()
-                        local tabnine = require("cmp_tabnine.config")
-
-                        tabnine:setup {
-                            max_lines = 1000,
-                            max_num_results = 20,
-                            sort = true,
-                            run_on_every_keystroke = true,
-                            snippet_placeholder = "..",
-                            ignored_file_types = {
-                                -- default is not to ignore
-                                -- uncomment to ignore in lua:
-                                -- lua = true
-                            },
-                            show_prediction_strength = false,
-                        }
-                    end,
-                },
+                "tzachar/cmp-tabnine",
 
                 {
                     "L3MON4D3/LuaSnip",
@@ -529,22 +516,6 @@ M.setup = function()
         {
             "VidocqH/lsp-lens.nvim",
             config = true,
-        },
-
-        {
-            "jcdickinson/codeium.nvim",
-            commit = "b1ff0d6c993e3d87a4362d2ccd6c660f7444599f",
-            cond = require("aeonia.core.util").check_is_personal_setup,
-            config = true,
-            enabled = false,
-            dependencies = {
-                "nvim-lua/plenary.nvim",
-
-                {
-                    "jcdickinson/http.nvim",
-                    build = "cargo build --workspace --release",
-                },
-            },
         },
 
         {

@@ -12,6 +12,17 @@ M.shortcuts_config = {
     },
 }
 
+M.lazy_keys = {
+    {
+        M.shortcuts_config.summarize_text.keys,
+        desc = M.shortcuts_config.summarize_text.desc,
+    },
+    {
+        M.shortcuts_config.gitcommit.keys,
+        desc = M.shortcuts_config.gitcommit.desc,
+    },
+}
+
 M.setup_keymap = function()
     new_keymap("n", "<Leader>ac", function()
         cmd("Git commit")

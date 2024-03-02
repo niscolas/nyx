@@ -11,7 +11,6 @@
     ./bluetooth.nix
     ./gaming.nix
     ./hardware-configuration.nix
-    ./mach-nix-pkgs
     ./performance.nix
     ./video.nix
     inputs.hosts.nixosModule
@@ -154,10 +153,6 @@
   };
 
   nyx = {
-    izalith = {
-      mach-nix-pkgs.enable = false;
-    };
-
     audio-relay.enable = true;
     awesome.enable = true;
     binary-cache.enable = true;
