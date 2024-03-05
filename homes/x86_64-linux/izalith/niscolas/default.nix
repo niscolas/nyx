@@ -223,7 +223,6 @@
       fluent-reader
       font-manager
       fzf
-      # gcc
       gh
       glxinfo
       gnome.gnome-disk-utility
@@ -255,7 +254,6 @@
       r2modman
       rclone
       rofi
-      rustup
       s-tui
       scrcpy
       snixembed

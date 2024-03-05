@@ -28,19 +28,14 @@ return {
         keys = neoai_config.lazy_keys,
     },
     {
-        "jcdickinson/codeium.nvim",
-        commit = "b1ff0d6c993e3d87a4362d2ccd6c660f7444599f",
-        cond = require("aeonia.core.util").check_is_personal_setup,
-        config = true,
-        enabled = false,
+        "Exafunction/codeium.nvim",
         dependencies = {
             "nvim-lua/plenary.nvim",
-
-            {
-                "jcdickinson/http.nvim",
-                build = "cargo build --workspace --release",
-            },
+            "hrsh7th/nvim-cmp",
         },
+        config = function()
+            require("codeium").setup {}
+        end,
     },
     {
         "tzachar/cmp-tabnine",

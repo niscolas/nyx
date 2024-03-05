@@ -30,6 +30,9 @@ in {
       stylua
       vscode-langservers-extracted
       yaml-language-server
+
+      # treesitter
+      gcc
     ];
 
     xdg.configFile."nvim".source =
