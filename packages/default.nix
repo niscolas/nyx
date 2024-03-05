@@ -12,7 +12,7 @@
       gen=$(nixos-rebuild list-generations | ${ripgrep}/bin/rg current)
       set -e
 
-      ${git}/bin/git commit -am "$gen"
+      ${git}/bin/git commit -am "NixOS Switch: $gen"
       popd
     '';
 
@@ -24,12 +24,8 @@
       echo "Home Manager switching..."
       home-manager switch --show-trace --flake . &>hm-switch.log || (
        cat hm-switch.log | ${ripgrep}/bin/rg --color error && false)
-
-      set +e
       gen=$(home-manager generations | head -n 1 | awk '{print $5}')
-      set -e
-
-      ${git}/bin/git commit -am "$gen"
+      ${git}/bin/git commit -am "Home Manager Switch: $gen"
       popd
     '';
 }
