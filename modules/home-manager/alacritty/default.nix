@@ -10,10 +10,12 @@ in {
   options.nyx.alacritty = {
     enable = lib.mkEnableOption {};
     enableDebugMode = lib.mkEnableOption {};
+    gruvbox = {
+    };
   };
 
   config = lib.mkIf cfg.enable {
-    home.packages = with pkgs; [alacritty];
+    home.packages = with pkgs; [];
 
     home.file.".config/alacritty".source =
       if !cfg.enableDebugMode
