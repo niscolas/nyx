@@ -37,6 +37,7 @@
   "neotest": { "branch": "master", "commit": "4440cc2227894c2ae9b0673a30e6cc6f1836e8c2" },
   "neotest-dotnet": { "branch": "main", "commit": "c19df2a139d88c5b4130b830d2cbe63a2c6c6c0c" },
   "noice.nvim": { "branch": "main", "commit": "bf67d70bd7265d075191e7812d8eb42b9791f737" },
+  "none-ls-shellcheck.nvim": { "branch": "main", "commit": "1eed283a7ede771b522a0a9f30bb604f02f51d64" },
   "none-ls.nvim": { "branch": "main", "commit": "ff3819c52ca04232fb70fbd6c1639de9abcbe122" },
   "nui.nvim": { "branch": "main", "commit": "fbb139c6f14896b434d0229099e1acd863ae6bec" },
   "nvim-autopairs": { "branch": "master", "commit": "c6139ca0d5ad7af129ea6c89cb4c56093f2c034a" },

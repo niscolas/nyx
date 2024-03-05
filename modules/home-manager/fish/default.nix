@@ -6,16 +6,23 @@
 }: let
   cfg = config.nyx.fish;
 in {
-  imports = [outputs.homeManagerModules.starship];
+  imports = [
+    outputs.homeManagerModules.batcat
+    outputs.homeManagerModules.starship
+  ];
 
   options.nyx.fish = {
     enable = lib.mkEnableOption {};
   };
 
   config = lib.mkIf cfg.enable {
-    nyx.starship = {
-      enable = true;
-      enableFishIntegration = true;
+    nyx = {
+      batcat.enable = true;
+
+      starship = {
+        enable = true;
+        enableFishIntegration = true;
+      };
     };
 
     programs = {
@@ -35,6 +42,7 @@ in {
         plugins = [];
 
         shellAliases = {
+          cat = "bat";
           g = "git";
           n = "nvim";
         };

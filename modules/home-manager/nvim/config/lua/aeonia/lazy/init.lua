@@ -370,6 +370,9 @@ M.setup = function()
             "nvimtools/none-ls.nvim",
             as = "none-ls",
             config = require("aeonia.null-ls").setup,
+            dependencies = {
+                "gbprod/none-ls-shellcheck.nvim",
+            },
         },
 
         {

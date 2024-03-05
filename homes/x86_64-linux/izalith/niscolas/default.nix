@@ -1,8 +1,9 @@
 {
   config,
-  pkgs,
   inputs,
+  lib,
   outputs,
+  pkgs,
   ...
 }: {
   imports = [
@@ -18,7 +19,6 @@
     ./ssh
     inputs.nur.hmModules.nur
     outputs.homeManagerModules.alacritty
-    outputs.homeManagerModules.batcat
     outputs.homeManagerModules.bottom
     outputs.homeManagerModules.espanso
     outputs.homeManagerModules.firefox
@@ -31,7 +31,7 @@
     outputs.homeManagerModules.modulesData
     outputs.homeManagerModules.neofetch
     outputs.homeManagerModules.nvim
-    outputs.homeManagerModules.ripgrep
+    # outputs.homeManagerModules.ripgrep
     outputs.homeManagerModules.spicetify
     outputs.homeManagerModules.tmux
     outputs.homeManagerModules.wezterm
@@ -66,11 +66,6 @@
 
   nyx = {
     alacritty = {
-      enable = true;
-      enableDebugMode = true;
-    };
-
-    batcat = {
       enable = true;
       enableDebugMode = true;
     };
@@ -120,12 +115,7 @@
     };
 
     nvim.enable = true;
-
-    ripgrep = {
-      enable = true;
-      enableDebugMode = true;
-    };
-
+    # ripgrep.enable = lib.mkForce true;
     spicetify.enable = true;
     tmux.enable = true;
 

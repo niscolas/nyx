@@ -41,17 +41,13 @@ M.setup = function()
             --     end,
             -- },
 
-            -- bash
-            null_ls.builtins.diagnostics.shellcheck,
-            null_ls.builtins.code_actions.shellcheck,
-
             -- godot
             null_ls.builtins.formatting.gdformat,
 
             -- js / ts
-            null_ls.builtins.diagnostics.xo,
-            null_ls.builtins.code_actions.xo,
-            null_ls.builtins.formatting.prettier_standard,
+            -- null_ls.builtins.diagnostics.xo,
+            -- null_ls.builtins.code_actions.xo,
+            -- null_ls.builtins.formatting.prettier_standard,
 
             -- lua
             null_ls.builtins.formatting.stylua,
@@ -63,6 +59,8 @@ M.setup = function()
             -- null_ls.builtins.formatting.csharpier,
         },
     }
+    null_ls.register(require("none-ls-shellcheck.diagnostics"))
+    null_ls.register(require("none-ls-shellcheck.code_actions"))
 
     table.insert(require("aeonia.lsp.format").formatters, null_ls_format)
 end
