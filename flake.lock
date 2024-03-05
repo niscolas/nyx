@@ -18,6 +18,26 @@
         "type": "github"
       }
     },
+    "disko": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1709647390,
+        "narHash": "sha256-JIZ9ZQckX1lfpqBbtA6QGPE0KBneAA6Dp6z7vZl/8lA=",
+        "owner": "nix-community",
+        "repo": "disko",
+        "rev": "cf185d687f382ef11427bcf41fff8e3aef83d294",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "repo": "disko",
+        "type": "github"
+      }
+    },
     "eww-tray3": {
       "inputs": {
         "flake-compat": "flake-compat",
@@ -664,6 +684,7 @@
     "root": {
       "inputs": {
         "audio-relay": "audio-relay",
+        "disko": "disko",
         "eww-tray3": "eww-tray3",
         "ft-labs-picom": "ft-labs-picom",
         "fup": "fup",

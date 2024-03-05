@@ -10,6 +10,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    disko = {
+      url = "github:nix-community/disko";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     fup.url = "github:gytis-ivaskevicius/flake-utils-plus";
     nur.url = "github:nix-community/NUR";
 
@@ -70,9 +75,16 @@
     # These are usually stuff you would upstream into home-manager
     homeManagerModules = import ./modules/home-manager;
 
-    nixosConfigurations.izalith = nixpkgs.lib.nixosSystem {
-      modules = [./systems/x86_64-linux/izalith];
-      specialArgs = {inherit inputs outputs;};
+    nixosConfigurations = {
+      izalith = nixpkgs.lib.nixosSystem {
+        modules = [./systems/x86_64-linux/izalith];
+        specialArgs = {inherit inputs outputs;};
+      };
+
+      liurnia = nixpkgs.lib.nixosSystem {
+        modules = [./systems/x86_64-linux/liurnia];
+        specialArgs = {inherit inputs outputs;};
+      };
     };
 
     homeConfigurations = {
