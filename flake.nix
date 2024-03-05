@@ -44,7 +44,6 @@
   } @ inputs: let
     inherit (self) outputs;
 
-    forAllSystems = nixpkgs.lib.genAttrs systems;
     systems = [
       "aarch64-linux"
       "i686-linux"
@@ -52,23 +51,12 @@
       "aarch64-darwin"
       "x86_64-darwin"
     ];
+
+    forAllSystems = nixpkgs.lib.genAttrs systems;
   in {
     # Your custom packages
     # Accessible through 'nix build', 'nix shell', etc
-    packages.x86_64-linux = {
-      nixos-rebuild = let
-        pkgs = nixpkgs.legacyPackages.x86_64-linux;
-      in
-        with pkgs;
-          pkgs.writeScriptBin "nixos-rebuild" ''
-            ${git}/bin/git diff -U0 *.nix
-            echo "NixOS Rebuilding..."
-            sudo nixos-rebuild switch --flake . &>nixos-switch.log || (
-             cat nixos-switch.log | grep --color error && false)
-            gen=$(nixos-rebuild list-generations | grep current)
-            ${git}/bin/git commit -am "$gen"
-          '';
-    };
+    packages = forAllSystems (system: import ./packages nixpkgs.legacyPackages.${system});
     # Formatter for your nix files, available through 'nix fmt'
     # Other options beside 'alejandra' include 'nixpkgs-fmt'
     formatter = forAllSystems (system: nixpkgs.${system}.alejandra);
