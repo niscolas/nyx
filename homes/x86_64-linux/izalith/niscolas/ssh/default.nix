@@ -21,7 +21,7 @@
       };
 
       liurnia = {
-        host = "nokron";
+        host = "liurnia";
         hostname = "192.168.100.12";
         user = "niscolas";
       };
