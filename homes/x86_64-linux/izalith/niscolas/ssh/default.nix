@@ -6,7 +6,12 @@
 }: {
   programs.ssh = {
     enable = true;
-    # addKeysToAgent = "yes";
+
+    # TODO: move "AddKeysToAgent" to option when it's oficially released:
+    # https://github.com/nix-community/home-manager/commit/7a69b3e738a587915a374994e05e8e10f1216721
+    extraConfig = ''
+      AddKeysToAgent yes
+    '';
 
     matchBlocks = {
       nokron = {
