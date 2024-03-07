@@ -80,7 +80,7 @@ M.setup = function()
             --         fallback()
             --     end
             -- end, { "i", "s" }),
-            ["<C-Space>"] = cmp.mapping(cmp.mapping.complete(), { "i", "c" }),
+            ["<C-y>"] = cmp.mapping(cmp.mapping.complete(), { "i", "c" }),
             ["<C-e>"] = cmp.mapping {
                 i = cmp.mapping.abort(),
                 c = cmp.mapping.close(),
@@ -107,10 +107,10 @@ M.setup = function()
             end,
         },
         sources = {
-            { name = "luasnip" },
             { name = "path" },
-            { name = "copilot" },
             { name = "codeium" },
+            { name = "luasnip" },
+            { name = "copilot" },
             { name = "cmp_tabnine" },
             { name = "nvim_lsp" },
             { name = "neorg" },

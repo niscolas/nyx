@@ -41,6 +41,9 @@ M.setup = function()
             --     end,
             -- },
 
+            -- c++
+            null_ls.builtins.formatting.clang_format,
+
             -- godot
             null_ls.builtins.formatting.gdformat,
 
