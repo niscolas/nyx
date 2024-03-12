@@ -27,6 +27,13 @@
         identityFile = "~/.ssh/liurnia";
       };
 
+      liurnia_root = {
+        host = "liurnia";
+        hostname = "192.168.100.12";
+        user = "root";
+        identityFile = "~/.ssh/liurnia";
+      };
+
       github = {
         host = "github.com";
         hostname = "github.com";
