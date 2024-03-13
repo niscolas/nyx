@@ -36,6 +36,10 @@
       url = "github:snowfallorg/lib";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    sops-nix = {
+      url = "github:Mic92/sops-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     spicetify-nix.url = "github:the-argus/spicetify-nix";
     hosts.url = "github:StevenBlack/hosts";
     wired.url = "github:Toqozz/wired-notify";
@@ -82,7 +86,10 @@
       };
 
       liurnia = nixpkgs.lib.nixosSystem {
-        modules = [./systems/x86_64-linux/liurnia];
+        modules = [
+          inputs.disko.nixosModules.disko
+          ./systems/x86_64-linux/liurnia/configuration.nix
+        ];
         specialArgs = {inherit inputs outputs;};
       };
     };

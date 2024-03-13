@@ -84,9 +84,15 @@ in {
           "com.sun:auto-snapshot" = "false";
           compression = "zstd";
           encryption = "aes-256-gcm";
+          keyformat = "passphrase";
+          keylocation = "file:///tmp/disk.key";
         };
         mountpoint = "/";
-        postCreateHook = "zfs snapshot ${systemPoolName}@blank";
+
+        postCreateHook = ''
+          zfs set keylocation="prompt" ${systemPoolName};
+          zfs snapshot ${systemPoolName}@blank;
+        '';
 
         datasets = {
           system_fs = {
@@ -106,9 +112,15 @@ in {
           "com.sun:auto-snapshot" = "false";
           compression = "zstd";
           encryption = "aes-256-gcm";
+          keyformat = "passphrase";
+          keylocation = "file:///tmp/disk.key";
         };
         mountpoint = "/${storagePool.name}";
-        postCreateHook = "zfs snapshot ${storagePool.name}@blank";
+
+        postCreateHook = ''
+          zfs set keylocation="prompt" ${storagePool.name};
+          zfs snapshot ${storagePool.name}@blank;
+        '';
 
         datasets = {
           "${storagePool.data.name}" = {
