@@ -22,6 +22,7 @@
         blockSocial = true;
       };
     }
+    inputs.home-manager.nixosModules.home-manager
     inputs.minegrub-theme.nixosModules.default
     inputs.nix-index-database.nixosModules.nix-index
     outputs.nixosModules.audio-relay
@@ -38,7 +39,7 @@
       # Workaround for https://github.com/nix-community/home-manager/issues/2942
       allowUnfreePredicate = _: true;
       permittedInsecurePackages = [
-        "electron-25.9.0"
+        "electron-19.1.9"
       ];
     };
 
@@ -48,6 +49,13 @@
       outputs.overlays.modifications
       outputs.overlays.unstable-packages
     ];
+  };
+
+  home-manager = {
+    extraSpecialArgs = {inherit inputs outputs;};
+    users = {
+      niscolas = import ../../../homes/x86_64-linux/izalith/niscolas;
+    };
   };
 
   environment = {
@@ -68,21 +76,45 @@
       fish
     ];
 
-    systemPackages = [
+    systemPackages = with pkgs; [
       (import ./scripts/my-cpu.nix {inherit config pkgs;})
       (import ./scripts/my-extract.nix {inherit config pkgs;})
       (import ./scripts/my-ram.nix {inherit config pkgs;})
       (import ./scripts/my-thermals.nix {inherit config pkgs;})
+      coreutils
+      duf
+      du-dust
+      etcher
+      gnome.file-roller
       inputs.home-manager.packages.${pkgs.system}.default
       inputs.nbfc.packages."${pkgs.system}".nbfc
-      pkgs.coreutils
-      pkgs.gnome.file-roller
-      pkgs.lightlocker
-      pkgs.rar
+      lightlocker
+      rar
+      ventoy-full
+      xclip
+      xdotool
+      xorg.xdpyinfo
+      xorg.xwininfo
+      xz
+      zip
     ];
   };
 
   systemd = {
+    user.services.polkit-gnome-authentication-agent-1 = {
+      description = "polkit-gnome-authentication-agent-1";
+      wantedBy = ["graphical-session.target"];
+      wants = ["graphical-session.target"];
+      after = ["graphical-session.target"];
+      serviceConfig = {
+        Type = "simple";
+        ExecStart = "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1";
+        Restart = "on-failure";
+        RestartSec = 1;
+        TimeoutStopSec = 10;
+      };
+    };
+
     services = {
       pritunl = {
         serviceConfig = {
@@ -186,7 +218,10 @@
     };
   };
 
-  security.rtkit.enable = true;
+  security = {
+    polkit.enable = true;
+    rtkit.enable = true;
+  };
 
   users = {
     defaultUserShell = pkgs.fish;
@@ -211,6 +246,8 @@
   };
 
   services = {
+    gvfs.enable = true; # Mount, trash, and other functionalities
+    tumbler.enable = true; # Thumbnail support for images
     flatpak.enable = true;
     tailscale.enable = true;
     printing.enable = false;
