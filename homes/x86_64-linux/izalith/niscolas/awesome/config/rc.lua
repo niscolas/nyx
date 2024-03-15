@@ -553,6 +553,28 @@ awful.rules.rules = {
             tag = "9",
         },
     },
+
+    {
+        rule_any = {
+            class = { "linux-wallpaperengine" },
+        },
+        properties = {
+            placement = awful.placement.centered, -- Optional: Center the window on the screen
+            border_width = 0, -- Optional: Remove border
+            fullscreen = true, -- Optional: Make the window fullscreen
+            floating = true, -- Optional: Make the window floating
+            ontop = false, -- Optional: Keep the window on top of other windows
+            focusable = false,
+            below = true,
+            sticky = true, -- Optional: Make the window sticky (visible on all tags)
+            skip_taskbar = true, -- Optional: Don't show the window in the taskbar
+            hide_titlebars = true, -- Optional: Hide the window's titlebars
+            -- maximized = true, -- Optional: Maximize the window
+            maximized_horizontal = true, -- Optional: Maximize horizontally
+            maximized_vertical = true, -- Optional: Maximize vertically
+            honor_workarea = false,
+        },
+    },
 }
 -- }}}
 
@@ -614,7 +636,6 @@ awesome.connect_signal("startup", function()
 
     require("eww")
 
-    spawn("firefox")
     spawn("easyeffects")
     spawn("pavucontrol")
 end)

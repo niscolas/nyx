@@ -2,10 +2,16 @@
   config,
   lib,
   outputs,
+  pkgs,
   ...
 }: let
   cfg = config.nyx.niscolas.awesome;
   configDir = "${config.nyx.niscolas.realPath}/awesome";
+
+  defaultBg = pkgs.fetchurl {
+    url = "https://images2.alphacoders.com/123/1239347.jpg";
+    hash = "sha256-R136PjrVSx6DsK9Akw93NIN1xrIf+gqsuXDOXYCl42I=";
+  };
 in {
   imports = [
     ../picom
@@ -24,6 +30,8 @@ in {
       if !cfg.enableDebugMode
       then ./config
       else config.lib.file.mkOutOfStoreSymlink "${configDir}/config";
+
+    xdg.configFile."wallpaper".source = config.lib.file.mkOutOfStoreSymlink defaultBg;
 
     nyx = {
       autorandr.enable = true;

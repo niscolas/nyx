@@ -7,6 +7,7 @@
   ...
 }: {
   imports = [
+    # outputs.homeManagerModules.ripgrep
     ./awesome
     ./bspwm
     ./eww
@@ -22,8 +23,8 @@
     outputs.homeManagerModules.bottom
     outputs.homeManagerModules.espanso
     outputs.homeManagerModules.firefox
-    outputs.homeManagerModules.flameshot
     outputs.homeManagerModules.fish
+    outputs.homeManagerModules.flameshot
     outputs.homeManagerModules.ideavim
     outputs.homeManagerModules.logseq
     outputs.homeManagerModules.mach-nix-pkgs
@@ -31,16 +32,15 @@
     outputs.homeManagerModules.modulesData
     outputs.homeManagerModules.neofetch
     outputs.homeManagerModules.nvim
-    # outputs.homeManagerModules.ripgrep
     outputs.homeManagerModules.spicetify
     outputs.homeManagerModules.tmux
     outputs.homeManagerModules.wezterm
     outputs.nixosModules.binary-cache
   ];
 
-  nix = {
-    package = pkgs.nix;
-  };
+  # nix = {
+  #   package = pkgs.nix;
+  # };
 
   nixpkgs = {
     config = {
@@ -198,7 +198,6 @@
     packages = with pkgs; [
       (import ./scripts/kb-layout-swap.nix {inherit pkgs;})
       (import ./scripts/my-battery.nix {inherit pkgs;})
-      qbittorrent
       appimage-run
       barrier
       brightnessctl
@@ -241,6 +240,7 @@
       pritunl-client
       protonup-qt
       qalculate-gtk
+      qbittorrent
       r2modman
       rclone
       rofi
@@ -256,15 +256,10 @@
       unixtools.xxd
       unzip
       usbutils # lsusb
+      vlc
       vulkan-tools
       wget
       wine-staging
-      xclip
-      xdotool
-      xorg.xdpyinfo
-      xorg.xwininfo
-      xz
-      zip
     ];
 
     # This value determines the home Manager release that your

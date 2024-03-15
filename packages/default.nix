@@ -9,12 +9,26 @@
        cat nixos-switch.log | grep --color error && false)
 
       set +e
-      gen=$(nixos-rebuild list-generations | grep current)
+      gen=$(nixos-rebuild list-generations | grep current | awk '{print $1}')
       set -e
 
-      ${git}/bin/git commit -am "NixOS Switch: $gen"
+      ${git}/bin/git add systems/x86_64-linux/izalith
+      ${git}/bin/git add homes/x86_64-linux/izalith
+      ${git}/bin/git add modules packages flake.nix flake.lock
+      ${git}/bin/git commit -m "NixOS Switch: $gen"
       popd
     '';
+
+  rebuild-liurnia-remote = ''
+    nixos-rebuild switch --flake .#liurnia --target-host "root@liurnia"
+  '';
+
+  hm-switch-no-git = pkgs.writeScriptBin "hm-switch-no-git" ''
+    set -e
+    echo "Home Manager switching..."
+    home-manager switch --show-trace --flake . &>hm-switch.log || (
+     cat hm-switch.log | grep --color error && false)
+  '';
 
   hm-switch = with pkgs;
     pkgs.writeScriptBin "hm-switch" ''

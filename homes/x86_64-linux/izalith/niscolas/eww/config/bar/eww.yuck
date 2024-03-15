@@ -207,5 +207,6 @@
     ;; :reserve (struts :distance "48px" :side "top")
     :stacking "bg"
     :wm-ignore false
+    :windowtype "dock"
     (bar_widget)
 )
