@@ -24,29 +24,24 @@
     inherit mountpoint;
   };
 
-  encryptedDataset = datasetSettings:
-    dataset datasetSettings.mountpoint
+  datasetMountablePostCreate = datasetSettings:
+    dataset null
     // {
       options = {
-        encryption = "aes-256-gcm";
-        keyformat = "passphrase";
-        keylocation = "file:///tmp/disk.key";
+        mountpoint = "none";
+        canmount = "noauto";
       };
 
       postCreateHook = ''
-        zfs set keylocation="prompt" ${datasetSettings.fullName};
-        zfs snapshot ${datasetSettings.fullName}@blank;
+        zfs set mountpoint=${datasetSettings.mountpoint} ${datasetSettings.fullName};
       '';
     };
 
-  withNoAutoMount = {
-    options = {
-      canmount = "noauto";
+  withAutoSnapshot = dataset:
+    lib.recursiveUpdate
+    dataset {
+      options = {auto-snapshot = "true";};
     };
-  };
-
-  withAutoSnapshot = {
-  };
 
   mirroredHdd = device: {
     type = "disk";
@@ -108,7 +103,7 @@ in {
           zfs snapshot ${systemPoolName}@blank;
         '';
 
-        datasets.system_fs = dataset "/system_fs" // withAutoSnapshot;
+        datasets.system_fs = withAutoSnapshot (dataset "/system_fs");
       };
 
       ${storagePool.name} = {
@@ -132,30 +127,18 @@ in {
         '';
 
         datasets = {
-          "${storagePool.data.name}" =
-            dataset storagePool.data.mountpoint
+          "${storagePool.data.name}" = withAutoSnapshot (datasetMountablePostCreate storagePool.data
             // {
               options = {
-                "com.sun:auto-snapshot" = "true";
-                canmount = "noauto";
                 sharenfs = "on";
               };
-            };
+            });
+
           "${storagePool.backup.name}" =
-            dataset storagePool.backup.mountpoint
-            // {
-              options = {
-                canmount = "noauto";
-                "com.sun:auto-snapshot" = "true";
-              };
-            };
+            withAutoSnapshot (datasetMountablePostCreate storagePool.backup);
+
           "${storagePool.temp.name}" =
-            dataset storagePool.temp.mountpoint
-            // {
-              options = {
-                canmount = "noauto";
-              };
-            };
+            datasetMountablePostCreate storagePool.temp;
         };
       };
     };
@@ -164,52 +147,50 @@ in {
   boot.zfs = {
     # enabled = true;
     forceImportAll = false;
-    requestEncryptionCredentials = false;
+    requestEncryptionCredentials = true;
   };
 
   # systemd.services."zfs-import-${storagePool.name}".wantedBy = lib.mkForce ["multi-user.target"];
 
-  systemd = {
-    services.setupStoragePool = {
-      description = "Setup ZFS Storage Pool";
-      wantedBy = ["multi-user.target"]; # Run at multi-user.target for manual user interaction
-
-      script = ''
-        ${pkgs.zfs}/bin/zpool import ${storagePool.name}
-
-        # Maximum number of retries
-        max_retries=3
-        retry_count=0
-
-        # Loop until successful or maximum retries reached
-        while [ $retry_count -lt $max_retries ]; do
-            # Prompt for passphrase
-            read -rsp "Enter passphrase for ZFS encryption (attempt $((retry_count + 1)) of $max_retries): " passphrase
-            echo    # Newline after passphrase
-
-            # Attempt to load the encryption key
-            sudo zfs load-key -L - <<<"$passphrase" ${storagePool.name}
-
-            # Check if loading key was successful
-            if [ $? -eq 0 ]; then
-                echo "Encryption key loaded successfully."
-                break  # Exit loop if successful
-            else
-                echo "Failed to load encryption key. Retrying..."
-                retry_count=$((retry_count + 1))
-            fi
-        done
-
-        # Check if maximum retries reached
-        if [ $retry_count -eq $max_retries ]; then
-            echo "Maximum number of retries reached. Exiting."
-            exit 1  # Exit with failure
-        fi
-
-        ${pkgs.zfs}/bin/zfs mount ${storagePool.data.fullName}
-        ${pkgs.zfs}/bin/zfs mount ${storagePool.backup.fullName}
-        ${pkgs.zfs}/bin/zfs mount ${storagePool.temp.fullName}
-      '';
-    };
-  };
+  # systemd = {
+  #   services.setupStoragePool = {
+  #     description = "Setup ZFS Storage Pool";
+  #     wantedBy = ["multi-user.target"]; # Run at multi-user.target for manual user interaction
+  #
+  #     script = ''
+  #       ${pkgs.zfs}/bin/zpool import ${storagePool.name}
+  #
+  #       # Maximum number of retries
+  #       max_retries=3
+  #       retry_count=0
+  #
+  #       # Loop until successful or maximum retries reached
+  #       while [ $retry_count -lt $max_retries ]; do
+  #           # Prompt for passphrase
+  #           read -rsp "Enter passphrase for ZFS encryption (attempt $((retry_count + 1)) of $max_retries): " passphrase
+  #           echo    # Newline after passphrase
+  #           # Attempt to load the encryption key
+  #           sudo zfs load-key -L - <<<"$passphrase" ${storagePool.name}
+  #           # Check if loading key was successful
+  #           if [ $? -eq 0 ]; then
+  #               echo "Encryption key loaded successfully."
+  #               break  # Exit loop if successful
+  #           else
+  #               echo "Failed to load encryption key. Retrying..."
+  #               retry_count=$((retry_count + 1))
+  #           fi
+  #       done
+  #       # Check if maximum retries reached
+  #       if [ $retry_count -eq $max_retries ]; then
+  #           echo "Maximum number of retries reached. Exiting."
+  #           exit 1  # Exit with failure
+  #       fi
+  #
+  #       ${pkgs.zfs}/bin/zfs mount -a
+  #       # ${pkgs.zfs}/bin/zfs mount ${storagePool.data.fullName}
+  #       # ${pkgs.zfs}/bin/zfs mount ${storagePool.backup.fullName}
+  #       # ${pkgs.zfs}/bin/zfs mount ${storagePool.temp.fullName}
+  #     '';
+  #   };
+  # };
 }
