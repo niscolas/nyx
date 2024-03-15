@@ -26,6 +26,13 @@
     hostId = "0e7a5ec4";
     hostName = "liurnia";
     networkmanager.enable = true;
+
+    firewall = {
+      enable = true;
+      # for NFSv3; view with `rpcinfo -p`
+      allowedTCPPorts = [111 2049 4000 4001 4002 20048];
+      allowedUDPPorts = [111 2049 4000 4001 4002 20048];
+    };
   };
 
   time.timeZone = "America/Sao_Paulo";
@@ -46,6 +53,7 @@
   };
 
   services = {
+    nfs.server.enable = true;
     openssh.enable = true;
     tailscale.enable = true;
   };

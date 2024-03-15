@@ -46,9 +46,6 @@
   };
 
   withAutoSnapshot = {
-    options = {
-      "com.sun:auto-snapshot" = "true";
-    };
   };
 
   mirroredHdd = device: {
@@ -121,19 +118,74 @@ in {
           "com.sun:auto-snapshot" = "false";
           canmount = "off";
           compression = "zstd";
-          keylocation = "none";
           mountpoint = "none";
         };
+
+        postCreateHook = ''
+          zfs snapshot ${storagePool.name}@blank;
+        '';
         # mountpoint = "/${storagePool.name}";
 
         datasets = {
-          "${storagePool.data.name}" = lib.recursiveUpdate (encryptedDataset storagePool.data) (lib.recursiveUpdate withNoAutoMount withAutoSnapshot);
-          "${storagePool.backup.name}" = lib.recursiveUpdate (encryptedDataset storagePool.backup) (lib.recursiveUpdate withNoAutoMount withAutoSnapshot);
-          "${storagePool.temp.name}" = lib.recursiveUpdate (encryptedDataset storagePool.temp) withNoAutoMount;
+          "${storagePool.data.name}" =
+            dataset null
+            // {
+              options = {
+                encryption = "aes-256-gcm";
+                keyformat = "passphrase";
+                keylocation = "file:///tmp/disk.key";
+                canmount = "noauto";
+                "com.sun:auto-snapshot" = "true";
+                sharenfs = "on";
+                mountpoint = "none";
+              };
+              postCreateHook = ''
+                zfs set keylocation="prompt" ${storagePool.data.fullName};
+              '';
+            };
+          "${storagePool.backup.name}" =
+            dataset null
+            // {
+              options = {
+                mountpoint = "none";
+                encryption = "aes-256-gcm";
+                keyformat = "passphrase";
+                keylocation = "file:///tmp/disk.key";
+                canmount = "noauto";
+                "com.sun:auto-snapshot" = "true";
+              };
+
+              postCreateHook = ''
+                zfs set keylocation="prompt" ${storagePool.backup.fullName};
+              '';
+            };
+          "${storagePool.temp.name}" =
+            dataset null
+            // {
+              options = {
+                mountpoint = "none";
+                encryption = "aes-256-gcm";
+                keyformat = "passphrase";
+                keylocation = "file:///tmp/disk.key";
+                canmount = "noauto";
+              };
+
+              postCreateHook = ''
+                zfs set keylocation="prompt" ${storagePool.temp.fullName};
+              '';
+            };
         };
       };
     };
   };
+
+  boot.zfs = {
+    # enabled = true;
+    forceImportAll = false;
+    requestEncryptionCredentials = false;
+  };
+
+  # systemd.services."zfs-import-${storagePool.name}".wantedBy = lib.mkForce ["multi-user.target"];
 
   # systemd = {
   #   services.mountZfsDatasets = {

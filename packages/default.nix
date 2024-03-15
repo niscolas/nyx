@@ -19,10 +19,6 @@
       popd
     '';
 
-  rebuild-liurnia-remote = ''
-    nixos-rebuild switch --flake .#liurnia --target-host "root@liurnia"
-  '';
-
   hm-switch-no-git = pkgs.writeScriptBin "hm-switch-no-git" ''
     set -e
     echo "Home Manager switching..."
@@ -45,5 +41,9 @@
 
   deploy-liurnia = pkgs.writeScriptBin "deploy-liurnia" ''
     nix run github:nix-community/nixos-anywhere -- --flake .#liurnia root@liurnia
+  '';
+
+  rebuild-liurnia-remote = pkgs.writeScriptBin "rebuild-liurnia-remote" ''
+    nixos-rebuild switch --flake .#liurnia --target-host "root@liurnia"
   '';
 }
