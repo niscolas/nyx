@@ -42,4 +42,8 @@
       ${git}/bin/git commit -am "Home Manager Switch: $gen"
       popd
     '';
+
+  deploy-liurnia = pkgs.writeScriptBin "deploy-liurnia" ''
+    nix run github:nix-community/nixos-anywhere -- --flake .#liurnia root@liurnia
+  '';
 }

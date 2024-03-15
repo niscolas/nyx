@@ -1,19 +1,70 @@
-{...}: let
+{
+  lib,
+  pkgs,
+  ...
+}: let
   systemPoolName = "zsystem";
-  storagePool = {
+  storagePool = rec {
     name = "zstorage";
-    mountpoint = "/${storagePool.name}";
-    data = {
-      name = "data";
-      mountpoint = "${storagePool.mountpoint}/${storagePool.data.name}";
+    mountpoint = "/${name}";
+
+    datasetSettings = datasetName: {
+      name = datasetName;
+      fullName = "${name}/${datasetName}";
+      mountpoint = "${mountpoint}/${datasetName}";
     };
-    backup = {
-      name = "backup";
-      mountpoint = "${storagePool.mountpoint}/${storagePool.backup.name}";
+
+    data = datasetSettings "data";
+    backup = datasetSettings "backup";
+    temp = datasetSettings "temp";
+  };
+
+  dataset = mountpoint: {
+    type = "zfs_fs";
+    inherit mountpoint;
+  };
+
+  encryptedDataset = datasetSettings:
+    dataset datasetSettings.mountpoint
+    // {
+      options = {
+        encryption = "aes-256-gcm";
+        keyformat = "passphrase";
+        keylocation = "file:///tmp/disk.key";
+      };
+
+      postCreateHook = ''
+        zfs set keylocation="prompt" ${datasetSettings.fullName};
+        zfs snapshot ${datasetSettings.fullName}@blank;
+      '';
     };
-    temp = {
-      name = "temp";
-      mountpoint = "${storagePool.mountpoint}/${storagePool.temp.name}";
+
+  withNoAutoMount = {
+    options = {
+      canmount = "noauto";
+    };
+  };
+
+  withAutoSnapshot = {
+    options = {
+      "com.sun:auto-snapshot" = "true";
+    };
+  };
+
+  mirroredHdd = device: {
+    type = "disk";
+    device = "${device}";
+    content = {
+      type = "gpt";
+      partitions = {
+        zfs = {
+          size = "100%";
+          content = {
+            type = "zfs";
+            pool = "${storagePool.name}";
+          };
+        };
+      };
     };
   };
 in {
@@ -44,38 +95,8 @@ in {
           };
         };
       };
-      hdd1 = {
-        type = "disk";
-        device = "/dev/sda";
-        content = {
-          type = "gpt";
-          partitions = {
-            zfs = {
-              size = "100%";
-              content = {
-                type = "zfs";
-                pool = "${storagePool.name}";
-              };
-            };
-          };
-        };
-      };
-      hdd2 = {
-        type = "disk";
-        device = "/dev/sdb";
-        content = {
-          type = "gpt";
-          partitions = {
-            zfs = {
-              size = "100%";
-              content = {
-                type = "zfs";
-                pool = "${storagePool.name}";
-              };
-            };
-          };
-        };
-      };
+      hdd1 = mirroredHdd "/dev/sda";
+      hdd2 = mirroredHdd "/dev/sdb";
     };
     zpool = {
       ${systemPoolName} = {
@@ -83,26 +104,14 @@ in {
         rootFsOptions = {
           "com.sun:auto-snapshot" = "false";
           compression = "zstd";
-          encryption = "aes-256-gcm";
-          keyformat = "passphrase";
-          keylocation = "file:///tmp/disk.key";
         };
         mountpoint = "/";
 
         postCreateHook = ''
-          zfs set keylocation="prompt" ${systemPoolName};
           zfs snapshot ${systemPoolName}@blank;
         '';
 
-        datasets = {
-          system_fs = {
-            type = "zfs_fs";
-            mountpoint = "/system_fs";
-            options = {
-              "com.sun:auto-snapshot" = "true";
-            };
-          };
-        };
+        datasets.system_fs = dataset "/system_fs" // withAutoSnapshot;
       };
 
       ${storagePool.name} = {
@@ -110,37 +119,32 @@ in {
         mode = "mirror";
         rootFsOptions = {
           "com.sun:auto-snapshot" = "false";
+          canmount = "off";
           compression = "zstd";
-          encryption = "aes-256-gcm";
-          keyformat = "passphrase";
-          keylocation = "file:///tmp/disk.key";
+          keylocation = "none";
+          mountpoint = "none";
         };
-        mountpoint = "/${storagePool.name}";
-
-        postCreateHook = ''
-          zfs set keylocation="prompt" ${storagePool.name};
-          zfs snapshot ${storagePool.name}@blank;
-        '';
+        # mountpoint = "/${storagePool.name}";
 
         datasets = {
-          "${storagePool.data.name}" = {
-            type = "zfs_fs";
-            mountpoint = "${storagePool.data.mountpoint}";
-            options."com.sun:auto-snapshot" = "true";
-          };
-
-          "${storagePool.backup.name}" = {
-            type = "zfs_fs";
-            mountpoint = "${storagePool.backup.mountpoint}";
-            options."com.sun:auto-snapshot" = "true";
-          };
-
-          "${storagePool.temp.name}" = {
-            type = "zfs_fs";
-            mountpoint = "${storagePool.temp.mountpoint}";
-          };
+          "${storagePool.data.name}" = lib.recursiveUpdate (encryptedDataset storagePool.data) (lib.recursiveUpdate withNoAutoMount withAutoSnapshot);
+          "${storagePool.backup.name}" = lib.recursiveUpdate (encryptedDataset storagePool.backup) (lib.recursiveUpdate withNoAutoMount withAutoSnapshot);
+          "${storagePool.temp.name}" = lib.recursiveUpdate (encryptedDataset storagePool.temp) withNoAutoMount;
         };
       };
     };
   };
+
+  # systemd = {
+  #   services.mountZfsDatasets = {
+  #     description = "Mount ZFS datasets";
+  #     wantedBy = ["multi-user.target"]; # Run at multi-user.target for manual user interaction
+  #
+  #     script = ''
+  #       ${pkgs.zfs}/bin/zfs mount ${storagePool.data.mountpoint}
+  #       ${pkgs.zfs}/bin/zfs mount ${storagePool.backup.mountpoint}
+  #       ${pkgs.zfs}/bin/zfs mount ${storagePool.temp.mountpoint}
+  #     '';
+  #   };
+  # };
 }

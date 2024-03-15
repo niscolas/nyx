@@ -45,7 +45,10 @@
     };
   };
 
-  services.openssh.enable = true;
+  services = {
+    openssh.enable = true;
+    tailscale.enable = true;
+  };
 
   environment.systemPackages = map lib.lowPrio [
     pkgs.curl

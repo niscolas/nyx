@@ -88,7 +88,7 @@
       liurnia = nixpkgs.lib.nixosSystem {
         modules = [
           inputs.disko.nixosModules.disko
-          ./systems/x86_64-linux/liurnia/configuration.nix
+          ./systems/x86_64-linux/liurnia
         ];
         specialArgs = {inherit inputs outputs;};
       };
