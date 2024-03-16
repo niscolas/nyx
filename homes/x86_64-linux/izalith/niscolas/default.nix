@@ -200,6 +200,7 @@
       (import ./scripts/my-battery.nix {inherit pkgs;})
       appimage-run
       barrier
+      bitwarden-cli
       brightnessctl
       cmake
       dbus
