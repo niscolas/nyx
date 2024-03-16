@@ -6,17 +6,13 @@
   outputs,
   pkgs,
   ...
-}: let
-  freshrss = {
-    address = "freshrss.example.com";
-    user = "freshrss";
-  };
-in {
+}: {
   imports = [
     (modulesPath + "/installer/scan/not-detected.nix")
     (modulesPath + "/profiles/qemu-guest.nix")
     ./disk-config.nix
     ./hardware-configuration.nix
+    ./rss
     inputs.sops.nixosModules.sops
     outputs.nixosModules.nix
   ];
@@ -36,11 +32,6 @@ in {
     defaultSopsFile = ./secrets/secrets.yaml;
     defaultSopsFormat = "yaml";
     age.keyFile = "/root/.config/sops/age/keys.txt";
-    secrets = {
-      freshrss_pwd = {
-        owner = "${freshrss.user}";
-      };
-    };
   };
 
   networking = {
@@ -85,26 +76,9 @@ in {
 
   services = {
     nfs.server.enable = true;
+    nginx.enable = true;
     openssh.enable = true;
     tailscale.enable = true;
-
-    freshrss = {
-      enable = true;
-
-      user = "${freshrss.user}";
-      baseUrl = "http://${freshrss.address}";
-      defaultUser = "admin";
-      passwordFile = config.sops.secrets.freshrss_pwd.path;
-      virtualHost = "${freshrss.address}";
-    };
-
-    nginx = {
-      enable = true;
-      virtualHosts."${freshrss.address}" = {
-        # forceSSL = true;
-        # enableACME = true;
-      };
-    };
   };
 
   security.acme.acceptTerms = true;
