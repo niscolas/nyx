@@ -3,14 +3,22 @@
   inputs,
   lib,
   modulesPath,
+  outputs,
   pkgs,
   ...
-}: {
+}: let
+  freshrss = {
+    address = "freshrss.example.com";
+    user = "freshrss";
+  };
+in {
   imports = [
     (modulesPath + "/installer/scan/not-detected.nix")
     (modulesPath + "/profiles/qemu-guest.nix")
     ./disk-config.nix
     ./hardware-configuration.nix
+    inputs.sops.nixosModules.sops
+    outputs.nixosModules.nix
   ];
 
   boot.loader.grub = {
@@ -22,6 +30,19 @@
     efiInstallAsRemovable = true;
   };
 
+  nyx.nix.enable = true;
+
+  sops = {
+    defaultSopsFile = ./secrets/secrets.yaml;
+    defaultSopsFormat = "yaml";
+    age.keyFile = "/root/.config/sops/age/keys.txt";
+    secrets = {
+      freshrss_pwd = {
+        owner = "${freshrss.user}";
+      };
+    };
+  };
+
   networking = {
     hostId = "0e7a5ec4";
     hostName = "liurnia";
@@ -30,9 +51,19 @@
     firewall = {
       enable = true;
       # for NFSv3; view with `rpcinfo -p`
-      allowedTCPPorts = [111 2049 4000 4001 4002 20048];
-      allowedUDPPorts = [111 2049 4000 4001 4002 20048];
+      allowedTCPPorts = [80 111 2049 4000 4001 4002 20048];
+      allowedUDPPorts = [80 111 2049 4000 4001 4002 20048];
     };
+
+    hosts = {
+      "192.168.100.12" = ["example.com"];
+    };
+
+    nameservers = [
+      "8.8.8.8" # Google DNS
+      "8.8.4.4" # Another Google DNS server
+      # Add more DNS servers as needed
+    ];
   };
 
   time.timeZone = "America/Sao_Paulo";
@@ -56,7 +87,27 @@
     nfs.server.enable = true;
     openssh.enable = true;
     tailscale.enable = true;
+
+    freshrss = {
+      enable = true;
+
+      user = "${freshrss.user}";
+      baseUrl = "http://${freshrss.address}";
+      defaultUser = "admin";
+      passwordFile = config.sops.secrets.freshrss_pwd.path;
+      virtualHost = "${freshrss.address}";
+    };
+
+    nginx = {
+      enable = true;
+      virtualHosts."${freshrss.address}" = {
+        # forceSSL = true;
+        # enableACME = true;
+      };
+    };
   };
+
+  security.acme.acceptTerms = true;
 
   environment.systemPackages = map lib.lowPrio [
     pkgs.curl
@@ -64,7 +115,7 @@
   ];
 
   users.users.root.openssh.authorizedKeys.keys = [
-    "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDFnTJQsQZQl5i6Uisxel7m1IBgh1zFuiCMfsIslsB5zMCgqqIhzWoFNhSnASXj9fJ6sTTz6HcDQs3QcJzaL4acOniU+Vc9LKxSveZeZLeIIbfB3Tq3d60Ox7FEvFTonj3te2P/xGgfIWO1Qw3wvJBYP0OiUUEQQbaAttsiurPC1tUzXowsrQJSNHKlh0fMJP86839wWdaO8JqhLaYZpLuPdHwehwWaCmfBejgx8rQVQFn4HgdOXFoaYnRQjom1sPEGdvyb+NpJ77akicT2Q9S47VQVFOLdsR1rxWBJPG1XwXA4JjCMu+mb8gHT/pUKOkPoUtryhC61dApke7H3qXavqQ5JgHeg3N/9HK5p5lju534MzT4r4+s3JCkymzQpfk75POikqRrO1wd4riLuF+JLJ16tvzezOgSE0WM8VqhgMpXhRonk/4nSzORowOdgWycqvT6jC98us3WYORmgSpPH6xlVaVfeVdFOyaIGOkowOT6CauAcbbYf39A1eZ17/VjUenMHGPv+knveO4FcEW+M9NgBbpXDFKgKzWaaXDSCl4+ZVG2Tpn+N532TetWnk+DCx0bVySwdpX1nPA6tyoJtZcD2h0dhQyxki1+f16I6O3ZbjZurnczYoBd6Au6v84SRWt5vJbAN3osZ/w4yqOp4kFjKVeX7D5Bn9OETp6F7Pw== niscolas@izalith"
+    "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCtNKiqzYl9BjjO7Frt65b3yObjeAxrBV/8TVUxRj3Jwv6xmDciAz0E0Hpr5vfJpAM8o4inNxNBbNtxIdIBz863TjGLExaaMI6Mtr6lWXknhWeAuTFSn3daYil4NF730UIVR6y1qSsONIivnBgDJmgyGkks8S3PaKPmzYV95aNJBC8qrvi8hYcDmQ4XkEPaVxGXuc0Jm9dPmS+qJ+BE/HHAeYow6sO6QVuLq8R71FcbTEv07a+ebL8UlDsZvVfqMvwIsRicocqrgYWFg70FG3gIvokN8uc7PU7exTonDPI9eQLdNa9SzQvwTSfqv5bhAp+ptW8l8Cyfsqn0Ecf2SiH9nzTzVC1ZIQQlx3k4hTghwrn7KfVfsVtcDZXBsZAx0KsY34XdT78JN2pwwcbvSnEvZhqj3UroF59V4G03vLLOe7OU+reF3kJiXmMYfAycNHAYeUNdtoPeO5EkDmLSf96rZNNGGM/UA0kYk10hWTso0fOvkBe4iMvzdFnUBjXU4LuQlR+qaObkIwPbYH0Kzoyk3yTv4J0DTYcofqgc7Yh/3Mxz8rWLqBkp1H5C84OYWAoZ8vo9yY/9Up2UebvMB9zItq66CG0iu0XkMvbQvDtcVqftNDuU/kc5OiR43OP2gOsF9Dgp5g+janL1d3yao/9NnPlTQXdDWe/jaLDLx9cfdQ== niscolas@izalith"
   ];
 
   nixpkgs.config.allowUnfree = true;
