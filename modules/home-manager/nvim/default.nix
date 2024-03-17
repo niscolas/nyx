@@ -18,53 +18,59 @@ in {
   };
 
   config = lib.mkIf cfg.enable {
-    home.packages = with pkgs;
-      [
-        neovim
+    home = {
+      sessionVariables = {
+        EDITOR = "nvim";
+      };
 
-        # bash
-        nodePackages.bash-language-server
-        shellcheck
+      packages = with pkgs;
+        [
+          neovim
 
-        # lsps
-        marksman
-        vscode-langservers-extracted
-        yaml-language-server
+          # bash
+          nodePackages.bash-language-server
+          shellcheck
 
-        # lua
-        lua-language-server
-        stylua
+          # lsps
+          marksman
+          vscode-langservers-extracted
+          yaml-language-server
 
-        # misc
-        fd
-        fzf
-        gnumake
+          # lua
+          lua-language-server
+          stylua
 
-        # nix
-        alejandra
-        deadnix
-        nil
+          # misc
+          fd
+          fzf
+          gnumake
 
-        # treesitter
-        gcc
+          # nix
+          alejandra
+          deadnix
+          nil
 
-        # clang-tools
-      ]
-      ++ (
-        if cfg.csharpLs.enable
-        then [csharp-ls]
-        else []
-      )
-      ++ (
-        if cfg.dotnet.enable
-        then [dotnet-sdk_8]
-        else []
-      );
+          # treesitter
+          gcc
 
-    xdg.configFile."nvim".source =
-      config.lib.file.mkOutOfStoreSymlink
-      "${config.nyx.modulesData.realPath}/nvim/config";
+          # clang-tools
+        ]
+        ++ (
+          if cfg.csharpLs.enable
+          then [csharp-ls]
+          else []
+        )
+        ++ (
+          if cfg.dotnet.enable
+          then [dotnet-sdk_8]
+          else []
+        );
 
-    nyx.ripgrep.enable = true;
+      xdg.configFile."nvim".source =
+        config.lib.file.mkOutOfStoreSymlink
+        "${config.nyx.modulesData.realPath}/nvim/config";
+
+      nyx.ripgrep.enable = true;
+    };
   };
 }

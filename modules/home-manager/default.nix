@@ -10,7 +10,6 @@
   fish = import ./fish;
   ideavim = import ./ideavim;
   logseq = import ./logseq;
-  mach-nix-pkgs = import ./mach-nix-pkgs;
   media-dirs = import ./media-dirs;
   modulesData = import ./modules-data;
   neofetch = import ./neofetch;

@@ -27,7 +27,6 @@
     outputs.homeManagerModules.flameshot
     outputs.homeManagerModules.ideavim
     outputs.homeManagerModules.logseq
-    outputs.homeManagerModules.mach-nix-pkgs
     outputs.homeManagerModules.media-dirs
     outputs.homeManagerModules.modulesData
     outputs.homeManagerModules.neofetch
@@ -100,8 +99,6 @@
       enable = true;
       enableBackup = true;
     };
-
-    mach-nix-pkgs.enable = true;
 
     media-dirs = {
       downloads.enableSymlink = true;
