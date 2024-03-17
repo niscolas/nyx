@@ -21,7 +21,13 @@ in {
       enable = true;
       package = pkgs.firefox.override {
         cfg = {
-          enableTridactylNative = cfg.tridactyl.enable;
+          nativeMessagingHosts.packages =
+            []
+            ++ (
+              if cfg.tridactyl.enable
+              then pkgs.tridactyl-native
+              else []
+            );
         };
       };
       profiles.default = {
@@ -455,4 +461,3 @@ in {
     home.file.".config/tridactyl".source = lib.mkIf cfg.tridactyl.enable ./tridactyl;
   };
 }
-

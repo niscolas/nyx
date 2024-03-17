@@ -5,6 +5,7 @@
   modifications = final: prev: {
     chromium = final.pkgs.unstable.chromium;
     eww = inputs.eww-tray3.packages."${final.pkgs.system}".default;
+    firefox = final.pkgs.unstable.firefox;
     heroic = final.pkgs.unstable.heroic;
 
     input-leap = prev.input-leap.overrideAttrs (
