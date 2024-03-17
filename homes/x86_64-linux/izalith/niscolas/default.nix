@@ -235,7 +235,6 @@
       parsec-bin
       pavucontrol
       pciutils # lspci
-      pritunl-client
       protonup-qt
       qalculate-gtk
       qbittorrent
