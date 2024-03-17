@@ -9,6 +9,10 @@
 in {
   options.nyx.nix = {
     enable = lib.mkEnableOption {};
+    nixPathAndRegistry.enable = lib.mkOption {
+      type = lib.types.bool;
+      default = true;
+    };
   };
 
   config = lib.mkIf cfg.enable {
@@ -27,6 +31,17 @@ in {
           "${XDG_BIN_HOME}"
         ];
       };
+
+      etc =
+        if cfg.nixPathAndRegistry.enable
+        then
+          lib.mapAttrs'
+          (name: value: {
+            name = "nix/path/${name}";
+            value.source = value.flake;
+          })
+          config.nix.registry
+        else {};
     };
 
     nix = {
@@ -34,8 +49,8 @@ in {
         automatic = true;
         options = "--delete-older-than 7d";
       };
-      nixPath = ["/etc/nix/path"];
-      registry = (lib.mapAttrs (_: flake: {inherit flake;})) ((lib.filterAttrs (_: lib.isType "flake")) inputs);
+      nixPath = lib.mkIf cfg.nixPathAndRegistry.enable ["/etc/nix/path"];
+      registry = lib.mkIf cfg.nixPathAndRegistry.enable ((lib.mapAttrs (_: flake: {inherit flake;})) ((lib.filterAttrs (_: lib.isType "flake")) inputs));
 
       settings = {
         # Deduplicate and optimize nix store

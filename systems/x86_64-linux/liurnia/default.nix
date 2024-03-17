@@ -29,10 +29,7 @@
     efiInstallAsRemovable = true;
   };
 
-  nyx.nix = {
-    enable = true;
-    nixPathAndRegistry.enable = false;
-  };
+  nyx.nix.enable = true;
 
   sops = {
     defaultSopsFile = ./secrets/secrets.yaml;
