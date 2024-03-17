@@ -12,10 +12,13 @@
     (modulesPath + "/profiles/qemu-guest.nix")
     ./disk-config.nix
     ./hardware-configuration.nix
+    ./nextcloud
     ./rss
     inputs.sops.nixosModules.sops
     outputs.nixosModules.nix
   ];
+
+  nixpkgs.config.allowUnfree = true;
 
   boot.loader.grub = {
     enable = true;
@@ -26,12 +29,15 @@
     efiInstallAsRemovable = true;
   };
 
-  nyx.nix.enable = true;
+  nyx.nix = {
+    enable = true;
+    nixPathAndRegistry.enable = false;
+  };
 
   sops = {
     defaultSopsFile = ./secrets/secrets.yaml;
     defaultSopsFormat = "yaml";
-    age.keyFile = "/root/.config/sops/age/keys.txt";
+    age.keyFile = "/root/.config/sops/age/liurnia_keys.txt";
   };
 
   networking = {
@@ -45,16 +51,6 @@
       allowedTCPPorts = [80 111 2049 4000 4001 4002 20048];
       allowedUDPPorts = [80 111 2049 4000 4001 4002 20048];
     };
-
-    hosts = {
-      "192.168.100.12" = ["example.com"];
-    };
-
-    nameservers = [
-      "8.8.8.8" # Google DNS
-      "8.8.4.4" # Another Google DNS server
-      # Add more DNS servers as needed
-    ];
   };
 
   time.timeZone = "America/Sao_Paulo";
@@ -74,13 +70,6 @@
     };
   };
 
-  services = {
-    nfs.server.enable = true;
-    nginx.enable = true;
-    openssh.enable = true;
-    tailscale.enable = true;
-  };
-
   security.acme.acceptTerms = true;
 
   environment.systemPackages = map lib.lowPrio [
@@ -91,8 +80,31 @@
   users.users.root.openssh.authorizedKeys.keys = [
     "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCtNKiqzYl9BjjO7Frt65b3yObjeAxrBV/8TVUxRj3Jwv6xmDciAz0E0Hpr5vfJpAM8o4inNxNBbNtxIdIBz863TjGLExaaMI6Mtr6lWXknhWeAuTFSn3daYil4NF730UIVR6y1qSsONIivnBgDJmgyGkks8S3PaKPmzYV95aNJBC8qrvi8hYcDmQ4XkEPaVxGXuc0Jm9dPmS+qJ+BE/HHAeYow6sO6QVuLq8R71FcbTEv07a+ebL8UlDsZvVfqMvwIsRicocqrgYWFg70FG3gIvokN8uc7PU7exTonDPI9eQLdNa9SzQvwTSfqv5bhAp+ptW8l8Cyfsqn0Ecf2SiH9nzTzVC1ZIQQlx3k4hTghwrn7KfVfsVtcDZXBsZAx0KsY34XdT78JN2pwwcbvSnEvZhqj3UroF59V4G03vLLOe7OU+reF3kJiXmMYfAycNHAYeUNdtoPeO5EkDmLSf96rZNNGGM/UA0kYk10hWTso0fOvkBe4iMvzdFnUBjXU4LuQlR+qaObkIwPbYH0Kzoyk3yTv4J0DTYcofqgc7Yh/3Mxz8rWLqBkp1H5C84OYWAoZ8vo9yY/9Up2UebvMB9zItq66CG0iu0XkMvbQvDtcVqftNDuU/kc5OiR43OP2gOsF9Dgp5g+janL1d3yao/9NnPlTQXdDWe/jaLDLx9cfdQ== niscolas@izalith"
   ];
+  services = {
+    nfs.server.enable = true;
 
-  nixpkgs.config.allowUnfree = true;
+    nginx = {
+      enable = true;
+      recommendedOptimisation = true;
+    };
+
+    openssh.enable = true;
+    tailscale.enable = true;
+    adguardhome = {
+      enable = true;
+      settings = {
+        http = {
+          address = "0.0.0.0:805";
+        };
+        dns = {
+          bind_hosts = ["100.83.253.49"];
+          port = 53;
+        };
+      };
+    };
+  };
+
+  virtualisation.docker.enable = true;
 
   system.stateVersion = "23.11";
 }
