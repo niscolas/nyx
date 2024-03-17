@@ -72,9 +72,7 @@
         '';
       };
 
-    shells = with pkgs; [
-      fish
-    ];
+    shells = with pkgs; [fish];
 
     systemPackages = with pkgs; [
       (import ./scripts/my-cpu.nix {inherit config pkgs;})
@@ -130,7 +128,12 @@
   programs = {
     command-not-found.enable = false;
     dconf.enable = true;
-    fish.enable = true;
+
+    fish = {
+      enable = true;
+      vendor.completions.enable = false;
+    };
+
     nm-applet.enable = true;
     xss-lock = {
       enable = true;
@@ -195,6 +198,7 @@
 
   xdg.portal = {
     enable = true;
+    config.common.default = "*";
     extraPortals = [pkgs.xdg-desktop-portal-gtk];
   };
 

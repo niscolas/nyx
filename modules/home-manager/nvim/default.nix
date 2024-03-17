@@ -65,12 +65,12 @@ in {
           then [dotnet-sdk_8]
           else []
         );
-
-      xdg.configFile."nvim".source =
-        config.lib.file.mkOutOfStoreSymlink
-        "${config.nyx.modulesData.realPath}/nvim/config";
-
-      nyx.ripgrep.enable = true;
     };
+
+    xdg.configFile."nvim".source =
+      config.lib.file.mkOutOfStoreSymlink
+      "${config.nyx.modulesData.realPath}/nvim/config";
+
+    nyx.ripgrep.enable = true;
   };
 }
