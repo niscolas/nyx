@@ -29,6 +29,7 @@
     outputs.nixosModules.awesome
     outputs.nixosModules.binary-cache
     outputs.nixosModules.bspwm
+    outputs.nixosModules.gnome
     outputs.nixosModules.nix
     outputs.nixosModules.sunshine
   ];
@@ -76,10 +77,8 @@
       duf
       du-dust
       etcher
-      gnome.file-roller
       inputs.home-manager.packages.${pkgs.system}.default
       inputs.nbfc.packages."${pkgs.system}".nbfc
-      lightlocker
       rar
       ventoy-full
       xclip
@@ -91,22 +90,6 @@
     ];
   };
 
-  systemd = {
-    user.services.polkit-gnome-authentication-agent-1 = {
-      description = "polkit-gnome-authentication-agent-1";
-      wantedBy = ["graphical-session.target"];
-      wants = ["graphical-session.target"];
-      after = ["graphical-session.target"];
-      serviceConfig = {
-        Type = "simple";
-        ExecStart = "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1";
-        Restart = "on-failure";
-        RestartSec = 1;
-        TimeoutStopSec = 10;
-      };
-    };
-  };
-
   programs = {
     command-not-found.enable = false;
     dconf.enable = true;
@@ -114,18 +97,6 @@
     fish = {
       enable = true;
       vendor.completions.enable = false;
-    };
-
-    nm-applet.enable = true;
-    xss-lock = {
-      enable = true;
-      lockerCommand = ''
-        ${pkgs.lightlocker}/bin/light-locker-command -l
-      '';
-    };
-    thunar = {
-      enable = true;
-      plugins = with pkgs.xfce; [thunar-archive-plugin thunar-volman];
     };
   };
 
@@ -171,17 +142,12 @@
 
   nyx = {
     audio-relay.enable = true;
-    awesome.enable = true;
+    awesome.enable = false;
     binary-cache.enable = true;
     bspwm.enable = false;
+    gnome.enable = true;
     nix.enable = true;
     sunshine.enable = true;
-  };
-
-  xdg.portal = {
-    enable = true;
-    config.common.default = "*";
-    extraPortals = [pkgs.xdg-desktop-portal-gtk];
   };
 
   # Set your time zone.
@@ -204,10 +170,7 @@
     };
   };
 
-  security = {
-    polkit.enable = true;
-    rtkit.enable = true;
-  };
+  security.rtkit.enable = true;
 
   users = {
     defaultUserShell = pkgs.fish;
@@ -224,12 +187,6 @@
   fonts.packages = with pkgs; [
     (nerdfonts.override {fonts = ["Mononoki" "IntelOneMono" "NerdFontsSymbolsOnly"];})
   ];
-
-  specialisation = {
-    steam_off.configuration = {
-      services.opensnitch.enable = true;
-    };
-  };
 
   services = {
     gvfs.enable = true; # Mount, trash, and other functionalities

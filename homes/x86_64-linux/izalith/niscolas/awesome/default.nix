@@ -14,6 +14,7 @@
   };
 in {
   imports = [
+    ../eww
     ../picom
     outputs.homeManagerModules.autorandr
     outputs.homeManagerModules.emote
@@ -38,6 +39,11 @@ in {
       emote.enable = true;
 
       niscolas = {
+        eww = {
+          enable = false;
+          enableDebugMode = true;
+        };
+
         picom = {
           enable = true;
           enableDebugMode = true;

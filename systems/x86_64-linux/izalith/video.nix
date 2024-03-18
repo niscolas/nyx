@@ -58,10 +58,7 @@ in {
 
   services.xserver = {
     enable = true;
-
-    excludePackages = with pkgs; [
-      xterm
-    ];
+    excludePackages = with pkgs; [xterm];
 
     config = ''
       Section "ServerLayout"
@@ -109,27 +106,5 @@ in {
 
     # Tell Xorg to use the nvidia driver
     videoDrivers = ["nvidia"];
-
-    # desktopManager.xfce = {
-    #   enable = true;
-    #   noDesktop = true;
-    #   enableXfwm = false;
-    # };
-
-    displayManager = {
-      lightdm = {
-        enable = true;
-      };
-
-      sessionCommands = ''
-        ${pkgs.lightlocker}/bin/light-locker --lock-on-suspend &
-      '';
-
-      setupCommands = ''
-        ${pkgs.xorg.xrandr}/bin/xrandr --auto
-      '';
-
-      defaultSession = "none+awesome";
-    };
   };
 }

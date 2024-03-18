@@ -10,7 +10,6 @@
     # outputs.homeManagerModules.ripgrep
     ./awesome
     ./bspwm
-    ./eww
     ./git
     ./heroic
     ./kanata
@@ -96,7 +95,7 @@
     };
 
     logseq = {
-      enable = true;
+      enable = false;
       enableBackup = true;
     };
 
@@ -117,22 +116,17 @@
     tmux.enable = true;
 
     wezterm = {
-      enable = true;
+      enable = false;
       enableDebugMode = true;
     };
 
     niscolas = {
       awesome = {
-        enable = true;
+        enable = false;
         enableDebugMode = true;
       };
 
       bspwm.enable = false;
-
-      eww = {
-        enable = true;
-        enableDebugMode = true;
-      };
 
       heroic = {
         enable = true;
