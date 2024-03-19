@@ -18,6 +18,7 @@
     ./options.nix
     ./ssh
     inputs.nur.hmModules.nur
+    inputs.nix-flatpak.homeManagerModules.nix-flatpak
     outputs.homeManagerModules.alacritty
     outputs.homeManagerModules.bottom
     outputs.homeManagerModules.espanso
@@ -101,6 +102,7 @@
 
     media-dirs = {
       downloads.enableSymlink = true;
+      videos.enableSymlink = true;
     };
 
     modulesData.realPath = "${config.home.homeDirectory}/bonfire/nyx/modules/home-manager";
@@ -145,6 +147,11 @@
   };
 
   services = {
+    flatpak.packages = [
+      "io.github.achetagames.epic_asset_manager"
+      "io.github.jeffshee.Hidamari"
+    ];
+
     blueman-applet.enable = true;
     network-manager-applet.enable = true;
     syncthing.enable = true;

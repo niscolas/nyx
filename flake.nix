@@ -23,6 +23,7 @@
     ft-labs-picom.url = "github:FT-Labs/picom";
     mach-nix.url = "mach-nix/3.5.0";
     minegrub-theme.url = "github:Lxtharia/minegrub-theme";
+    nix-flatpak.url = "github:gmodena/nix-flatpak";
     nix-index-database = {
       url = "github:Mic92/nix-index-database";
       inputs.nixpkgs.follows = "nixpkgs";

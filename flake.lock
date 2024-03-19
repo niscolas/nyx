@@ -406,6 +406,21 @@
         "type": "github"
       }
     },
+    "nix-flatpak": {
+      "locked": {
+        "lastModified": 1708781964,
+        "narHash": "sha256-qbEZgB1mNuMADLmM64EtcRjDHXR3UFL4xVmoanv9wZU=",
+        "owner": "gmodena",
+        "repo": "nix-flatpak",
+        "rev": "09d07c73b4d9771f527a168e0b1b6d8a1f39de28",
+        "type": "github"
+      },
+      "original": {
+        "owner": "gmodena",
+        "repo": "nix-flatpak",
+        "type": "github"
+      }
+    },
     "nix-index-database": {
       "inputs": {
         "nixpkgs": [
@@ -709,6 +724,7 @@
         "mach-nix": "mach-nix",
         "minegrub-theme": "minegrub-theme",
         "nbfc": "nbfc",
+        "nix-flatpak": "nix-flatpak",
         "nix-index-database": "nix-index-database",
         "nixpkgs": "nixpkgs_8",
         "nixpkgs-unstable": "nixpkgs-unstable",

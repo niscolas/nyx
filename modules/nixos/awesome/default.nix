@@ -13,30 +13,34 @@ in {
   config = lib.mkIf cfg.enable {
     environment.systemPackages = with pkgs; [lightlocker];
 
-    services.xserver = {
-      displayManager = {
-        lightdm = {
-          enable = true;
+    services = {
+      xserver = {
+        displayManager = {
+          lightdm = {
+            enable = true;
+          };
+
+          sessionCommands = ''
+            ${pkgs.lightlocker}/bin/light-locker --lock-on-suspend &
+          '';
+
+          setupCommands = ''
+            ${pkgs.xorg.xrandr}/bin/xrandr --auto
+          '';
+
+          defaultSession = "none+awesome";
         };
 
-        sessionCommands = ''
-          ${pkgs.lightlocker}/bin/light-locker --lock-on-suspend &
-        '';
-
-        setupCommands = ''
-          ${pkgs.xorg.xrandr}/bin/xrandr --auto
-        '';
-
-        defaultSession = "none+awesome";
+        windowManager.awesome = {
+          enable = true;
+          luaModules = with pkgs.luaPackages; [
+            luarocks # is the package manager for Lua modules
+            luadbi-mysql # Database abstraction layer
+          ];
+        };
       };
 
-      windowManager.awesome = {
-        enable = true;
-        luaModules = with pkgs.luaPackages; [
-          luarocks # is the package manager for Lua modules
-          luadbi-mysql # Database abstraction layer
-        ];
-      };
+      blueman.enable = true;
     };
 
     xdg.portal = {
