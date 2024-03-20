@@ -10,6 +10,7 @@
   imports = [
     (modulesPath + "/installer/scan/not-detected.nix")
     (modulesPath + "/profiles/qemu-guest.nix")
+    ./adguard
     ./disk-config.nix
     ./hardware-configuration.nix
     ./nextcloud
@@ -82,23 +83,17 @@
 
     nginx = {
       enable = true;
+
+      recommendedBrotliSettings = true;
+      recommendedGzipSettings = true;
       recommendedOptimisation = true;
+      recommendedProxySettings = true;
+      recommendedTlsSettings = true;
+      recommendedZstdSettings = true;
     };
 
     openssh.enable = true;
     tailscale.enable = true;
-    adguardhome = {
-      enable = true;
-      settings = {
-        http = {
-          address = "0.0.0.0:805";
-        };
-        dns = {
-          bind_hosts = ["100.83.253.49"];
-          port = 53;
-        };
-      };
-    };
   };
 
   virtualisation.docker.enable = true;
