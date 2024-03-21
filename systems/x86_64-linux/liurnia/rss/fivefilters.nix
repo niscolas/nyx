@@ -4,6 +4,8 @@
   ...
 }: let
   cfg = config.nyx.liurnia.fivefilters;
+  duckDnsLib = import ../duckdns/lib.nix {inherit config lib;};
+  port = "801";
 in {
   options.nyx.liurnia.fivefilters = {
     enable = lib.mkEnableOption {};
@@ -19,13 +21,13 @@ in {
       };
 
       volumes = ["rss-cache:/var/lib/fivefilters-cache"];
-      ports = ["801:80" "809:443"];
+      ports = ["${port}:80"];
     };
 
-    services.nginx.virtualHosts."fivefilters.${config.nyx.liurnia.duckdns.domainName}" = {
-      locations."/".proxyPass = "https://localhost:809";
-      forceSSL = true;
-      useACMEHost = "${config.nyx.liurnia.duckdns.domainName}";
-    };
+    services.nginx.virtualHosts =
+      duckDnsLib.mkSubdomain
+      "fivefilters" {
+        locations."/".proxyPass = "http://localhost:${port}";
+      };
   };
 }

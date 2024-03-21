@@ -4,9 +4,20 @@
   ...
 }: let
   cfg = config.nyx.liurnia.freshrss;
+  duckDnsLib = import ../duckdns/lib.nix {inherit config lib;};
 in {
   options.nyx.liurnia.freshrss = {
     enable = lib.mkEnableOption {};
+
+    virtualHost = lib.mkOption {
+      type = lib.types.str;
+      default = duckDnsLib.mkSubdomainPath "freshrss";
+    };
+
+    url = lib.mkOption {
+      type = lib.types.str;
+      default = "https://${config.services.freshrss.virtualHost}";
+    };
   };
 
   config = lib.mkIf cfg.enable {
@@ -16,17 +27,14 @@ in {
       freshrss = {
         enable = true;
 
-        baseUrl = "https://${config.services.freshrss.virtualHost}";
+        baseUrl = cfg.url;
         passwordFile = config.sops.secrets.freshrss_pwd.path;
-        virtualHost = "freshrss.${config.nyx.liurnia.duckdns.domainName}";
+        virtualHost = cfg.virtualHost;
       };
 
-      nginx.virtualHosts.${config.services.freshrss.virtualHost} = {
-        forceSSL = true;
-        useACMEHost = config.nyx.liurnia.duckdns.domainName;
-        # enableACME = true;
-        # acmeRoot = null;
-      };
+      nginx.virtualHosts =
+        duckDnsLib.mkSubdomainFromPath
+        config.services.freshrss.virtualHost {};
     };
   };
 }

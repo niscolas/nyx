@@ -14,6 +14,7 @@
     ./disk-config.nix
     ./duckdns
     ./hardware-configuration.nix
+    ./homepage
     ./nextcloud
     ./rss
     inputs.sops.nixosModules.sops
@@ -34,6 +35,7 @@
   nyx = {
     nix.enable = true;
     liurnia = {
+      homepage.enable = true;
       duckdns.enable = true;
       rss.enable = true;
     };

@@ -1,8 +1,12 @@
 {
   config,
+  lib,
   pkgs,
   ...
-}: {
+}: let
+  duckDnsLib = import ../duckdns/lib.nix {inherit config lib;};
+  virtualHostPath = duckDnsLib.mkSubdomainPath "nextcloud";
+in {
   sops.secrets = {
     "nextcloud/admin_pwd".owner = "nextcloud";
     "nextcloud/db_pwd".owner = "nextcloud";
@@ -12,7 +16,7 @@
     nextcloud = {
       enable = true;
 
-      hostName = "nextcloud.${config.nyx.liurnia.duckdns.domainName}";
+      hostName = virtualHostPath;
       https = true;
       package = pkgs.nextcloud28;
       database.createLocally = true;
@@ -48,12 +52,9 @@
     #   ];
     # };
 
-    nginx.virtualHosts.${config.services.nextcloud.hostName} = {
-      forceSSL = true;
-      useACMEHost = "${config.nyx.liurnia.duckdns.domainName}";
-      # enableACME = true;
-      # acmeRoot = null;
-    };
+    nginx.virtualHosts =
+      duckDnsLib.mkSubdomainFromPath
+      config.services.nextcloud.hostName {};
   };
 
   # systemd.services."nextcloud-setup" = {
