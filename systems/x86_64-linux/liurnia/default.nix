@@ -33,7 +33,10 @@
 
   nyx = {
     nix.enable = true;
-    liurnia.duckdns.enable = true;
+    liurnia = {
+      duckdns.enable = true;
+      rss.enable = true;
+    };
   };
 
   sops = {
@@ -50,8 +53,8 @@
     firewall = {
       enable = true;
       # for NFSv3; view with `rpcinfo -p`
-      allowedTCPPorts = [80 111 2049 4000 4001 4002 20048];
-      allowedUDPPorts = [80 111 2049 4000 4001 4002 20048];
+      allowedTCPPorts = [111 2049 4000 4001 4002 20048];
+      allowedUDPPorts = [111 2049 4000 4001 4002 20048];
     };
   };
 

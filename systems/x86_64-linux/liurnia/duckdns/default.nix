@@ -17,8 +17,7 @@ in {
     sops.secrets.duckdns_token = {};
 
     security.acme = {
-      defaults = {
-      };
+      defaults = {};
 
       certs."${config.nyx.liurnia.duckdns.domainName}" = {
         dnsProvider = "duckdns";
@@ -26,18 +25,18 @@ in {
         credentialFiles = {
           DUCKDNS_TOKEN_FILE = config.sops.secrets.duckdns_token.path;
         };
+
         domain = "*.${config.nyx.liurnia.duckdns.domainName}";
-        # extraDomainNames = ["*.${config.nyx.liurnia.duckdns.domainName}"];
       };
     };
 
     services.nginx.virtualHosts = {
-      "${config.nyx.liurnia.duckdns.domainName}" = {
-        # forceSSL = true;
-        # enableACME = true;
-        # acmeRoot = null;
-        # serverAliases = ["*.${config.nyx.liurnia.duckdns.domainName}"];
-      };
+      # "${config.nyx.liurnia.duckdns.domainName}" = {
+      # forceSSL = true;
+      # enableACME = true;
+      # acmeRoot = null;
+      # serverAliases = ["*.${config.nyx.liurnia.duckdns.domainName}"];
+      # };
     };
   };
 }
