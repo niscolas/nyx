@@ -127,18 +127,15 @@ in {
         '';
 
         datasets = {
-          "${storagePool.data.name}" = withAutoSnapshot (datasetMountablePostCreate storagePool.data
+          "${storagePool.data.name}" = withAutoSnapshot (dataset storagePool.data.mountpoint
             // {
               options = {
                 sharenfs = "on";
               };
             });
 
-          "${storagePool.backup.name}" =
-            withAutoSnapshot (datasetMountablePostCreate storagePool.backup);
-
-          "${storagePool.temp.name}" =
-            datasetMountablePostCreate storagePool.temp;
+          "${storagePool.backup.name}" = withAutoSnapshot (dataset storagePool.backup.mountpoint);
+          "${storagePool.temp.name}" = dataset storagePool.temp.mountpoint;
         };
       };
     };
@@ -150,7 +147,7 @@ in {
     requestEncryptionCredentials = true;
   };
 
-  # systemd.services."zfs-import-${storagePool.name}".wantedBy = lib.mkForce ["multi-user.target"];
+  systemd.services."zfs-import-${storagePool.name}".after = ["sshd.service"];
 
   # systemd = {
   #   services.setupStoragePool = {

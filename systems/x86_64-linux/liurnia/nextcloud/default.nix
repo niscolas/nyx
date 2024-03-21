@@ -17,6 +17,7 @@ in {
       enable = true;
 
       hostName = virtualHostPath;
+      home = "/zstorage/data/nextcloud";
       https = true;
       package = pkgs.nextcloud28;
       database.createLocally = true;
@@ -24,7 +25,7 @@ in {
       config = {
         overwriteProtocol = "https";
 
-        adminuser = "admin";
+        adminuser = "niscolas";
         adminpassFile = config.sops.secrets."nextcloud/admin_pwd".path;
 
         dbtype = "pgsql";
@@ -52,13 +53,11 @@ in {
     #   ];
     # };
 
-    nginx.virtualHosts =
-      duckDnsLib.mkSubdomainFromPath
-      config.services.nextcloud.hostName {};
+    nginx.virtualHosts = duckDnsLib.mkSubdomainFromPath config.services.nextcloud.hostName {};
   };
 
-  # systemd.services."nextcloud-setup" = {
-  #   requires = ["postgresql.service"];
-  #   after = ["postgresql.service"];
-  # };
+  systemd.services."nextcloud-setup" = {
+    requires = ["zfs-import-zstorage.service"];
+    after = ["zfs-import-zstorage.service"];
+  };
 }
