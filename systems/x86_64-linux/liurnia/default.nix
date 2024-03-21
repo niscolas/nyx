@@ -8,10 +8,11 @@
   ...
 }: {
   imports = [
+    # ./adguard
     (modulesPath + "/installer/scan/not-detected.nix")
     (modulesPath + "/profiles/qemu-guest.nix")
-    ./adguard
     ./disk-config.nix
+    ./duckdns
     ./hardware-configuration.nix
     ./nextcloud
     ./rss
@@ -30,7 +31,10 @@
     efiInstallAsRemovable = true;
   };
 
-  nyx.nix.enable = true;
+  nyx = {
+    nix.enable = true;
+    liurnia.duckdns.enable = true;
+  };
 
   sops = {
     defaultSopsFile = ./secrets/secrets.yaml;
@@ -68,7 +72,15 @@
     };
   };
 
-  security.acme.acceptTerms = true;
+  security.acme = {
+    acceptTerms = true;
+    defaults = {
+      email = "niscolas@proton.me";
+      group = "nginx";
+    };
+  };
+
+  users.users.nginx.extraGroups = ["acme"];
 
   environment.systemPackages = map lib.lowPrio [
     pkgs.curl
@@ -78,6 +90,7 @@
   users.users.root.openssh.authorizedKeys.keys = [
     "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCtNKiqzYl9BjjO7Frt65b3yObjeAxrBV/8TVUxRj3Jwv6xmDciAz0E0Hpr5vfJpAM8o4inNxNBbNtxIdIBz863TjGLExaaMI6Mtr6lWXknhWeAuTFSn3daYil4NF730UIVR6y1qSsONIivnBgDJmgyGkks8S3PaKPmzYV95aNJBC8qrvi8hYcDmQ4XkEPaVxGXuc0Jm9dPmS+qJ+BE/HHAeYow6sO6QVuLq8R71FcbTEv07a+ebL8UlDsZvVfqMvwIsRicocqrgYWFg70FG3gIvokN8uc7PU7exTonDPI9eQLdNa9SzQvwTSfqv5bhAp+ptW8l8Cyfsqn0Ecf2SiH9nzTzVC1ZIQQlx3k4hTghwrn7KfVfsVtcDZXBsZAx0KsY34XdT78JN2pwwcbvSnEvZhqj3UroF59V4G03vLLOe7OU+reF3kJiXmMYfAycNHAYeUNdtoPeO5EkDmLSf96rZNNGGM/UA0kYk10hWTso0fOvkBe4iMvzdFnUBjXU4LuQlR+qaObkIwPbYH0Kzoyk3yTv4J0DTYcofqgc7Yh/3Mxz8rWLqBkp1H5C84OYWAoZ8vo9yY/9Up2UebvMB9zItq66CG0iu0XkMvbQvDtcVqftNDuU/kc5OiR43OP2gOsF9Dgp5g+janL1d3yao/9NnPlTQXdDWe/jaLDLx9cfdQ== niscolas@izalith"
   ];
+
   services = {
     nfs.server.enable = true;
 
