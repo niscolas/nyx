@@ -7,8 +7,18 @@
   duckDnsLib = import ../duckdns/lib.nix {inherit config lib;};
   port = "801";
 in {
-  options.nyx.liurnia.fivefilters = {
+  options.nyx.liurnia.fivefilters = rec {
     enable = lib.mkEnableOption {};
+
+    virtualHost = lib.mkOption {
+      type = lib.types.str;
+      default = duckDnsLib.mkSubdomainPath "fivefilters";
+    };
+
+    url = lib.mkOption {
+      type = lib.types.str;
+      default = "https://${config.nyx.liurnia.fivefilters.virtualHost}";
+    };
   };
 
   config = lib.mkIf cfg.enable {
@@ -25,8 +35,8 @@ in {
     };
 
     services.nginx.virtualHosts =
-      duckDnsLib.mkSubdomain
-      "fivefilters" {
+      duckDnsLib.mkSubdomainFromPath
+      cfg.virtualHost {
         locations."/".proxyPass = "http://localhost:${port}";
       };
   };

@@ -15,6 +15,7 @@
     ./duckdns
     ./hardware-configuration.nix
     ./homepage
+    ./media-server
     ./nextcloud
     ./performance
     ./rss
@@ -36,8 +37,16 @@
   nyx = {
     nix.enable = true;
     liurnia = {
-      homepage.enable = true;
       duckdns.enable = true;
+      homepage.enable = true;
+      nextcloud.enable = true;
+
+      media-server = {
+        enable = true;
+        jellyfin.enable = true;
+        sonarr.enable = true;
+      };
+
       performance.enable = true;
       rss.enable = true;
     };
@@ -57,8 +66,8 @@
     firewall = {
       enable = true;
       # for NFSv3; view with `rpcinfo -p`
-      allowedTCPPorts = [111 2049 4000 4001 4002 20048];
-      allowedUDPPorts = [111 2049 4000 4001 4002 20048];
+      # allowedTCPPorts = [111 2049 4000 4001 4002 20048];
+      # allowedUDPPorts = [111 2049 4000 4001 4002 20048];
     };
   };
 

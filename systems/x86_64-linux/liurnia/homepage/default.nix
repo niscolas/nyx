@@ -26,15 +26,25 @@ in {
 
     systemd.services.homepage-dashboard = let
       configFile = pkgs.writeText "services.yaml" ''
-        - My First Group:
-            - My First Service:
-                href: http://localhost/
-                description: Homepage is awesome
+        - Stuff?:
+            - NextCloud:
+                icon: nextcloud.svg
+                description: Afte Cloud...
+                href: ${config.nyx.liurnia.nextcloud.url}
+                ping: ${config.nyx.liurnia.nextcloud.virtualHost}
 
         - RSS:
             - FreshRSS:
+                icon: freshrss.svg
+                description: RSS, but Fresh.
                 href: ${config.nyx.liurnia.freshrss.url}
-                description: RSS, but Fresh
+                ping: ${config.nyx.liurnia.freshrss.virtualHost}
+
+            - Five Filters:
+                icon: freshrss.svg
+                description: It actually uses 5 entire filters.
+                href: ${config.nyx.liurnia.fivefilters.url}
+                ping: ${config.nyx.liurnia.fivefilters.virtualHost}
       '';
     in {
       preStart = ''

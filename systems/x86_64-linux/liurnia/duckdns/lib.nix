@@ -17,4 +17,12 @@
   mkSubdomainFromPath = path: extraConfig: {
     "${path}" = lib.recursiveUpdate commonConfig extraConfig;
   };
+
+  mkSubdomainFromPathAndPort = path: port: extraConfig: {
+    "${path}" = lib.recursiveUpdate (commonConfig
+      // {
+        locations."/".proxyPass = "http://localhost:${port}";
+      })
+    extraConfig;
+  };
 }
