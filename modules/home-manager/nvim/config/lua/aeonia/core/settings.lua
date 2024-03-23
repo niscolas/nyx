@@ -86,7 +86,6 @@ set.laststatus = 3
 set.mouse = "a"
 set.scrolloff = 8
 set.sidescrolloff = 16
-set.shell = "fish"
 set.shortmess:append("c")
 set.timeoutlen = 50
 set.ttimeoutlen = 0
