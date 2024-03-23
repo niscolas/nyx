@@ -7,15 +7,14 @@
 in {
   options.nyx.starship = {
     enable = lib.mkEnableOption {};
-    enableFishIntegration = lib.mkEnableOption {};
   };
 
   config = lib.mkIf cfg.enable {
     programs.starship = {
       enable = true;
-      enableFishIntegration = cfg.enableFishIntegration;
     };
 
+    # TODO: use programs.starship.settings instead
     xdg.configFile."starship.toml".source = ./starship.toml;
   };
 }

@@ -2,22 +2,56 @@
   config,
   pkgs,
   lib,
+  outputs,
   ...
 }: let
   cfg = config.nyx.zsh;
   configDir = "${config.nyx.modulesData.realPath}/zsh";
 in {
+  imports = [
+    outputs.homeManagerModules.batcat
+    outputs.homeManagerModules.starship
+  ];
+
   options.nyx.zsh = {
     enable = lib.mkEnableOption {};
-    enableDebugMode = lib.mkEnableOption {};
   };
 
   config = lib.mkIf cfg.enable {
-    home.packages = with pkgs; [zsh];
+    nyx = {
+      batcat.enable = true;
+      starship.enable = true;
+    };
 
-    home.file.".config/zsh".source =
-      if !cfg.enableDebugMode
-      then ./config
-      else config.lib.file.mkOutOfStoreSymlink "${configDir}/config";
+    programs = {
+      eza = {
+        enable = true;
+        enableAliases = true;
+        git = true;
+        icons = true;
+      };
+
+      zsh = {
+        enable = true;
+        enableCompletion = true;
+        enableAutosuggestions = true;
+        syntaxHighlighting.enable = true;
+        defaultKeymap = "vicmd";
+
+        shellAliases = {
+          cat = "bat";
+          g = "git";
+          n = "nvim";
+          t = "tmux";
+        };
+        history.size = 10000;
+        history.path = "${config.xdg.dataHome}/zsh/history";
+      };
+
+      zoxide = {
+        enable = true;
+        enableZshIntegration = true;
+      };
+    };
   };
 }

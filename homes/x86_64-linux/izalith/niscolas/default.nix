@@ -23,7 +23,6 @@
     outputs.homeManagerModules.bottom
     outputs.homeManagerModules.espanso
     outputs.homeManagerModules.firefox
-    outputs.homeManagerModules.fish
     outputs.homeManagerModules.flameshot
     outputs.homeManagerModules.ideavim
     outputs.homeManagerModules.logseq
@@ -34,6 +33,7 @@
     outputs.homeManagerModules.spicetify
     outputs.homeManagerModules.tmux
     outputs.homeManagerModules.wezterm
+    outputs.homeManagerModules.zsh
     outputs.nixosModules.binary-cache
   ];
 
@@ -98,7 +98,6 @@
     };
 
     flameshot.enable = true;
-    fish.enable = true;
 
     ideavim = {
       enable = true;
@@ -131,6 +130,8 @@
       enable = false;
       enableDebugMode = true;
     };
+
+    zsh.enable = true;
 
     niscolas = {
       awesome = {

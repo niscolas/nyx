@@ -5,7 +5,9 @@
   inputs,
   outputs,
   ...
-}: {
+}: let
+  defaultShell = pkgs.zsh;
+in {
   imports = [
     ./audio.nix
     ./bluetooth.nix
@@ -68,7 +70,7 @@
       '';
     };
 
-    shells = with pkgs; [fish];
+    shells = [defaultShell];
 
     systemPackages = with pkgs; [
       (import ./scripts/my-cpu.nix {inherit config pkgs;})
@@ -96,11 +98,7 @@
   programs = {
     command-not-found.enable = false;
     dconf.enable = true;
-
-    fish = {
-      enable = true;
-      vendor.completions.enable = false;
-    };
+    zsh.enable = true;
   };
 
   boot = {
@@ -150,7 +148,12 @@
     bspwm.enable = false;
     gnome.enable = false;
     kde.enable = true;
-    nix.enable = true;
+
+    nix = {
+      enable = true;
+      nixPathAndRegistry.enable = true;
+    };
+
     sunshine.enable = true;
     tailscale.enable = true;
   };
@@ -181,14 +184,14 @@
   };
 
   users = {
-    defaultUserShell = pkgs.fish;
+    defaultUserShell = defaultShell;
 
     users.niscolas = {
       isNormalUser = true;
       description = "Nícolas";
       extraGroups = ["networkmanager" "wheel" "uinput" "input"];
       packages = [];
-      shell = pkgs.fish;
+      shell = defaultShell;
     };
   };
 
