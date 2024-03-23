@@ -53,6 +53,8 @@ in {
           # treesitter
           gcc
 
+          nodejs # markdown-preview.nvim
+
           # clang-tools
         ]
         ++ (

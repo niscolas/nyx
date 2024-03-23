@@ -19,6 +19,15 @@ in {
       enable = true;
       driSupport = true;
       driSupport32Bit = true;
+
+      # https://nixos.wiki/wiki/Accelerated_Video_Playback
+      extraPackages = with pkgs; [
+        intel-media-driver # LIBVA_DRIVER_NAME=iHD
+        intel-vaapi-driver # LIBVA_DRIVER_NAME=i965 (older but works better for Firefox/Chromium)
+        vaapiVdpau
+        libvdpau-va-gl
+      ];
+
       # extraPackages = with pkgs; [mangohud];
       # extraPackages32 = with pkgs; [mangohud];
     };
@@ -60,42 +69,42 @@ in {
     enable = true;
     excludePackages = with pkgs; [xterm];
 
-    config = ''
-      Section "ServerLayout"
-      Identifier "Default Layout"
-      Screen "nvidia" 0 0
-      EndSection
-
-      Section "Module"
-      Load "modesetting"
-      Load "glx"
-      EndSection
-
-      Section "Device"
-      Identifier "nvidia"
-      Driver "nvidia"
-      BusID "PCI:1:0:0"
-      Option "AllowEmptyInitialConfiguration"
-      Option "PrimaryGPU" "yes
-      EndSection
-
-      Section "Device"
-      Identifier "intel"
-      Driver "modesetting"
-      Option "AccelMethod" "sna"
-      EndSection
-
-      Section "Screen"
-      Identifier "nvidia"
-      Device "nvidia"
-      Option "AllowEmptyInitialConfiguration"
-      EndSection
-
-      Section "Screen"
-      Identifier "intel"
-      Device "intel"
-      EndSection
-    '';
+    # config = ''
+    #   Section "ServerLayout"
+    #   Identifier "Default Layout"
+    #   Screen "nvidia" 0 0
+    #   EndSection
+    #
+    #   Section "Module"
+    #   Load "modesetting"
+    #   Load "glx"
+    #   EndSection
+    #
+    #   Section "Device"
+    #   Identifier "nvidia"
+    #   Driver "nvidia"
+    #   BusID "PCI:1:0:0"
+    #   Option "AllowEmptyInitialConfiguration"
+    #   Option "PrimaryGPU" "yes
+    #   EndSection
+    #
+    #   Section "Device"
+    #   Identifier "intel"
+    #   Driver "modesetting"
+    #   Option "AccelMethod" "sna"
+    #   EndSection
+    #
+    #   Section "Screen"
+    #   Identifier "nvidia"
+    #   Device "nvidia"
+    #   Option "AllowEmptyInitialConfiguration"
+    #   EndSection
+    #
+    #   Section "Screen"
+    #   Identifier "intel"
+    #   Device "intel"
+    #   EndSection
+    # '';
 
     # Configure keymap in X11
     layout = "us";

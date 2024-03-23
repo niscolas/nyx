@@ -81,10 +81,13 @@
     homeManagerModules = import ./modules/home-manager;
 
     nixosConfigurations = {
-      izalith = nixpkgs.lib.nixosSystem {
-        modules = [./systems/x86_64-linux/izalith];
-        specialArgs = {inherit inputs outputs;};
-      };
+      izalith = let
+        username = "niscolas";
+      in
+        nixpkgs.lib.nixosSystem {
+          modules = [./systems/x86_64-linux/izalith];
+          specialArgs = {inherit inputs outputs username;};
+        };
 
       liurnia = nixpkgs.lib.nixosSystem {
         modules = [

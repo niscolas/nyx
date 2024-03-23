@@ -61,7 +61,17 @@
   };
 
   # Nicely reload system units when changing configs
-  systemd.user.startServices = "sd-switch";
+  systemd.user = {
+    startServices = "sd-switch";
+
+    # https://github.com/nix-community/home-manager/issues/2064#issuecomment-887300055
+    targets.tray = {
+      Unit = {
+        Description = "Home Manager System Tray";
+        Requires = ["graphical-session-pre.target"];
+      };
+    };
+  };
 
   nyx = {
     alacritty = {
@@ -76,7 +86,6 @@
 
     binary-cache.enable = true;
     espanso.enable = true;
-    flameshot.enable = true;
 
     firefox = {
       enable = true;
@@ -88,6 +97,7 @@
       };
     };
 
+    flameshot.enable = true;
     fish.enable = true;
 
     ideavim = {
@@ -152,8 +162,11 @@
       "io.github.jeffshee.Hidamari"
     ];
 
-    blueman-applet.enable = true;
-    network-manager-applet.enable = true;
+    nextcloud-client = {
+      enable = true;
+      startInBackground = true;
+    };
+
     syncthing.enable = true;
   };
 
@@ -183,14 +196,6 @@
     sessionVariables = {
       MACHINE_SETUP = "personal";
       MACHINE_THEME = "gruvbox";
-    };
-
-    pointerCursor = {
-      gtk.enable = true;
-      x11.enable = true;
-      name = "Nordzy-cursors";
-      size = 16;
-      package = pkgs.nordzy-cursor-theme;
     };
 
     packages = with pkgs; [
@@ -271,46 +276,15 @@
     stateVersion = "23.05";
   };
 
-  programs.direnv = {
-    enable = true;
-    nix-direnv.enable = true;
+  programs = {
+    direnv = {
+      enable = true;
+      nix-direnv.enable = true;
+    };
+
+    # Let home Manager install and manage itself.
+    home-manager.enable = true;
+
+    obs-studio.enable = true;
   };
-
-  gtk = {
-    enable = true;
-
-    theme = {
-      name = "Yaru-dark";
-      package = pkgs.yaru-theme;
-    };
-
-    iconTheme = {
-      name = "Papirus-Dark";
-      package = pkgs.papirus-icon-theme;
-    };
-
-    gtk3.extraConfig = {
-      Settings = ''
-        gtk-application-prefer-dark-theme=1
-      '';
-    };
-
-    gtk4.extraConfig = {
-      Settings = ''
-        gtk-application-prefer-dark-theme=1
-      '';
-    };
-  };
-
-  qt = {
-    enable = true;
-    style = {
-      name = "gtk2";
-      package = pkgs.libsForQt5.qtstyleplugins;
-    };
-    platformTheme = "gtk";
-  };
-
-  # Let home Manager install and manage itself.
-  programs.home-manager.enable = true;
 }

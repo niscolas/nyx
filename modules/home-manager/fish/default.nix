@@ -45,6 +45,7 @@ in {
           cat = "bat";
           g = "git";
           n = "nvim";
+          t = "tmux";
         };
       };
 

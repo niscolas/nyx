@@ -27,12 +27,59 @@ in {
   };
 
   config = lib.mkIf cfg.enable {
+    gtk = {
+      enable = true;
+
+      theme = {
+        name = "Yaru-dark";
+        package = pkgs.yaru-theme;
+      };
+
+      iconTheme = {
+        name = "Papirus-Dark";
+        package = pkgs.papirus-icon-theme;
+      };
+
+      gtk3.extraConfig = {
+        Settings = ''
+          gtk-application-prefer-dark-theme=1
+        '';
+      };
+
+      gtk4.extraConfig = {
+        Settings = ''
+          gtk-application-prefer-dark-theme=1
+        '';
+      };
+    };
+
+    qt = {
+      enable = true;
+      style = {
+        name = "gtk2";
+        package = pkgs.libsForQt5.qtstyleplugins;
+      };
+      platformTheme = "gtk";
+    };
+    home.pointerCursor = {
+      gtk.enable = true;
+      x11.enable = true;
+      name = "Nordzy-cursors";
+      size = 16;
+      package = pkgs.nordzy-cursor-theme;
+    };
+
     xdg.configFile."awesome".source =
       if !cfg.enableDebugMode
       then ./config
       else config.lib.file.mkOutOfStoreSymlink "${configDir}/config";
 
     xdg.configFile."wallpaper".source = config.lib.file.mkOutOfStoreSymlink defaultBg;
+
+    services = {
+      blueman-applet.enable = true;
+      network-manager-applet.enable = true;
+    };
 
     nyx = {
       autorandr.enable = true;

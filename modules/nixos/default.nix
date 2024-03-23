@@ -4,7 +4,9 @@
   binary-cache = import ./binary-cache;
   bspwm = import ./bspwm;
   gnome = import ./gnome;
+  kde = import ./kde;
   nix = import ./nix;
   pritunl = import ./pritunl;
   sunshine = import ./sunshine;
+  tailscale = import ./tailscale;
 }

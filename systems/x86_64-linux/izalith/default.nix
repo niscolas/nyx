@@ -30,8 +30,10 @@
     outputs.nixosModules.binary-cache
     outputs.nixosModules.bspwm
     outputs.nixosModules.gnome
+    outputs.nixosModules.kde
     outputs.nixosModules.nix
     outputs.nixosModules.sunshine
+    outputs.nixosModules.tailscale
   ];
 
   nixpkgs = {
@@ -79,6 +81,7 @@
       etcher
       inputs.home-manager.packages.${pkgs.system}.default
       inputs.nbfc.packages."${pkgs.system}".nbfc
+      intel-media-driver
       rar
       ventoy-full
       xclip
@@ -145,9 +148,11 @@
     awesome.enable = false;
     binary-cache.enable = true;
     bspwm.enable = false;
-    gnome.enable = true;
+    gnome.enable = false;
+    kde.enable = true;
     nix.enable = true;
     sunshine.enable = true;
+    tailscale.enable = true;
   };
 
   # Set your time zone.
@@ -170,7 +175,10 @@
     };
   };
 
-  security.rtkit.enable = true;
+  security = {
+    rtkit.enable = true;
+    polkit.enable = true;
+  };
 
   users = {
     defaultUserShell = pkgs.fish;
@@ -192,7 +200,6 @@
     gvfs.enable = true; # Mount, trash, and other functionalities
     tumbler.enable = true; # Thumbnail support for images
     flatpak.enable = true;
-    tailscale.enable = true;
     printing.enable = false;
 
     udev.extraRules = ''
