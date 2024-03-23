@@ -36,7 +36,7 @@ in {
         enableCompletion = true;
         enableAutosuggestions = true;
         syntaxHighlighting.enable = true;
-        defaultKeymap = "vicmd";
+        defaultKeymap = "viins";
 
         shellAliases = {
           cat = "bat";
