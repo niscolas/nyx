@@ -31,6 +31,7 @@
     outputs.homeManagerModules.neofetch
     outputs.homeManagerModules.nvim
     outputs.homeManagerModules.spicetify
+    outputs.homeManagerModules.tailscale-tray
     outputs.homeManagerModules.tmux
     outputs.homeManagerModules.wezterm
     outputs.homeManagerModules.zsh
@@ -124,6 +125,7 @@
     nvim.enable = true;
     # ripgrep.enable = lib.mkForce true;
     spicetify.enable = true;
+    tailscale-tray.enable = true;
     tmux.enable = true;
 
     wezterm = {
