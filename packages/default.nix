@@ -47,12 +47,12 @@ in {
   '';
 
   rebuild-liurnia-remote = pkgs.writeScriptBin "rebuild-liurnia-remote" ''
-    nixos-rebuild switch --flake ${configDir}#liurnia --target-host "root@liurnia"
+    nixos-rebuild switch --flake ${configDir}#liurnia --show-trace --target-host "root@liurnia"
   '';
 
-  # edit-liurnia-secrets = pkgs.writeScriptBin "edit-liurnia-secrets" ''
-  #   SOPS_AGE_KEY_FILE=~/.config/sops/age/liurnia_keys.txt \
-  #       ${pkgs.sops}/bin/sops \
-  #       ${../systems/x86_64-linux/liurnia/secrets/secrets.yaml}
-  # '';
+  edit-liurnia-secrets = pkgs.writeScriptBin "edit-liurnia-secrets" ''
+    SOPS_AGE_KEY_FILE=~/.config/sops/age/liurnia_keys.txt \
+        ${pkgs.sops}/bin/sops \
+        ${configDir}/systems/x86_64-linux/liurnia/secrets/secrets.yaml
+  '';
 }
