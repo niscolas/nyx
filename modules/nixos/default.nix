@@ -8,5 +8,4 @@
   nix = import ./nix;
   pritunl = import ./pritunl;
   sunshine = import ./sunshine;
-  tailscale = import ./tailscale;
 }

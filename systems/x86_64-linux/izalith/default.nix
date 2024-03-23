@@ -35,7 +35,6 @@ in {
     outputs.nixosModules.kde
     outputs.nixosModules.nix
     outputs.nixosModules.sunshine
-    outputs.nixosModules.tailscale
   ];
 
   nixpkgs = {
@@ -155,7 +154,6 @@ in {
     };
 
     sunshine.enable = true;
-    tailscale.enable = true;
   };
 
   # Set your time zone.
@@ -200,16 +198,16 @@ in {
   ];
 
   services = {
-    gvfs.enable = true; # Mount, trash, and other functionalities
-    tumbler.enable = true; # Thumbnail support for images
     flatpak.enable = true;
+    gvfs.enable = true; # Mount, trash, and other functionalities
+    openssh.enable = true;
     printing.enable = false;
+    tailscale.enable = true;
+    tumbler.enable = true; # Thumbnail support for images
 
     udev.extraRules = ''
       KERNEL=="uinput", MODE="0660", GROUP="uinput", OPTIONS+="static_node=uinput"
     '';
-
-    openssh.enable = true;
   };
 
   networking = {

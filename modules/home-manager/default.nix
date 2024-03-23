@@ -18,6 +18,7 @@
   ripgrep = import ./ripgrep;
   spicetify = import ./spicetify;
   starship = import ./starship;
+  tailscale-tray = import ./tailscale-tray;
   tmux = import ./tmux;
   wezterm = import ./wezterm;
   wired = import ./wired;
