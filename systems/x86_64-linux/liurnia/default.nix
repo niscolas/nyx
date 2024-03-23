@@ -38,7 +38,91 @@
     nix.enable = true;
     liurnia = {
       duckdns.enable = true;
-      homepage.enable = true;
+      homepage = {
+        enable = true;
+        widgets = [
+          {
+            resources = {
+              cpu = true;
+              memory = true;
+              disk = "/";
+            };
+          }
+          {
+            search = {
+              provider = "duckduckgo";
+              target = "_blank";
+            };
+          }
+        ];
+        services = [
+          {
+            Services = [
+              {
+                NextCloud = [
+                  {
+                    icon = "nextcloud.svg";
+                    description = "After Cloud...";
+                    href = "${config.nyx.liurnia.nextcloud.url}";
+                    ping = "${config.nyx.liurnia.nextcloud.virtualHost}";
+                  }
+                ];
+              }
+            ];
+          }
+          {
+            RSS = [
+              {
+                FreshRSS = [
+                  {
+                    icon = "freshrss.svg";
+                    description = "RSS, but Fresh.";
+                    href = "${config.nyx.liurnia.freshrss.url}";
+                    ping = "${config.nyx.liurnia.freshrss.virtualHost}";
+                  }
+                ];
+              }
+              {
+                "Five Filters" = [
+                  {
+                    icon = "freshrss.svg";
+                    description = "It actually uses 5 entire filters.";
+                    href = "${config.nyx.liurnia.fivefilters.url}";
+                    ping = "${config.nyx.liurnia.fivefilters.virtualHost}";
+                  }
+                ];
+              }
+            ];
+          }
+        ];
+        bookmarks = [
+          {
+            Tailscale = [
+              {
+                abbr = "TS";
+                icon = "tailscale.svg";
+                href = "https://login.tailscale.com/admin/";
+              }
+            ];
+          }
+          {
+            "Nixos Search" = [
+              {
+                icon = "si-nixos";
+                href = "https://search.nixos.org/packages";
+              }
+            ];
+          }
+          {
+            "Nixos Wiki" = [
+              {
+                icon = "si-nixos";
+                href = "https://nixos.wiki/";
+              }
+            ];
+          }
+        ];
+      };
       nextcloud.enable = true;
 
       media-server = {

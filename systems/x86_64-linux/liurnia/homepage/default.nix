@@ -6,9 +6,31 @@
 }: let
   cfg = config.nyx.liurnia.homepage;
   duckDnsLib = import ../duckdns/lib.nix {inherit config lib;};
+  configDir = "/var/lib/homepage-dashboard";
 in {
-  options.nyx.liurnia.homepage = {
-    enable = lib.mkEnableOption {};
+  # https://github.com/LongerHV/nixos-configuration/blob/3d9baf05bc1bc34e2b9137a475db123e84b7aec5/modules/nixos/homelab/homepage.nix#L4
+  options.nyx.liurnia.homepage = with lib; {
+    enable = mkEnableOption {};
+
+    settings = mkOption {
+      type = types.attrs;
+      default = {};
+    };
+
+    services = mkOption {
+      type = types.listOf types.attrs;
+      default = [];
+    };
+
+    widgets = mkOption {
+      type = types.listOf types.attrs;
+      default = [];
+    };
+
+    bookmarks = mkOption {
+      type = types.listOf types.attrs;
+      default = [];
+    };
   };
 
   config = lib.mkIf cfg.enable {
@@ -25,30 +47,13 @@ in {
     };
 
     systemd.services.homepage-dashboard = let
-      configFile = pkgs.writeText "services.yaml" ''
-        - Stuff?:
-            - NextCloud:
-                icon: nextcloud.svg
-                description: Afte Cloud...
-                href: ${config.nyx.liurnia.nextcloud.url}
-                ping: ${config.nyx.liurnia.nextcloud.virtualHost}
-
-        - RSS:
-            - FreshRSS:
-                icon: freshrss.svg
-                description: RSS, but Fresh.
-                href: ${config.nyx.liurnia.freshrss.url}
-                ping: ${config.nyx.liurnia.freshrss.virtualHost}
-
-            - Five Filters:
-                icon: freshrss.svg
-                description: It actually uses 5 entire filters.
-                href: ${config.nyx.liurnia.fivefilters.url}
-                ping: ${config.nyx.liurnia.fivefilters.virtualHost}
-      '';
+      format = pkgs.formats.yaml {};
     in {
       preStart = ''
-        cp --force "${configFile}" "/var/lib/homepage-dashboard/services.yaml"
+        ln -sf ${format.generate "settings.yaml" cfg.settings} ${configDir}/settings.yaml
+        ln -sf ${format.generate "services.yaml" cfg.services} ${configDir}/services.yaml
+        ln -sf ${format.generate "widgets.yaml" cfg.widgets} ${configDir}/widgets.yaml
+        ln -sf ${format.generate "bookmarks.yaml" cfg.bookmarks} ${configDir}/bookmarks.yaml
       '';
     };
   };
