@@ -6,7 +6,8 @@
   outputs,
   pkgs,
   ...
-}: {
+}:
+with lib; {
   imports = [
     # ./adguard
     (modulesPath + "/installer/scan/not-detected.nix")
@@ -16,6 +17,7 @@
     ./hardware-configuration.nix
     ./homepage
     ./media-server
+    ./netdata
     ./nextcloud
     ./performance
     ./rss
@@ -23,7 +25,15 @@
     outputs.nixosModules.nix
   ];
 
-  nixpkgs.config.allowUnfree = true;
+  nixpkgs = {
+    config.allowUnfree = true;
+
+    overlays = [
+      outputs.overlays.additions
+      outputs.overlays.modifications
+      outputs.overlays.unstable-packages
+    ];
+  };
 
   boot.loader.grub = {
     enable = true;
@@ -40,89 +50,121 @@
       duckdns.enable = true;
       homepage = {
         enable = true;
-        widgets = [
-          {
-            resources = {
-              cpu = true;
-              memory = true;
-              disk = "/";
-            };
-          }
-          {
-            search = {
-              provider = "duckduckgo";
-              target = "_blank";
-            };
-          }
-        ];
-        services = [
-          {
-            Services = [
-              {
-                NextCloud = [
-                  {
+        layout = {
+          settings = {
+            statusStyle = "dot";
+          };
+          widgets = [
+            {
+              resources = {
+                cpu = true;
+                memory = true;
+                disk = "/";
+              };
+            }
+            {
+              search = {
+                provider = "duckduckgo";
+                target = "_blank";
+              };
+            }
+          ];
+          services = [
+            {
+              Monitoring = [
+                {
+                  NETDATA = {
+                    icon = "netdata.svg";
+                    description = "NET DATA";
+                    href = config.nyx.liurnia.netdata.service.url;
+                    siteMonitor = config.nyx.liurnia.netdata.service.url;
+
+                    widget = {
+                      type = "netdata";
+                      url = config.nyx.liurnia.netdata.service.url;
+                    };
+                  };
+                }
+              ];
+            }
+            {
+              Services = [
+                {
+                  NextCloud = {
                     icon = "nextcloud.svg";
                     description = "After Cloud...";
-                    href = "${config.nyx.liurnia.nextcloud.url}";
-                    ping = "${config.nyx.liurnia.nextcloud.virtualHost}";
-                  }
-                ];
-              }
-            ];
-          }
-          {
-            RSS = [
-              {
-                FreshRSS = [
-                  {
+                    href = config.nyx.liurnia.nextcloud.url;
+                    siteMonitor = config.nyx.liurnia.nextcloud.url;
+                  };
+                }
+              ];
+            }
+            {
+              RSS = [
+                {
+                  FreshRSS = {
                     icon = "freshrss.svg";
                     description = "RSS, but Fresh.";
-                    href = "${config.nyx.liurnia.freshrss.url}";
-                    ping = "${config.nyx.liurnia.freshrss.virtualHost}";
-                  }
-                ];
-              }
-              {
-                "Five Filters" = [
-                  {
+                    href = config.nyx.liurnia.freshrss.url;
+                    siteMonitor = config.nyx.liurnia.freshrss.url;
+                    widget = {
+                      type = "freshrss";
+                      url = "${config.nyx.liurnia.freshrss.url}/api/";
+                      username = config.services.freshrss.defaultUser;
+                      password = config.sops.secrets."freshrss/api_pwd";
+                    };
+                  };
+                }
+                {
+                  "Five Filters" = {
                     icon = "freshrss.svg";
                     description = "It actually uses 5 entire filters.";
-                    href = "${config.nyx.liurnia.fivefilters.url}";
-                    ping = "${config.nyx.liurnia.fivefilters.virtualHost}";
-                  }
-                ];
-              }
-            ];
-          }
-        ];
-        bookmarks = [
-          {
-            Tailscale = [
-              {
-                abbr = "TS";
-                icon = "tailscale.svg";
-                href = "https://login.tailscale.com/admin/";
-              }
-            ];
-          }
-          {
-            "Nixos Search" = [
-              {
-                icon = "si-nixos";
-                href = "https://search.nixos.org/packages";
-              }
-            ];
-          }
-          {
-            "Nixos Wiki" = [
-              {
-                icon = "si-nixos";
-                href = "https://nixos.wiki/";
-              }
-            ];
-          }
-        ];
+                    href = config.nyx.liurnia.fivefilters.url;
+                    siteMonitor = config.nyx.liurnia.fivefilters.url;
+                  };
+                }
+              ];
+            }
+          ];
+          bookmarks = [
+            {
+              Admin = [
+                {
+                  Tailscale = [
+                    {
+                      abbr = "TS";
+                      icon = "tailscale-light.png";
+                      href = "https://login.tailscale.com/admin/";
+                    }
+                  ];
+                }
+              ];
+            }
+            {
+              NixOS = [
+                {
+                  "Nixos Search" = [
+                    {
+                      icon = "si-nixos";
+                      href = "https://search.nixos.org/packages";
+                    }
+                  ];
+                }
+                {
+                  "Nixos Wiki" = [
+                    {
+                      icon = "si-nixos";
+                      href = "https://nixos.wiki/";
+                    }
+                  ];
+                }
+              ];
+            }
+          ];
+        };
       };
+
+      netdata.enable = true;
       nextcloud.enable = true;
 
       media-server = {

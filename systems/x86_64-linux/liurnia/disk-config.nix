@@ -15,6 +15,7 @@
     };
 
     data = datasetSettings "data";
+    nextcloud = datasetSettings "nextcloud";
     backup = datasetSettings "backup";
     temp = datasetSettings "temp";
   };
@@ -134,6 +135,7 @@ in {
               };
             });
 
+          # "${storagePool.nextcloud.name}" = withAutoSnapshot (dataset storagePool.data.mountpoint);
           "${storagePool.backup.name}" = withAutoSnapshot (dataset storagePool.backup.mountpoint);
           "${storagePool.temp.name}" = dataset storagePool.temp.mountpoint;
         };
@@ -147,47 +149,7 @@ in {
     requestEncryptionCredentials = true;
   };
 
-  systemd.services."zfs-import-${storagePool.name}".after = ["sshd.service"];
-
-  # systemd = {
-  #   services.setupStoragePool = {
-  #     description = "Setup ZFS Storage Pool";
-  #     wantedBy = ["multi-user.target"]; # Run at multi-user.target for manual user interaction
-  #
-  #     script = ''
-  #       ${pkgs.zfs}/bin/zpool import ${storagePool.name}
-  #
-  #       # Maximum number of retries
-  #       max_retries=3
-  #       retry_count=0
-  #
-  #       # Loop until successful or maximum retries reached
-  #       while [ $retry_count -lt $max_retries ]; do
-  #           # Prompt for passphrase
-  #           read -rsp "Enter passphrase for ZFS encryption (attempt $((retry_count + 1)) of $max_retries): " passphrase
-  #           echo    # Newline after passphrase
-  #           # Attempt to load the encryption key
-  #           sudo zfs load-key -L - <<<"$passphrase" ${storagePool.name}
-  #           # Check if loading key was successful
-  #           if [ $? -eq 0 ]; then
-  #               echo "Encryption key loaded successfully."
-  #               break  # Exit loop if successful
-  #           else
-  #               echo "Failed to load encryption key. Retrying..."
-  #               retry_count=$((retry_count + 1))
-  #           fi
-  #       done
-  #       # Check if maximum retries reached
-  #       if [ $retry_count -eq $max_retries ]; then
-  #           echo "Maximum number of retries reached. Exiting."
-  #           exit 1  # Exit with failure
-  #       fi
-  #
-  #       ${pkgs.zfs}/bin/zfs mount -a
-  #       # ${pkgs.zfs}/bin/zfs mount ${storagePool.data.fullName}
-  #       # ${pkgs.zfs}/bin/zfs mount ${storagePool.backup.fullName}
-  #       # ${pkgs.zfs}/bin/zfs mount ${storagePool.temp.fullName}
-  #     '';
-  #   };
-  # };
+  systemd.services."zfs-import-${storagePool.name}" = {
+    after = ["sshd.service"];
+  };
 }

@@ -40,7 +40,7 @@ in {
         config = {
           overwriteProtocol = "https";
 
-          adminuser = "niscolas";
+          adminuser = "admin";
           adminpassFile = config.sops.secrets."nextcloud/admin_pwd".path;
 
           dbtype = "pgsql";
@@ -71,9 +71,10 @@ in {
       nginx.virtualHosts = duckDnsLib.mkSubdomainFromPath config.services.nextcloud.hostName {};
     };
 
-    systemd.services."nextcloud-setup" = {
-      requires = ["zfs-import-zstorage.service"];
-      after = ["zfs-import-zstorage.service"];
-    };
+    # TODO: enable this to grant that zstorage will be available
+    # systemd.services."nextcloud-setup" = {
+    #   requires = ["zfs-import-zstorage.service"];
+    #   after = ["zfs-import-zstorage.service"];
+    # };
   };
 }

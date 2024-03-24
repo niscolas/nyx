@@ -12,48 +12,57 @@ in {
   options.nyx.liurnia.homepage = with lib; {
     enable = mkEnableOption {};
 
-    settings = mkOption {
-      type = types.attrs;
-      default = {};
+    service = {
+      port = duckDnsLib.mkServicePortOption (toString (config.services.homepage-dashboard.listenPort));
     };
 
-    services = mkOption {
-      type = types.listOf types.attrs;
-      default = [];
-    };
+    layout = {
+      settings = mkOption {
+        type = types.attrs;
+        default = {};
+      };
 
-    widgets = mkOption {
-      type = types.listOf types.attrs;
-      default = [];
-    };
+      services = mkOption {
+        type = types.listOf types.attrs;
+        default = [];
+      };
 
-    bookmarks = mkOption {
-      type = types.listOf types.attrs;
-      default = [];
+      widgets = mkOption {
+        type = types.listOf types.attrs;
+        default = [];
+      };
+
+      bookmarks = mkOption {
+        type = types.listOf types.attrs;
+        default = [];
+      };
     };
   };
 
   config = lib.mkIf cfg.enable {
     services = {
-      homepage-dashboard.enable = true;
+      homepage-dashboard = {
+        enable = true;
+        package = pkgs.unstable.homepage-dashboard;
+      };
 
       nginx.virtualHosts = {
         "${config.nyx.liurnia.duckdns.domainName}" =
           duckDnsLib.commonConfig
           // {
-            locations."/".proxyPass = "http://localhost:${toString (config.services.homepage-dashboard.listenPort)}";
+            locations."/".proxyPass = "http://localhost:${cfg.service.port}";
           };
       };
     };
 
     systemd.services.homepage-dashboard = let
-      format = pkgs.formats.yaml {};
+      generate = (pkgs.formats.yaml {}).generate;
     in {
       preStart = ''
-        ln -sf ${format.generate "settings.yaml" cfg.settings} ${configDir}/settings.yaml
-        ln -sf ${format.generate "services.yaml" cfg.services} ${configDir}/services.yaml
-        ln -sf ${format.generate "widgets.yaml" cfg.widgets} ${configDir}/widgets.yaml
-        ln -sf ${format.generate "bookmarks.yaml" cfg.bookmarks} ${configDir}/bookmarks.yaml
+        ln -sf ${generate "settings.yaml" cfg.layout.settings} ${configDir}/settings.yaml
+        ln -sf ${generate "services.yaml" cfg.layout.services} ${configDir}/services.yaml
+        ln -sf ${generate "widgets.yaml" cfg.layout.widgets} ${configDir}/widgets.yaml
+        ln -sf ${generate "bookmarks.yaml" cfg.layout.bookmarks} ${configDir}/bookmarks.yaml
       '';
     };
   };

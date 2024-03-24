@@ -21,14 +21,17 @@ in {
   };
 
   config = lib.mkIf cfg.enable {
-    sops.secrets.freshrss_pwd.owner = config.services.freshrss.user;
+    sops.secrets = {
+      "freshrss/admin_pwd".owner = config.services.freshrss.user;
+      "freshrss/api_pwd".owner = config.services.freshrss.user;
+    };
 
     services = {
       freshrss = {
         enable = true;
 
         baseUrl = cfg.url;
-        passwordFile = config.sops.secrets.freshrss_pwd.path;
+        passwordFile = config.sops.secrets."freshrss/admin_pwd".path;
         virtualHost = cfg.virtualHost;
       };
 
