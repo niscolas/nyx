@@ -21,60 +21,77 @@ in {
     };
   };
 
-  config = lib.mkIf cfg.enable {
-    sops.secrets = {
-      "nextcloud/admin_pwd".owner = "nextcloud";
-      "nextcloud/db_pwd".owner = "nextcloud";
-    };
-
-    services = {
-      nextcloud = {
-        enable = true;
-
-        hostName = cfg.virtualHost;
-        home = "/zstorage/data/nextcloud";
-        https = true;
-        package = pkgs.nextcloud28;
-        database.createLocally = true;
-
-        config = {
-          overwriteProtocol = "https";
-
-          adminuser = "admin";
-          adminpassFile = config.sops.secrets."nextcloud/admin_pwd".path;
-
-          dbtype = "pgsql";
-          # dbhost = "/run/postgresql"; # nextcloud will add /.s.PGSQL.5432 by itself
-          # dbpassFile = config.sops.secrets."nextcloud/db_pwd".path;
+  config = let
+    group = config.users.groups.nextcloud.name;
+  in
+    lib.mkIf cfg.enable {
+      sops.secrets = {
+        "nextcloud/admin_pwd" = {
+          inherit group;
+          mode = "0440";
         };
 
-        extraAppsEnable = true;
+        "nextcloud/db_pwd" = {
+          inherit group;
+          mode = "0440";
+        };
 
-        extraApps = {
-          inherit (config.services.nextcloud.package.packages.apps) contacts calendar tasks;
+        "nextcloud/nc_token" = {
+          inherit group;
+          mode = "0440";
         };
       };
 
-      # postgresql = {
-      #   enable = true;
-      #
-      #   # Ensure the database, user, and permissions always exist
-      #   ensureDatabases = ["nextcloud"];
-      #   ensureUsers = [
-      #     {
-      #       name = "nextcloud";
-      #       ensurePermissions."DATABASE nextcloud" = "ALL PRIVILEGES";
-      #     }
-      #   ];
+      services = {
+        nextcloud = {
+          enable = true;
+
+          hostName = cfg.virtualHost;
+          home = "/zstorage/nextcloud/home";
+          https = true;
+          package = pkgs.nextcloud28;
+          database.createLocally = true;
+
+          config = {
+            overwriteProtocol = "https";
+
+            adminuser = "admin";
+            adminpassFile = config.sops.secrets."nextcloud/admin_pwd".path;
+
+            dbtype = "pgsql";
+            # dbhost = "/run/postgresql"; # nextcloud will add /.s.PGSQL.5432 by itself
+            # dbpassFile = config.sops.secrets."nextcloud/db_pwd".path;
+          };
+
+          extraAppsEnable = true;
+
+          extraApps = {
+            inherit (config.services.nextcloud.package.packages.apps) contacts calendar tasks;
+          };
+        };
+
+        # postgresql = {
+        #   enable = true;
+        #
+        #   # Ensure the database, user, and permissions always exist
+        #   ensureDatabases = ["nextcloud"];
+        #   ensureUsers = [
+        #     {
+        #       name = "nextcloud";
+        #       ensurePermissions."DATABASE nextcloud" = "ALL PRIVILEGES";
+        #     }
+        #   ];
+        # };
+
+        nginx.virtualHosts = duckDnsLib.mkSubdomainFromPath config.services.nextcloud.hostName {};
+      };
+
+      users.groups.nextcloud.members = [config.users.users.homepage.name];
+
+      # TODO: enable this to grant that zstorage will be available
+      # systemd.services."nextcloud-setup" = {
+      #   requires = ["zfs-import-zstorage.service"];
+      #   after = ["zfs-import-zstorage.service"];
       # };
-
-      nginx.virtualHosts = duckDnsLib.mkSubdomainFromPath config.services.nextcloud.hostName {};
     };
-
-    # TODO: enable this to grant that zstorage will be available
-    # systemd.services."nextcloud-setup" = {
-    #   requires = ["zfs-import-zstorage.service"];
-    #   after = ["zfs-import-zstorage.service"];
-    # };
-  };
 }

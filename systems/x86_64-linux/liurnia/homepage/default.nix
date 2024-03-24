@@ -16,6 +16,10 @@ in {
       port = duckDnsLib.mkServicePortOption (toString (config.services.homepage-dashboard.listenPort));
     };
 
+    secrets = mkOption {
+      type = types.attrs;
+    };
+
     layout = {
       settings = mkOption {
         type = types.attrs;
@@ -57,13 +61,45 @@ in {
 
     systemd.services.homepage-dashboard = let
       generate = (pkgs.formats.yaml {}).generate;
+      files = ["settings" "services" "widgets" "bookmarks"];
+      sedCommand =
+        builtins.concatStringsSep "; "
+        (
+          builtins.attrValues
+          (
+            builtins.mapAttrs (keyword: file: "s/${keyword}/$(<${file})/g")
+            cfg.secrets
+          )
+        );
     in {
-      preStart = ''
-        ln -sf ${generate "settings.yaml" cfg.layout.settings} ${configDir}/settings.yaml
-        ln -sf ${generate "services.yaml" cfg.layout.services} ${configDir}/services.yaml
-        ln -sf ${generate "widgets.yaml" cfg.layout.widgets} ${configDir}/widgets.yaml
-        ln -sf ${generate "bookmarks.yaml" cfg.layout.bookmarks} ${configDir}/bookmarks.yaml
-      '';
+      preStart =
+        builtins.concatStringsSep
+        "\n"
+        (
+          map
+          (file: ''
+            original=${generate "${file}.yaml" cfg.layout.${file}}
+            copy=${configDir}/${file}.yaml
+            cp -f $original $copy
+            sed -i "${sedCommand}" $copy
+          '')
+          files
+        );
+
+      serviceConfig = {
+        User = config.users.users.homepage.name;
+      };
+    };
+
+    users = {
+      users = {
+        homepage = {
+          group = config.users.groups.homepage.name;
+          isSystemUser = true;
+        };
+      };
+
+      groups.homepage = {};
     };
   };
 }

@@ -48,8 +48,22 @@ with lib; {
     nix.enable = true;
     liurnia = {
       duckdns.enable = true;
-      homepage = {
+      homepage = let
+        freshrss = {
+          apiPwdKeyword = "_freshrssapipwd_";
+          apiPwdFile = config.sops.secrets."freshrss/api_pwd".path;
+        };
+
+        nextcloud = {
+          ncTokenKeyword = "_nextcloudnctoken_";
+          ncTokenFile = config.sops.secrets."nextcloud/nc_token".path;
+        };
+      in {
         enable = true;
+        secrets = {
+          "${freshrss.apiPwdKeyword}" = "${freshrss.apiPwdFile}";
+          "${nextcloud.ncTokenKeyword}" = "${nextcloud.ncTokenFile}";
+        };
         layout = {
           settings = {
             statusStyle = "dot";
@@ -90,11 +104,19 @@ with lib; {
             {
               Services = [
                 {
-                  NextCloud = {
+                  NextCloud = let
+                    url = config.nyx.liurnia.nextcloud.url;
+                  in {
                     icon = "nextcloud.svg";
                     description = "After Cloud...";
-                    href = config.nyx.liurnia.nextcloud.url;
-                    siteMonitor = config.nyx.liurnia.nextcloud.url;
+                    href = url;
+                    siteMonitor = url;
+                    widget = {
+                      type = "nextcloud";
+                      url = url;
+                      key = nextcloud.ncTokenKeyword;
+                      fields = ["freespace" "activeusers" "numfiles" "numshares"];
+                    };
                   };
                 }
               ];
@@ -109,9 +131,9 @@ with lib; {
                     siteMonitor = config.nyx.liurnia.freshrss.url;
                     widget = {
                       type = "freshrss";
-                      url = "${config.nyx.liurnia.freshrss.url}/api/";
+                      url = config.nyx.liurnia.freshrss.url;
                       username = config.services.freshrss.defaultUser;
-                      password = config.sops.secrets."freshrss/api_pwd";
+                      password = freshrss.apiPwdKeyword;
                     };
                   };
                 }

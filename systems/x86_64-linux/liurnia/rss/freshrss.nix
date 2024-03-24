@@ -20,24 +20,35 @@ in {
     };
   };
 
-  config = lib.mkIf cfg.enable {
-    sops.secrets = {
-      "freshrss/admin_pwd".owner = config.services.freshrss.user;
-      "freshrss/api_pwd".owner = config.services.freshrss.user;
-    };
-
-    services = {
-      freshrss = {
-        enable = true;
-
-        baseUrl = cfg.url;
-        passwordFile = config.sops.secrets."freshrss/admin_pwd".path;
-        virtualHost = cfg.virtualHost;
+  config = let
+    group = config.users.users."${config.services.freshrss.user}".group;
+  in
+    lib.mkIf cfg.enable {
+      sops.secrets = {
+        "freshrss/admin_pwd" = {
+          mode = "0440";
+          group = group;
+        };
+        "freshrss/api_pwd" = {
+          mode = "0440";
+          group = group;
+        };
       };
 
-      nginx.virtualHosts =
-        duckDnsLib.mkSubdomainFromPath
-        config.services.freshrss.virtualHost {};
+      services = {
+        freshrss = {
+          enable = true;
+
+          baseUrl = cfg.url;
+          passwordFile = config.sops.secrets."freshrss/admin_pwd".path;
+          virtualHost = cfg.virtualHost;
+        };
+
+        nginx.virtualHosts =
+          duckDnsLib.mkSubdomainFromPath
+          config.services.freshrss.virtualHost {};
+      };
+
+      users.groups."${config.services.freshrss.user}".members = [config.users.users.homepage.name];
     };
-  };
 }
