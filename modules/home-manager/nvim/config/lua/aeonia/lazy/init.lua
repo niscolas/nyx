@@ -66,7 +66,12 @@ M.setup = function()
 
                 {
                     "nvim-treesitter/nvim-treesitter-context",
-                    config = true,
+                    config = function()
+                        require("treesitter-context").setup {
+                            enable = true,
+                            max_lines = 2,
+                        }
+                    end,
                 },
             },
         },
