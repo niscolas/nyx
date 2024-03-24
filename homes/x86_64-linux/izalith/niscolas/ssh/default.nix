@@ -15,9 +15,6 @@
 
     matchBlocks = let
       liurniaRootConfig = {
-        host = "liurnia";
-        user = "root";
-        identityFile = "~/.ssh/liurnia";
       };
     in {
       nokron = {
@@ -26,15 +23,12 @@
         user = "niscolas";
       };
 
-      liurnia = {
+      liurnia_root_tailscale = {
         host = "liurnia";
-        hostname = "192.168.100.12";
-        user = "niscolas";
+        hostname = "100.83.253.49";
         identityFile = "~/.ssh/liurnia";
+        user = "root";
       };
-
-      liurnia_root = liurniaRootConfig // {hostname = "192.168.100.12";};
-      liurnia_root_tailscale = liurniaRootConfig // {hostname = "100.83.253.49";};
 
       github = {
         host = "github.com";
