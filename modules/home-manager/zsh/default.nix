@@ -1,15 +1,14 @@
 {
   config,
-  pkgs,
   lib,
   outputs,
   ...
 }: let
   cfg = config.nyx.zsh;
-  configDir = "${config.nyx.modulesData.realPath}/zsh";
 in {
   imports = [
     outputs.homeManagerModules.batcat
+    outputs.homeManagerModules.eza
     outputs.homeManagerModules.starship
   ];
 
@@ -17,20 +16,15 @@ in {
     enable = lib.mkEnableOption {};
   };
 
+  # TODO: remove normal ZSH config files in ./config/
   config = lib.mkIf cfg.enable {
     nyx = {
       batcat.enable = true;
+      eza.enable = true;
       starship.enable = true;
     };
 
     programs = {
-      eza = {
-        enable = true;
-        enableAliases = true;
-        git = true;
-        icons = true;
-      };
-
       zsh = {
         enable = true;
         enableCompletion = true;
@@ -39,6 +33,7 @@ in {
         defaultKeymap = "viins";
 
         shellAliases = {
+          c = "clear";
           cat = "bat";
           g = "git";
           n = "nvim";
@@ -48,10 +43,7 @@ in {
         history.path = "${config.xdg.dataHome}/zsh/history";
       };
 
-      zoxide = {
-        enable = true;
-        enableZshIntegration = true;
-      };
+      zoxide.enable = true;
     };
   };
 }
