@@ -5,6 +5,7 @@
   bottom = import ./bottom;
   emote = import ./emote;
   espanso = import ./espanso;
+  eza = import ./eza;
   firefox = import ./firefox;
   flameshot = import ./flameshot;
   fish = import ./fish;
