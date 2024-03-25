@@ -135,7 +135,7 @@ in {
               };
             });
 
-          # "${storagePool.nextcloud.name}" = withAutoSnapshot (dataset storagePool.data.mountpoint);
+          "${storagePool.nextcloud.name}" = withAutoSnapshot (dataset storagePool.nextcloud.mountpoint);
           "${storagePool.backup.name}" = withAutoSnapshot (dataset storagePool.backup.mountpoint);
           "${storagePool.temp.name}" = dataset storagePool.temp.mountpoint;
         };
