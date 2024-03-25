@@ -13,17 +13,21 @@
       AddKeysToAgent yes
     '';
 
-    matchBlocks = let
-      liurniaRootConfig = {
-      };
-    in {
+    matchBlocks = {
       nokron = {
         host = "nokron";
         hostname = "139.144.170.177";
         user = "niscolas";
       };
 
-      liurnia_root_tailscale = {
+      liurniaRennala = {
+        host = "liurnia";
+        hostname = "100.83.253.49";
+        identityFile = "~/.ssh/liurnia";
+        user = "rennala";
+      };
+
+      liurniaRoot = {
         host = "liurnia";
         hostname = "100.83.253.49";
         identityFile = "~/.ssh/liurnia";
