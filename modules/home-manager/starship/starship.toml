@@ -1,16 +1,18 @@
 "$schema" = 'https://starship.rs/config-schema.json'
 
 format = """
-$os$username$directory$git_branch$git_status\
-[](purple)[$all](fg:dark_soft bg:purple bold)[](fg:purple) \
-$cmd_duration\
+[$os](neutral_blue bold)[](neutral_blue)[$username $hostname](fg:dark_soft bg:neutral_blue bold bold)[](neutral_blue) \
+$directory\
+[](yellow)[ $git_branch$git_status](fg:dark_soft bg:yellow bold bold)[](yellow) \
+[$all](fg:purple bold)$cmd_duration\
 \n$character
 """
 
 palette = "gruvbox"
 
 [palettes.gruvbox]
-dark_soft = "#32302f"
+dark_soft = "#32302F"
+light_soft = "#F2E5BC"
 red = "#FB4934"
 green = "#B8BB26"
 yellow = "#FABD2F"
@@ -47,22 +49,22 @@ truncation_length = 3
 truncation_symbol = "…/"
 
 [git_branch]
-format = "[](yellow)[](fg:dark_soft bg:yellow bold)[](fg:yellow bg:dark_soft)[ $branch](fg:yellow bg:dark_soft bold)"
+format = "$symbol$branch(:$remote_branch)"
 symbol = ""
 
 [git_status]
-format = "[ $all_status $ahead_behind ](fg:yellow bg:dark_soft)[](dark_soft) "
-conflicted = "󱓌 "
-ahead = " "
-behind = " "
-diverged = "󰦾 "
-up_to_date = ""
-untracked = "󰨹 "
-stashed = "󰀼 "
-modified = "󰷈 "
-staged = '\( $count\)'
-renamed = "󰑕 "
-deleted = "󰚃 "
+format = "$all_status$ahead_behind"
+conflicted = " 󱓌"
+ahead = " "
+behind = " "
+diverged = " 󰦾"
+up_to_date = " "
+untracked = " 󰨹"
+stashed = " 󰀼"
+modified = " 󰷈"
+staged = " "
+renamed = " 󰑕"
+deleted = " 󰚃"
 
 [line_break]
 disabled = true
@@ -76,11 +78,11 @@ symbol = " "
 format = "$symbol$version "
 
 [os]
-format = "[$symbol](fg:blue bold)"
+format = "$symbol"
 disabled = false
 
 [os.symbols]
-Arch = " "
+Arch = ""
 
 [package]
 format = "$symbol$version "
@@ -97,6 +99,10 @@ style = "fg:dark_soft bg:green bold"
 format = "[](green)[ $time]($style)[](green)"
 
 [username]
-show_always = false
-format = "$user"
-disabled = true
+show_always = true
+format = " $user"
+
+[hostname]
+ssh_only = false
+ssh_symbol="󰢹"
+format = "󰒋 $ssh_symbol $hostname"
