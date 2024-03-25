@@ -14,7 +14,7 @@ M.setup = function()
         or default_highlights
 
     toggleterm.setup {
-        direction = "vertical",
+        direction = "float",
         float_opts = { -- The border key is *almost* the same as 'nvim_open_win'
             -- see :h nvim_open_win for details on borders however
             -- the 'curved' border is a custom border type
@@ -24,20 +24,18 @@ M.setup = function()
         highlights = highlights,
         -- size can be a number or function which is passed the current terminal
         size = function(term)
-            if term.direction == "float" then
-                return vim.o.columns * 0.5
-            elseif term.direction == "vertical" then
+            if term.direction == "vertical" then
                 return vim.o.columns * 0.5
             end
         end,
         open_mapping = [[<c-t>]],
-        hide_numbers = true,
+        hide_numbers = false,
         shade_filetypes = {},
         shade_terminals = true,
         start_in_insert = true,
         insert_mappings = true, -- whether or not the open mapping applies in insert mode
         terminal_mappings = true, -- whether or not the open mapping applies in the opened terminals
-        persist_size = true,
+        persist_size = false,
         close_on_exit = true, -- close the terminal window when the process exits
     }
 end
