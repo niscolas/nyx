@@ -21,7 +21,7 @@ window:
   history: 10000
   multiplier: 3
 
-  opacity: 0.8
+  opacity: 0.85
 
 cursor:
   style:
