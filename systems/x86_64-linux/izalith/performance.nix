@@ -1,10 +1,11 @@
-{lib, ...}: {
+{
+  lib,
+  pkgs,
+  ...
+}: {
   services = {
     system76-scheduler.enable = true;
-
     power-profiles-daemon.enable = false;
-
-    thermald.enable = false;
 
     auto-cpufreq = {
       enable = true;
@@ -45,6 +46,9 @@
         STOP_CHARGE_THRESH_BAT0 = 75;
       };
     };
+
+    # throttled can conflict with it, keep it disabled
+    thermald.enable = false;
 
     throttled = {
       enable = true;
@@ -130,7 +134,34 @@
     };
   };
 
+  # auto suspend USB devices if on
   powerManagement.powertop.enable = true;
+  systemd.services = let
+    execStartBin = pkgs.writeShellScriptBin "powertop-start" ''
+      ${pkgs.powertop}/bin/powertop --auto-tune
+
+      for i in /sys/bus/usb/devices/*/power/autosuspend;
+      do echo -1 > $i;
+      done
+    '';
+  in {
+    powertop = {
+      serviceConfig = {
+        ExecStart = lib.mkForce "${execStartBin}/bin/powertop-start";
+      };
+    };
+  };
+
+  # /sys/bus/usb/devices/3-1
+  # /sys/bus/usb/devices/3-1.1
+  # /sys/bus/usb/devices/3-1.1.1
+  # /sys/bus/usb/devices/3-1.2
+  # /sys/bus/usb/devices/3-1.4
+  # /sys/bus/usb/devices/2-1
+  # /sys/bus/usb/devices/2-1.1
+
+  # /sys/bus/usb/devices/3-9
+  # /sys/bus/usb/devices/3-14
 
   specialisation = {
     turbo.configuration = {
