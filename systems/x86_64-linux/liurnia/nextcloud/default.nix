@@ -59,8 +59,6 @@ in {
             adminpassFile = config.sops.secrets."nextcloud/admin_pwd".path;
 
             dbtype = "pgsql";
-            # dbhost = "/run/postgresql"; # nextcloud will add /.s.PGSQL.5432 by itself
-            # dbpassFile = config.sops.secrets."nextcloud/db_pwd".path;
           };
 
           extraAppsEnable = true;
@@ -70,28 +68,14 @@ in {
           };
         };
 
-        # postgresql = {
-        #   enable = true;
-        #
-        #   # Ensure the database, user, and permissions always exist
-        #   ensureDatabases = ["nextcloud"];
-        #   ensureUsers = [
-        #     {
-        #       name = "nextcloud";
-        #       ensurePermissions."DATABASE nextcloud" = "ALL PRIVILEGES";
-        #     }
-        #   ];
-        # };
-
         nginx.virtualHosts = duckDnsLib.mkSubdomainFromPath config.services.nextcloud.hostName {};
       };
 
       users.groups.nextcloud.members = [config.users.users.homepage.name];
 
-      # TODO: enable this to grant that zstorage will be available
-      # systemd.services."nextcloud-setup" = {
-      #   requires = ["zfs-import-zstorage.service"];
-      #   after = ["zfs-import-zstorage.service"];
-      # };
+      systemd.services."nextcloud-setup" = {
+        requires = ["zfs-import-zstorage.service"];
+        after = ["zfs-import-zstorage.service"];
+      };
     };
 }
