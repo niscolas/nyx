@@ -88,6 +88,9 @@ in {
     services.xserver = {
       enable = true;
       displayManager = {
+        setupCommands = ''
+          ${pkgs.xorg.xrandr}/bin/xrandr --auto
+        '';
         sddm.enable = true;
         # defaultSession = "plasmax11";
       };
