@@ -27,6 +27,9 @@ in {
         [
           neovim
 
+          # spell checking
+          nodePackages.cspell
+
           # bash
           nodePackages.bash-language-server
           shellcheck

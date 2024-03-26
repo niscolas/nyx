@@ -27,6 +27,7 @@ end
 
 M.setup = function()
     local null_ls = require("null-ls")
+    local cspell = require("cspell")
     local augroup = new_augroup("lsp_formatting", { clear = true })
 
     null_ls.setup {
@@ -34,13 +35,16 @@ M.setup = function()
             on_attach(client, bufnr, augroup)
         end,
         sources = {
-            -- null_ls.builtins.code_actions.cspell,
-            -- null_ls.builtins.diagnostics.cspell.with {
-            --     diagnostics_postprocess = function(diagnostic)
-            --         diagnostic.severity = vim.diagnostic.severity.HINT
-            --     end,
-            -- },
+            cspell.diagnostics.with {
+                diagnostics_postprocess = function(diagnostic)
+                    diagnostic.severity = vim.diagnostic.severity.HINT
+                end,
+            },
 
+            cspell.code_actions,
+
+            -- null_ls.builtins.code_actions.cspell,
+            -- null_ls.builtins.diagnostics.cspell
             -- c++
             null_ls.builtins.formatting.clang_format,
 

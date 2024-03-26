@@ -377,6 +377,7 @@ M.setup = function()
             config = require("aeonia.null-ls").setup,
             dependencies = {
                 "gbprod/none-ls-shellcheck.nvim",
+                "davidmh/cspell.nvim",
             },
         },
 
