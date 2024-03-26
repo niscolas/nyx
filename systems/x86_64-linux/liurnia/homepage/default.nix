@@ -16,6 +16,7 @@ in {
       port = duckDnsLib.mkServicePortOption (toString (config.services.homepage-dashboard.listenPort));
     };
 
+    # TODO: include also the group that the "homepage" user should be added to access it
     secrets = mkOption {
       type = types.attrs;
     };

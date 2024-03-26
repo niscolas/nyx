@@ -28,6 +28,10 @@
       url = "github:Mic92/nix-index-database";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nixvim = {
+      url = "github:nix-community/nixvim/nixos-23.11";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     nbfc.url = "github:nbfc-linux/nbfc-linux";
     nvidia-patch = {
       url = "github:niscolas/nvidia-patch-nixos-fork";
