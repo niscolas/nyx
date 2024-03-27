@@ -19,6 +19,7 @@ in {
     # TODO: include also the group that the "homepage" user should be added to access it
     secrets = mkOption {
       type = types.attrs;
+      default = [];
     };
 
     layout = {
@@ -68,7 +69,8 @@ in {
         (
           builtins.attrValues
           (
-            builtins.mapAttrs (keyword: file: "s/${keyword}/$(<${file})/g")
+            builtins.mapAttrs
+            (_: value: "s/${value.keyword}/$(<${value.file})/g")
             cfg.secrets
           )
         );
@@ -100,7 +102,19 @@ in {
         };
       };
 
-      groups.homepage = {};
+      groups =
+        {
+          homepage = {};
+        }
+        // lib.attrsets.mapAttrs' (
+          _: value:
+            lib.attrsets.nameValuePair
+            value.group
+            {
+              members = ["homepage"];
+            }
+        )
+        cfg.secrets;
     };
   };
 }

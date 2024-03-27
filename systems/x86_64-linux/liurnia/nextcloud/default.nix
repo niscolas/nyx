@@ -71,8 +71,6 @@ in {
         nginx.virtualHosts = duckDnsLib.mkSubdomainFromPath config.services.nextcloud.hostName {};
       };
 
-      users.groups.nextcloud.members = [config.users.users.homepage.name];
-
       systemd.services."nextcloud-setup" = {
         requires = ["zfs-import-zstorage.service"];
         after = ["zfs-import-zstorage.service"];

@@ -48,7 +48,5 @@ in {
           duckDnsLib.mkSubdomainFromPath
           config.services.freshrss.virtualHost {};
       };
-
-      users.groups."${config.services.freshrss.user}".members = [config.users.users.homepage.name];
     };
 }

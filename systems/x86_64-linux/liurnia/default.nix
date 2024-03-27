@@ -49,21 +49,20 @@ in
       nix.enable = true;
       liurnia = {
         duckdns.enable = true;
-        homepage = let
-          freshrss = {
-            apiPwdKeyword = "_freshrssapipwd_";
-            apiPwdFile = config.sops.secrets."freshrss/api_pwd".path;
-          };
-
-          nextcloud = {
-            ncTokenKeyword = "_nextcloudnctoken_";
-            ncTokenFile = config.sops.secrets."nextcloud/nc_token".path;
-          };
-        in {
+        homepage = rec {
           enable = true;
           secrets = {
-            "${freshrss.apiPwdKeyword}" = "${freshrss.apiPwdFile}";
-            "${nextcloud.ncTokenKeyword}" = "${nextcloud.ncTokenFile}";
+            freshrss = {
+              keyword = "_freshrssapipwd_";
+              file = config.sops.secrets."freshrss/api_pwd".path;
+              group = "freshrss";
+            };
+
+            nextcloud = {
+              keyword = "_nextcloudnctoken_";
+              file = config.sops.secrets."nextcloud/nc_token".path;
+              group = "nextcloud";
+            };
           };
           layout = {
             settings = {
@@ -119,7 +118,7 @@ in
                       widget = {
                         type = "nextcloud";
                         url = url;
-                        key = nextcloud.ncTokenKeyword;
+                        key = secrets.nextcloud.keyword;
                         fields = ["freespace" "activeusers" "numfiles" "numshares"];
                       };
                     };
@@ -138,7 +137,7 @@ in
                         type = "freshrss";
                         url = config.nyx.liurnia.freshrss.url;
                         username = config.services.freshrss.defaultUser;
-                        password = freshrss.apiPwdKeyword;
+                        password = secrets.freshrss.keyword;
                       };
                     };
                   }
@@ -290,6 +289,7 @@ in
           fd
           fzf
           gitMinimal
+          lm_sensors
           pciutils # lspci
           rar
           speedtest-go
